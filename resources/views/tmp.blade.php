@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
-    <link rel="icon" href="{{asset('assets/images/logos/logo2.png')}}" type="image/png">
+    <link rel="icon" href="{{asset('assets/images/logos/utamaicon.png')}}" type="image/png">
     <style>
       .dropdown-item:hover {
     background-color: #5D87FF;
@@ -41,7 +41,7 @@
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
                 <a href="./index.html" class="text-nowrap logo-img">
-                  <img src="{{asset('assets/images/logos/logo2.png')}}" width="180" alt="" />
+                  <img src="{{asset('assets/images/logos/utamalogo.png')}}" width="180" alt="" />
                 </a>
           <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
             <i class="ti ti-x fs-8"></i>

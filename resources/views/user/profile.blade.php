@@ -1,158 +1,69 @@
 @extends('tmp')
+
 @section('content')
-<div class="container mt-5">
-  <div class="row">
-    <!-- Bagian Kiri: Foto dan Nama -->
-    <div class="col-md-4">
-      <img src="{{ asset('assets2/img/price.jpg') }}" alt="Foto Profil" class="profile-img img-fluid mb-3">
-      @auth
-        <h2 class="mb-3 text-center text-primary">{{ auth()->user()->name }}</h2>
-      @endauth
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card mb-4 shadow-lg">
+            <div class="card-body text-center">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                    class="rounded-circle img-fluid" style="width: 150px;">
+                    @auth
+                      <p class="text-dark my-3">{{ Auth::user()->name }}</p>
+                      <p class="text-dark mb-1">{{ Auth::user()->position->jabatan }}</p>
+                    @endauth
+            </div>
+        </div>
     </div>
-
-    <!-- Bagian Kanan: Detail Gaji -->
-    <div class="col-md-8">
-      @if(auth()->user()->gaji()->exists())
-        @php
-          // Inisialisasi objek Carbon dengan bulan yang diinginkan
-          $carbonInstance = \Carbon\Carbon::now()->startOfMonth();
-          $gajiBulanIni = auth()->user()->gaji()->where('bulan', $carbonInstance->format('Y-m'))->first();
-        @endphp
-        @if($gajiBulanIni)
-        <h3>Gaji</h3>
-          <table class="table table-dark table-striped">
-            <tr>
-              <td>Gaji Pokok</td>
-              <td>: RP. {{ $gajiBulanIni->gapok }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Istri</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_istri }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Anak</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_anak }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Umum</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_umum }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Beras</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_beras }}</td>
-            </tr>
-            <tr>
-              <td>PPH</td>
-              <td>: RP. {{ $gajiBulanIni->pph }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Struktural</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_struktural }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Fungsional</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_fungsional }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Terpencil</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_terpencil }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Pembulatan</td>
-              <td>: RP. {{ $gajiBulanIni->pembulatan }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Kinerja</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_kinerja }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Makan</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_makan }}</td>
-            </tr>
-            <tr>
-              <td class="text text-primary">Butto</td>
-              <td class="text text-primary">: RP. {{ $gajiBulanIni->total_gaji }}</td>
-            </tr>
-            <!-- Sisipkan kolom lainnya sesuai kebutuhan -->
-          </table>
-        @else
-          <p>Tidak ada data gaji untuk bulan ini.</p>
-        @endif
-      @else
-        <p>Tidak ada data gaji.</p>
-      @endif
-
-       
-      @if(auth()->user()->potongan()->exists())
-    @php
-        // Inisialisasi objek Carbon dengan bulan yang diinginkan
-        $carbonInstance = \Carbon\Carbon::now()->startOfMonth();
-        $potonganBulanIni = auth()->user()->potongan()->where('bulan', $carbonInstance->format('Y-m'))->first();
-    @endphp
-    @if($potonganBulanIni)
-        <h3>Potongan</h3>
-        <table class="table table-dark table-striped">
-            <tr>
-                <td>Zakat</td>
-                <td>: RP. {{ $potonganBulanIni->zakat }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Istri</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_istri }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Anak</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_anak }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Umum</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_umum }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Beras</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_beras }}</td>
-            </tr>
-            <tr>
-              <td>PPH</td>
-              <td>: RP. {{ $gajiBulanIni->pph }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Struktural</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_struktural }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Fungsional</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_fungsional }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Terpencil</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_terpencil }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Pembulatan</td>
-              <td>: RP. {{ $gajiBulanIni->pembulatan }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Kinerja</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_kinerja }}</td>
-            </tr>
-            <tr>
-              <td>Tunjangan Makan</td>
-              <td>: RP. {{ $gajiBulanIni->tnj_makan }}</td>
-            </tr>
-            <tr>
-              <td class="text text-primary">Butto</td>
-              <td class="text text-primary">: RP. {{ $gajiBulanIni->total_gaji }}</td>
-            </tr>
-            <!-- Sisipkan kolom lainnya sesuai kebutuhan -->
-          </table>
-        @else
-          <p>Tidak ada data potongan untuk bulan ini.</p>
-        @endif
-      @else
-        <p>Tidak ada data gaji.</p>
-      @endif
-
-  </div>
+    <div class="col-lg-8">
+        <div class="card mb-4 mb-lg-0">
+            <div class="card-body shadow-lg">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Full Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">Johnatan Smith</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Email</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">example@example.com</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Phone</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">(097) 234-5678</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Mobile</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">(098) 765-4321</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Address</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 @endsection
