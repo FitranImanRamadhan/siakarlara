@@ -37,9 +37,9 @@
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
-        <aside class="left-sidebar">
+        <aside class="left-sidebar shadow-sm">
             <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between bg-primary">
+                <div class="brand-logo d-flex align-items-center justify-content-between">
                 <a href="./index.html" class="text-nowrap logo-img">
                   <img src="{{asset('assets/images/logos/logo2.png')}}" width="180" alt="" />
                 </a>
@@ -199,7 +199,7 @@
     <!--  Main wrapper -->
         <div class="body-wrapper">
           <!--  Header Start -->
-          <header class="app-header shadow-lg bg-primary">
+          <header class="app-header shadow-sm">
   <nav class="navbar navbar-expand-lg navbar-light">
     <ul class="navbar-nav">
       <!-- ... (elemen-elemen lain jika ada) ... -->
@@ -223,7 +223,7 @@
         </li>
         <li class="nav-item pt-2">
           @auth
-            <p class="text-light">{{ Auth::user()->name }}</p>
+            <p class="text-dark">{{ Auth::user()->name }}</p>
           @endauth
         </li>
       </ul>
@@ -232,7 +232,7 @@
 </header>
           <!--  Header End -->
           <div class="container-fluid">
-            <div class="card">
+            <div class="card mt-2">
                 <div class="card-body">
                     <h1 class="card-title">@yield('title')</h1>
                     @yield('content')
