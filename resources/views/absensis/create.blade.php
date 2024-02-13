@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" type="submit">Simpan</button>
+        <button class="btn btn-primary" type="submit">Simpann</button>
     </form>
 
     <script>
