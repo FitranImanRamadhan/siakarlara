@@ -37,7 +37,7 @@
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
-        <aside class="left-sidebar shadow-sm">
+        <aside class="left-sidebar shadow-sm bg-light-primary">
             <div>
                 <div class="brand-logo d-flex align-items-center justify-content-between">
                 <a href="./index.html" class="text-nowrap logo-img">
@@ -48,7 +48,7 @@
           </div>
         </div>
         <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+        <nav class="sidebar-nav scroll-sidebar bg-light-primary" data-simplebar="">
                 <ul id="sidebarnav">
             <li class="nav-small-cap">
               <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -83,7 +83,6 @@
                   </a>
                 </li>
                 @endif
-                @if(Auth()->user()->level == "1")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('positions.index') }}" aria-expanded="false">
                     <span>
@@ -92,7 +91,6 @@
                     <span class="hide-menu">Data Jabatan</span>
                   </a>
                 </li>
-                @endif
                 @if(Auth()->user()->level == "1")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('departements.index') }}" aria-expanded="false">
@@ -129,6 +127,34 @@
                       <i class="ti ti-typography"></i>
                     </span>
                     <span class="hide-menu">Gaji</span>
+                  </a>
+                </li>
+                @endif
+              </ul>
+            </div>
+
+            <br>
+
+            <div class="sidebar-item"">
+            <button type="button" class="btn btn-primary dropdown-toggle custom-btn" data-bs-toggle="dropdown" aria-expanded="false">
+              Potongan
+            </button>
+              <ul class="dropdown-menu">
+                @if(Auth()->user()->level == "1")
+                <li class="sidebar-item">
+                  <a class="sidebar-link" href="{{ route('umrs.index') }}" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-file-description"></i>
+                    </span>
+                    <span class="hide-menu">Umr</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a class="sidebar-link" href="{{ route('potongans.index') }}" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-typography"></i>
+                    </span>
+                    <span class="hide-menu">Potongan</span>
                   </a>
                 </li>
                 @endif
@@ -247,6 +273,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script> <!-- Memuat DataTables -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> <!-- Memuat jQuery UI -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js')}}"></script>
 <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js')}}"></script>
 <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

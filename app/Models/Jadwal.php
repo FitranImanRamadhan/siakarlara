@@ -23,7 +23,7 @@ class Jadwal extends Model
 
     public function jabatan ()
     {
-        return $this->belongsto(Jabatan::class);
+        return $this->belongsto(Position::class);
     }
     
 

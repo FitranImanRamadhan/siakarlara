@@ -20,15 +20,16 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'position_id',
-        'jabatan_id',
-        'golongan_id',
         'nip',
         'password',
         'level',
         'departement'
     ];
 
-   
+    public function absensi  ()
+    {
+        return $this->hasMany(Absensi::class);
+    }
 
     public function position  ()
     {

@@ -37,7 +37,7 @@
             <td>{{$data->nip}}</td>
             <td>{{$data->name}}</td>
             <td>{{ $data->position ? $data->position->jabatan : '0' }}</td>
-            <td>{{$data->position->gapok}}</td>
+            <td>{{ $data->position ? $data->position->gapok : 'Data posisi tidak tersedia' }}</td>
             <td>
     {{ $data->level == 0 ? 'User' : 'Admin' }}
 </td>

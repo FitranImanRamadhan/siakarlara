@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nama') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Nama</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                        <div class="form-group row mt-2">
-                            <label for="nip" class="col-md-4 col-form-label text-md-right">{{ __('NIP') }}</label>
+                            <label for="nip" class="col-md-4 col-form-label text-md-right">NIP</label>
 
                             <div class="col-md-6">
                                 <input id="nip" type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip') }}" required>
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -54,7 +54,7 @@
                         </div>
 
                        <div class="form-group row mt-2">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -62,7 +62,7 @@
                         </div>
 
                    <div class="form-group row mt-2">
-                        <label for="position_id" class="col-md-4 col-form-label text-md-right">{{ __('Position') }}</label>
+                        <label for="position_id" class="col-md-4 col-form-label text-md-right">Jabatan</label>
 
                         <div class="col-md-6">
                             <select id="position_id" class="form-control @error('position_id') is-invalid @enderror" name="position_id" required>
@@ -76,7 +76,7 @@
 
 
                        <div class="form-group row mt-2">
-                            <label for="level" class="col-md-4 col-form-label text-md-right">{{ __('Level') }}</label>
+                            <label for="level" class="col-md-4 col-form-label text-md-right">Level</label>
 
                             <div class="col-md-6">
                                 <select id="level" class="form-control @error('level') is-invalid @enderror" name="level" required>
@@ -96,7 +96,7 @@
                         <div class="form-group row mt-4">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Submit') }}
+                                    Submit
                                 </button>
                             </div>
                         </div>

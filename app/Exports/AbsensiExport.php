@@ -21,7 +21,7 @@ class AbsensiExport implements FromCollection, WithHeadings
             return [
                 'ID' => $absensi->id,
                 'Nama' => $absensi->user->name, // Ubah 'nama' dengan nama field yang menyimpan nama user
-                'Jabatan' => $absensi->user->jabatan->nama_jabatan,
+                'Jabatan' => $absensi->user->position->jabatan,
                 'Bulan' => $absensi->bulan,
                 'Tahun' => $absensi->tahun,
                 'Hadir' => $absensi->hadir,

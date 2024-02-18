@@ -12,10 +12,12 @@ use App\Http\Controllers\GajiController;
 use App\Http\Controllers\PotonganController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\UmrController;
 use App\Http\Controllers\JabatanController;
 use App\Models\Absensi;
 use App\Models\Departements;    
 use App\Models\Potongan;
+use App\Models\Umr;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,12 +47,17 @@ Route::middleware('auth')->group(function () {
     Route::get('password', [UserController::class, 'password'])->name('password');
     Route::post('password', [UserController::class, 'password_action'])->name('password.action');
     Route::get('change-password', [UserController::class, 'password'])->name('change.password');
-    // Route Position
+    
+
     Route::resource('positions', PositionController::class);
     Route::resource('departements', DepartementController::class);
     Route::resource('users', UserController::class);
     Route::resource('absensis', AbsensiController::class);
     Route::resource('jadwals', JadwalController::class);
+    Route::resource('umrs', UmrController::class);
+    Route::resource('potongans', PotonganController::class);
+
+
     Route::get('departement/export-pdf', [DepartementController::class, 'exportPdf'])->name('departements.exportPdf');
     Route::get('user/export-pdf', [UserController::class, 'exportPdf'])->name('users.exportPdf');
     Route::get('position/export-excel', [PositionController::class, 'exportExcel'])->name('position.exportExcel');
@@ -63,12 +70,11 @@ Route::middleware('auth')->group(function () {
 
 
     //absensi
-
-
 Route::get('laporan_absensi', [AbsensiController::class, 'laporan'])->name('laporan-absensi');
 Route::get('/getDataForTable', [AbsensiController::class, 'getDataForTable'])->name('getDataForTable');
 Route::get('/get-data-all', [AbsensiController::class, 'getDataAll'])->name('get.data.all');
 Route::get('/export-by-month-year', [AbsensiController::class, 'exportByMonthYear'])->name('export.by.month.year');
+
 
 
 

@@ -66,8 +66,8 @@
             <td>{{ $data->sakit }}</td>
             <td>{{ $data->alpha }}</td>
             <td>
-                <form action="{{ route('absensis.destroy',$data->id) }}" method="Post">
-                    <a class="btn btn-warning" href="{{ route('absensis.edit',$data->id) }}">Edit</a>
+                <a class="btn btn-warning" href="{{ route('absensis.edit',$data->id) }}">Edit</a>
+                <form action="{{ route('absensis.destroy',$data->id) }}" method="Post" style="display:inline-block">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>

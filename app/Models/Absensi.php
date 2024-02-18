@@ -22,6 +22,8 @@ class Absensi extends Model
     {
         return $this->belongsto(User::class);
     }
+
+    
     
 
 }
