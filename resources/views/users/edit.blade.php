@@ -8,12 +8,12 @@
                 <div class="card-header">{{ $title }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('users.update', $user->id) }}">
+                    <form id="updateForm" method="POST" action="{{ route('users.update', $user->id) }}">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nama') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Nama<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" required autofocus>
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="nip" class="col-md-4 col-form-label text-md-right">{{ __('NIP') }}</label>
+                            <label for="nip" class="col-md-4 col-form-label text-md-right">NIP<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="nip" type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $user->nip) }}" required>
@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="position_id" class="col-md-4 col-form-label text-md-right">{{ __('Position') }}</label>
+                            <label for="position_id" class="col-md-4 col-form-label text-md-right">Jabatan<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <select id="position_id" class="form-control @error('position_id') is-invalid @enderror" name="position_id" required>
@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="level" class="col-md-4 col-form-label text-md-right">{{ __('Level') }}</label>
+                            <label for="level" class="col-md-4 col-form-label text-md-right">Level<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <select id="level" class="form-control @error('level') is-invalid @enderror" name="level" required>
@@ -79,8 +79,8 @@
 
                         <div class="form-group row mt-4">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Update') }}
+                                <button type="button" id="updateBtn" class="btn btn-primary">
+                                    Update
                                 </button>
                             </div>
                         </div>
@@ -90,4 +90,26 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('#updateBtn').click(function() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to update this user's information!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#updateForm').submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection

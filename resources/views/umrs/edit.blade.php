@@ -8,17 +8,17 @@
                 <div class="card-header">{{ $title }}</div>
 
                 <div class="card-body">
-                    <form action="{{ route('positions.update', $position->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('umrs.update', $umr->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group row">
-                            <label for="jabatan" class="col-md-4 col-form-label text-md-right">Jabatan</label>
+                            <label for="kota" class="col-md-4 col-form-label text-md-right">Kota<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="jabatan" type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ $position->jabatan }}" required autofocus>
+                                <input id="kota" type="text" class="form-control @error('kota') is-invalid @enderror" name="kota" value="{{ $umr->kota }}" required autofocus>
 
-                                @error('jabatan')
+                                @error('kota')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,12 +27,12 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="gapok" class="col-md-4 col-form-label text-md-right">Gaji Pokok</label>
+                            <label for="upah_umr" class="col-md-4 col-form-label text-md-right">Upah Minimum<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="gapok" type="text" class="form-control @error('gapok') is-invalid @enderror" name="gapok" value="{{ $position->gapok }}" required>
+                                <input id="upah_umr" type="text" class="form-control @error('upah_umr') is-invalid @enderror" name="upah_umr" value="{{ $umr->upah_umr }}" required>
 
-                                @error('gapok')
+                                @error('upah_umr')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

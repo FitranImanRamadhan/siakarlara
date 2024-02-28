@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row mt-2">
-                            <label for="umr_id" class="col-md-4 col-form-label text-md-right">Upah Minimum</label>
+                            <label for="umr_id" class="col-md-4 col-form-label text-md-right">Upah Minimum<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <select id="umr_id" class="form-control @error('umr_id') is-invalid @enderror" name="umr_id" required onchange="calculateBPJSTK(); calculateBPJSKES()">
@@ -24,12 +24,12 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="atur" class="col-form-label text-md-center">Atur %</label>
+                                <label for="atur" class="col-form-label text-md-center">Atur %<span class="text-danger">*</span></label>
                             </div>
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="bpjs_tk" class="col-md-4 col-form-label text-md-right">BPJS TK</label>
+                            <label for="bpjs_tk" class="col-md-4 col-form-label text-md-right">BPJS TK<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="bpjs_tk" type="number" class="form-control @error('bpjs_tk') is-invalid @enderror" name="bpjs_tk" value="{{ old('bpjs_tk', 4) }}" readonly required>
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="bpjs_kes" class="col-md-4 col-form-label text-md-right">BPJS Kesehatan</label>
+                            <label for="bpjs_kes" class="col-md-4 col-form-label text-md-right">BPJS Kesehatan<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="bpjs_kes" type="number" class="form-control @error('bpjs_kes') is-invalid @enderror" name="bpjs_kes" value="{{ old('bpjs_kes', 1) }}" readonly required>
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="alpha" class="col-md-4 col-form-label text-md-right">Alpha</label>
+                            <label for="alpha" class="col-md-4 col-form-label text-md-right">Alpha<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="alpha" type="number" class="form-control @error('alpha') is-invalid @enderror" name="alpha" value="{{ old('alpha') }}" required autofocus>

@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="jabatan" class="col-md-4 col-form-label text-md-right">Jabatan</label>
+                            <label for="jabatan" class="col-md-4 col-form-label text-md-right">Jabatan<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="jabatan" type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ old('jabatan') }}" required autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="gapok" class="col-md-4 col-form-label text-md-right">Gaji Pokok</label>
+                            <label for="gapok" class="col-md-4 col-form-label text-md-right">Gaji Pokok<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="gapok" type="text" class="form-control @error('gapok') is-invalid @enderror" name="gapok" value="{{ old('gapok') }}" required>
@@ -42,7 +42,7 @@
                         <div class="form-group row mt-4">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Submit') }}
+                                    Submit
                                 </button>
                             </div>
                         </div>

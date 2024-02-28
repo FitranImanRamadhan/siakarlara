@@ -8,16 +8,16 @@
                 <div class="card-header">{{ $title }}</div>
 
                 <div class="card-body">
-                    <form action="{{ route('positions.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('umrs.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="jabatan" class="col-md-4 col-form-label text-md-right">Jabatan</label>
+                            <label for="kota" class="col-md-4 col-form-label text-md-right">Kota<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="jabatan" type="text" class="form-control @error('jabatan') is-invalid @enderror" name="jabatan" value="{{ old('jabatan') }}" required autofocus>
+                                <input id="kota" type="text" class="form-control @error('kota') is-invalid @enderror" name="kota" value="{{ old('kota') }}" required autofocus>
 
-                                @error('jabatan')
+                                @error('kota')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -26,12 +26,12 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="gapok" class="col-md-4 col-form-label text-md-right">Gaji Pokok</label>
+                            <label for="upah_umr" class="col-md-4 col-form-label text-md-right">Upah Minimum<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="gapok" type="text" class="form-control @error('gapok') is-invalid @enderror" name="gapok" value="{{ old('gapok') }}" required>
+                                <input id="upah_umr" type="text" class="form-control @error('upah_umr') is-invalid @enderror" name="upah_umr" value="{{ old('upah_umr') }}" required>
 
-                                @error('gapok')
+                                @error('upah_umr')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -42,7 +42,7 @@
                         <div class="form-group row mt-4">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Submit') }}
+                                    Submit
                                 </button>
                             </div>
                         </div>

@@ -39,7 +39,7 @@
                     <a class="btn btn-warning" href="{{ route('positions.edit',$data->id) }}">Edit</a>
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger delete-btn">Delete</button>
                 </form>
             </td>
         </tr>
@@ -52,5 +52,27 @@
     $(document).ready(function() {
         $('#example').DataTable();
     });
+
+    $(document).ready(function() {
+        $('#example').DataTable();
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            var form = $(this).closest('form');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
 </script>
 @endsection

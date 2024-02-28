@@ -24,7 +24,6 @@
             <th scope="col">NIP</th>
             <th scope="col">Nama</th>
             <th scope="col">Jabatan</th>
-            <th scope="col">Gaji Pokok</th>
             <th scope="col">Level</th>  
             <th scope="col">Actions</th>
         </tr>
@@ -36,17 +35,16 @@
             <td>{{ $no++ }}</td>
             <td>{{$data->nip}}</td>
             <td>{{$data->name}}</td>
-            <td>{{ $data->position ? $data->position->jabatan : '0' }}</td>
-            <td>{{ $data->position ? $data->position->gapok : 'Data posisi tidak tersedia' }}</td>
+            <td>{{ $data->position ? $data->position->jabatan : 'Data posisi tidak tersedia' }}</td>
             <td>
     {{ $data->level == 0 ? 'User' : 'Admin' }}
 </td>
             <td>
-                <form action="{{ route('users.destroy', $data->id) }}" method="POST">
+                <form id="delete-form-{{ $data->id }}" action="{{ route('users.destroy', $data->id) }}" method="POST">
                     <a class="btn btn-warning" href="{{ route('users.edit', $data->id) }}">Edit</a>
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delet</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser({{ $data->id }})">Delete</button>
                 </form>
             </td>
         </tr>
@@ -57,9 +55,27 @@
 @endsection
 
 @section('js')
+
 <script>
     $(document).ready(function() {
         $('#example').DataTable();
     });
+
+    function deleteUser(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the form after confirmation
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
 </script>
 @endsection

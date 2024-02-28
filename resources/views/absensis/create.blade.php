@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" type="submit"><i class="fas fa-check-double mr-1"></i>Simpan</button>
+        <button class="btn btn-primary" type="submit"></i>Submit</button>
     </form>
 
     <script>

@@ -45,7 +45,6 @@
     <thead>
         <tr>
             <th scope="col">No</th>
-            <th scope="col">NIK</th>
             <th scope="col">Nama</th>
             <th scope="col">Jabatan</th>
             <th scope="col">Hadir</th>
@@ -59,7 +58,6 @@
         @foreach ($absensis as $data)
         <tr>
             <td>{{ $no++ }}</td>
-            <td>{{ $data->user->nip }}</td>
             <td>{{ $data->user->name }}</td>
             <td>{{ $data->user->position->jabatan }}</td>
             <td>{{ $data->hadir }}</td>
@@ -76,6 +74,15 @@
         </tr>
         @endforeach
     </tbody>
+
+    @if(request()->has('bulan') && request()->has('tahun'))
+    <div>
+    <h6 class="text-danger">
+        Rekapitulasi Absensi Pada Bulan {{ date('F', mktime(0, 0, 0, request('bulan'), 1)) }} Tahun {{ request('tahun') }}
+    </h6>
+    </div>
+
+@endif
 </table>
 @elseif(!request()->has('bulan') || !request()->has('tahun'))
 <div class="alert alert-info">

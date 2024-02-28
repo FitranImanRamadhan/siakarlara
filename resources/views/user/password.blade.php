@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('password.action') }}" method="POST">
+                    <form id="passwordForm" action="{{ route('password.action') }}" method="POST">
                         @csrf
 
                         <div class="form-group row mb-3">
@@ -60,4 +60,28 @@
         </div>
     </div>
 </div>
+
+<!-- Tambahkan skrip SweetAlert -->
+<script>
+    // Menangkap peristiwa pengiriman formulir
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah pengiriman formulir secara langsung
+
+        // Menampilkan SweetAlert
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to change your password?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, change it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit formulir secara manual setelah konfirmasi
+                this.submit();
+            }
+        });
+    });
+</script>
 @endsection

@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Nama</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Nama <span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
@@ -26,7 +26,7 @@
                         </div>
 
                        <div class="form-group row mt-2">
-                            <label for="nip" class="col-md-4 col-form-label text-md-right">NIP</label>
+                            <label for="nip" class="col-md-4 col-form-label text-md-right">NIP<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="nip" type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip') }}" required>
@@ -40,11 +40,13 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Password<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    Password akan disetel otomatis berdasarkan NIP.
+                                </small>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -54,7 +56,7 @@
                         </div>
 
                        <div class="form-group row mt-2">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -62,7 +64,7 @@
                         </div>
 
                    <div class="form-group row mt-2">
-                        <label for="position_id" class="col-md-4 col-form-label text-md-right">Jabatan</label>
+                        <label for="position_id" class="col-md-4 col-form-label text-md-right">Jabatan<span class="text-danger">*</span></label>
 
                         <div class="col-md-6">
                             <select id="position_id" class="form-control @error('position_id') is-invalid @enderror" name="position_id" required>
@@ -76,7 +78,7 @@
 
 
                        <div class="form-group row mt-2">
-                            <label for="level" class="col-md-4 col-form-label text-md-right">Level</label>
+                            <label for="level" class="col-md-4 col-form-label text-md-right">Level<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
                                 <select id="level" class="form-control @error('level') is-invalid @enderror" name="level" required>
@@ -106,9 +108,21 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('nip').addEventListener('input', function() {
+    var nipValue = this.value;
+    var passwordInput = document.getElementById('password');
+    var confirmPasswordInput = document.getElementById('password-confirm');
+    
+    // Jika nilai NIP tidak kosong, set nilai password dan konfirmasi password sesuai dengan nilai NIP
+    if (nipValue !== '') {
+        passwordInput.value = nipValue;
+        confirmPasswordInput.value = nipValue;
+    } else {
+        passwordInput.value = '';
+        confirmPasswordInput.value = '';
+    }
+});
+</script>
 @endsection
-
-
-
-
-
