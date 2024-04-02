@@ -73,7 +73,7 @@
               Master
             </button>
               <ul class="dropdown-menu">
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false">
                     <span>
@@ -91,7 +91,7 @@
                     <span class="hide-menu">Data Jabatan</span>
                   </a>
                 </li>
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('departements.index') }}" aria-expanded="false">
                     <span>
@@ -110,7 +110,7 @@
               Transaksi
             </button>
               <ul class="dropdown-menu">
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('absensis.index') }}" aria-expanded="false">
                     <span>
@@ -120,7 +120,7 @@
                   </a>
                 </li>
                 @endif
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link" aria-expanded="false">
                     <span>
@@ -140,7 +140,7 @@
               Potongan
             </button>
               <ul class="dropdown-menu">
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('umrs.index') }}" aria-expanded="false">
                     <span>
@@ -168,7 +168,7 @@
               Laporan
             </button>
               <ul class="dropdown-menu">
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('laporan-absensi') }}" aria-expanded="false">
                     <span>
@@ -178,7 +178,7 @@
                   </a>
                 </li>
                 @endif
-                @if(Auth()->user()->level == "1")
+                @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
                   <a class="sidebar-link"  aria-expanded="false">
                     <span>
@@ -249,7 +249,7 @@
                   </li>
                   <li class="nav-item pt-2">
                     @auth
-                      <p class="text-dark">{{ Auth::user()->name }}</p>
+                      <p class="text-dark">{{ Auth::user()->nama }}</p>
                     @endauth
                   </li>
                 </ul>

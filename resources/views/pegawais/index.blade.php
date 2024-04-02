@@ -9,38 +9,36 @@
 <br>
 <div class="d-flex justify-content-between mb-2">
     
-    <div>
-        <a class="btn btn-success" href="{{ route('position.exportExcel') }}">Export Excel</a>
-
-    </div>
-    <a class="btn btn-success" href="{{ route('positions.create') }}">Tambah Jabatan</a>
+    {{-- <div>
+        <a class="btn btn-success" href="{{ route('pegawai.exportExcel') }}">Export Excel</a>
+        
+    </div> --}}
+    <a class="btn btn-success" href="{{ route('pegawais.create') }}">Tambah Pegawai</a>
 </div>
-
-
 <br>
 <table id="example" class="table table-bordered">
     <thead>
         <tr>
             <th scope="col">No</th>
+            <th scope="col">Nama</th>
             <th scope="col">Jabatan</th>
-            <th scope="col">Gaji Perhari</th>
-            <th scope="col">Tunjangan Jabatan</th>
-            <th scope="col">Uang Makan</th>
+            <th scope="col">Jenis Kelamin</th>
+            <th scope="col">Tanggal Bergabung</th>
             <th scope="col">Aksi</th>
         </tr>
     </thead>
     <tbody>
         @php $no = 1 @endphp
-        @foreach ($positions as $data)
+        @foreach ($pegawais as $data)
         <tr>
             <td>{{ $no++ }}</td>
-            <td>{{ $data->jabatan }}</td>
-            <td>{{ $data->gaji_perhari }}</td>
-            '<td>{{ $data->tunjangan_jabatan }}</td>
-            <td>{{ $data->uang_makan }}</td>
+            <td>{{ $data->nama }}</td>
+            <td>{{ $data->position->jabatan }}</td>
+            '<td>{{ $data->jenis_kelamin }}</td>
+            <td>{{ $data->tanggal_bergabung }}</td>
             <td>
-                <form action="{{ route('positions.destroy',$data->id) }}" method="Post">
-                    <a class="btn btn-warning" href="{{ route('positions.edit',$data->id) }}">Edit</a>
+                <form action="{{ route('pegawais.destroy',$data->id) }}" method="Post">
+                    <a class="btn btn-warning" href="{{ route('pegawais.edit',$data->id) }}">Edit</a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger delete-btn">Delete</button>

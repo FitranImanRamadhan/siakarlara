@@ -21,9 +21,8 @@
     <thead>
         <tr>
             <th scope="col">No</th>
-            <th scope="col">NIP</th>
             <th scope="col">Nama</th>
-            <th scope="col">Jabatan</th>
+            <th scope="col">Email</th>
             <th scope="col">Level</th>  
             <th scope="col">Actions</th>
         </tr>
@@ -33,12 +32,9 @@
         @foreach ($users as $data)
         <tr>
             <td>{{ $no++ }}</td>
-            <td>{{$data->nip}}</td>
-            <td>{{$data->name}}</td>
-            <td>{{ $data->position ? $data->position->jabatan : 'Data posisi tidak tersedia' }}</td>
-            <td>
-    {{ $data->level == 0 ? 'User' : 'Admin' }}
-</td>
+            <td>{{$data->nama}}</td>
+            <td>{{$data->email}}</td>
+            <td>{{$data->hak_akses}}</td>
             <td>
                 <form id="delete-form-{{ $data->id }}" action="{{ route('users.destroy', $data->id) }}" method="POST">
                     <a class="btn btn-warning" href="{{ route('users.edit', $data->id) }}">Edit</a>

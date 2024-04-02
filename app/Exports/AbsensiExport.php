@@ -20,8 +20,8 @@ class AbsensiExport implements FromCollection, WithHeadings
         return $this->absensis->map(function ($absensi) {
             return [
                 'ID' => $absensi->id,
-                'Nama' => $absensi->user->name, // Ubah 'nama' dengan nama field yang menyimpan nama user
-                'Jabatan' => $absensi->user->position->jabatan,
+                'Nama' => $absensi->pegawai->nama, // Ubah 'nama' dengan nama field yang menyimpan nama pegawai
+                'Jabatan' => $absensi->pegawai->position->jabatan,
                 'Bulan' => $absensi->bulan,
                 'Tahun' => $absensi->tahun,
                 'Hadir' => $absensi->hadir,

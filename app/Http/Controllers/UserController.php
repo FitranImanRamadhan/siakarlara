@@ -20,15 +20,15 @@ class UserController extends Controller
     public function register_action(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'nip' => 'required|unique:users',
+            'nama' => 'required',
+            'email' => 'required|unique:users',
             'password' => 'required',
             'password_confirm' => 'required|same:password',
         ]);
 
         $user = new User([
-            'name' => $request->name,
-            'nip' => $request->nip,
+            'nama' => $request->nama,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         $user->save();
@@ -46,16 +46,16 @@ class UserController extends Controller
     public function login_action(Request $request)
     {
         $request->validate([
-            'nip' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
-        if (Auth::attempt(['nip' => $request->nip, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'password' => 'Wrong nip or password',
+            'password' => 'Wrong email or password',
         ]);
     }
 
@@ -101,31 +101,29 @@ class UserController extends Controller
     public function index()
     {
         $title = "Data user";
-        $users = User::with('position')->paginate(15);
+        $users = User::orderBy('id', 'asc')->paginate(15);
         return view('users.index', compact(['users', 'title']));
     }
 
     public function create(Request $request)
 {
     $title = "Create User / Register";
-    $pst = Position::all();
 
     if ($request->isMethod('post')) {
         $request->validate([
-            'name' => 'required',
-            'position_id' => 'required',
-            'nip' => 'required|unique:users',
+            'nama' => 'required',
+            'email' => 'required|unique:users',
             'password' => 'required',
-            'level' => 'required',
+            'hak_akses' => 'required',
         ]);
 
         // Create a new user based on the registration data
         $user = User::create([
-            'name' => $request->input('name'),
-            'position_id' => $request->input('position_id'),
-            'nip' => $request->input('nip'),
+            'nama' => $request->input('nama'),
+           
+            'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
-            'level' => $request->input('level'),
+            'hak_akses' => $request->input('hak_akses'),
         ]);
 
         // You can also log in the user automatically here if needed
@@ -133,18 +131,17 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User has been created and registered successfully.');
     }
 
-    return view('users.create', compact(['title','pst']));
+    return view('users.create', compact(['title']));
 }
 
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'position_id' => 'required',
-            'nip' => 'required|unique:users',
+            'nama' => 'required',
+            'email' => 'required|unique:users',
             'password' => 'required',
-            'level' => 'required',
+            'hak_akses' => 'required',
         ]);
 
         User::create($request->post());
@@ -156,8 +153,7 @@ class UserController extends Controller
     {
         
         $title = "Edit Data User";
-        $pst = Position::all();
-        return view('users.edit', compact('user', 'title','pst'));
+        return view('users.edit', compact('user', 'title'));
     }
 
 
@@ -165,17 +161,15 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
-            'position_id' => 'required',
-            'nip' => 'required|unique:users,nip,' . $id,
-            'level' => 'required',
+            'nama' => 'required',
+            'email' => 'required|unique:users,email,' . $id,
+            'hak_akses' => 'required',
         ]);
 
         $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->position_id = $request->position_id;
-        $user->nip = $request->nip;
-        $user->level = $request->level;
+        $user->nama = $request->nama;
+        $user->email = $request->email;
+        $user->hak_akses = $request->hak_akses;
         $user->save();
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');

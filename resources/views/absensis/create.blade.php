@@ -42,11 +42,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($np as $user)
+                        @foreach($pgw as $pegawai)
                             <tr>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->position->jabatan }}</td>
-                                <td><input type="hidden" name="user_id[]" value="{{ $user->id }}">
+                                <td>{{ $pegawai->nama }}</td>
+                                <td>{{ $pegawai->position->jabatan }}</td>
+                                <td><input type="hidden" name="pegawai_id[]" value="{{ $pegawai->id }}">
                                     <input class="form-control attendance" type="number" name="hadir[]" placeholder="Hadir" required></td>
                                 <td><input class="form-control attendance" type="number" name="sakit[]" placeholder="Sakit" required></td>
                                 <td><input class="form-control attendance" type="number" name="alpha[]" placeholder="Alpha" required></td>
@@ -85,19 +85,19 @@
         // Menambahkan event listener untuk setiap input dengan class 'attendance'
 document.querySelectorAll('.attendance').forEach(function(input) {
     input.addEventListener('change', function() {
-        var userRow = input.closest('tr'); // Mengambil baris (row) terdekat yang berisi input ini
+        var pegawaiRow = input.closest('tr'); // Mengambil baris (row) terdekat yang berisi input ini
         var totalHadir = 0;
         var totalSakit = 0;
         var totalAlpha = 0;
 
         // Menghitung total hadir, sakit, dan alpha untuk pengguna yang bersangkutan
-        userRow.querySelectorAll('.attendance').forEach(function(userInput) {
-            if (userInput.name.includes('hadir')) {
-                totalHadir += parseInt(userInput.value) || 0;
-            } else if (userInput.name.includes('sakit')) {
-                totalSakit += parseInt(userInput.value) || 0;
-            } else if (userInput.name.includes('alpha')) {
-                totalAlpha += parseInt(userInput.value) || 0;
+        pegawaiRow.querySelectorAll('.attendance').forEach(function(pegawaiInput) {
+            if (pegawaiInput.name.includes('hadir')) {
+                totalHadir += parseInt(pegawaiInput.value) || 0;
+            } else if (pegawaiInput.name.includes('sakit')) {
+                totalSakit += parseInt(pegawaiInput.value) || 0;
+            } else if (pegawaiInput.name.includes('alpha')) {
+                totalAlpha += parseInt(pegawaiInput.value) || 0;
             }
         });
 
@@ -106,8 +106,8 @@ document.querySelectorAll('.attendance').forEach(function(input) {
             // Tampilkan pesan kesalahan Bootstrap jika total melebihi 26
             showAlert('Total absensi (hadir, sakit, dan alpha) untuk pengguna ini tidak boleh melebihi 26.', 'danger');
             // Mengatur kembali nilai input untuk pengguna ini menjadi kosong
-            userRow.querySelectorAll('.attendance').forEach(function(userInput) {
-                userInput.value = '';
+            pegawaiRow.querySelectorAll('.attendance').forEach(function(pegawaiInput) {
+                pegawaiInput.value = '';
             });
         }
     });

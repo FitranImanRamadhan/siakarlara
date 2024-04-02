@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('bulan');
             $table->string('tahun');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('pegawai_id');
             $table->integer('hadir');
             $table->integer('sakit');
             $table->integer('alpha');

@@ -15,12 +15,12 @@
                         <form action="{{ route('register.action') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label>Name <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" name="name" value="{{ old('name') }}" />
+                                <label>Nama <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" name="nama" value="{{ old('nama') }}" />
                             </div>
                             <div class="mb-3">
-                                <label>nip<span class="text-danger">*</span></label>
-                                <input class="form-control" type="nip" name="nip" value="{{ old('nip') }}" />
+                                <label>Email<span class="text-danger">*</span></label>
+                                <input class="form-control" type="email" name="email" value="{{ old('email') }}" />
                             </div>
                             <div class="mb-3">
                                 <label>Password <span class="text-danger">*</span></label>

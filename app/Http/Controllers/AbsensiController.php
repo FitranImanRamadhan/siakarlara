@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\Exportabsensi; // Perhatikan penamaan kelas
 use App\Models\Absensi;
-use App\Models\User;
+use App\Models\Pegawai;
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,15 +17,15 @@ class AbsensiController extends Controller
     public function index()
     {
         $title = "Data absensi";
-    $absensis = Absensi::with('user')->paginate(15);
+    $absensis = Absensi::with('pegawai')->paginate(15);
         return view('absensis.index', compact('absensis', 'title')); // Mengubah compact agar sesuai
     }
 
     public function create()
     {
         $title = "Tambah data absensi";
-        $np = User::all();
-        return view('absensis.create', compact('title','np')); // Mengubah compact agar sesuai
+        $pgw = Pegawai::all();
+        return view('absensis.create', compact('title','pgw')); // Mengubah compact agar sesuai
     }
 
     public function store(Request $request)
@@ -34,13 +34,13 @@ class AbsensiController extends Controller
     $request->validate([
         'bulan' => 'required',
         'tahun' => 'required',
-        'user_id.*' => 'required|exists:users,id',
+        'pegawai_id.*' => 'required|exists:pegawais,id',
         'hadir.*' => 'required|numeric',
         'sakit.*' => 'required|numeric',
         'alpha.*' => 'required|numeric',
     ], [
-        'user_id.*.required' => 'User ID is required.',
-        'user_id.*.exists' => 'Invalid user ID provided.',
+        'pegawai_id.*.required' => 'Pegawai ID is required.',
+        'pegawai_id.*.exists' => 'Invalid pegawai ID provided.',
         'hadir.*.required' => 'Hadir field is required.',
         'hadir.*.numeric' => 'Hadir field must be numeric.',
         'sakit.*.required' => 'Sakit field is required.',
@@ -62,7 +62,7 @@ class AbsensiController extends Controller
     }
 
     // Persiapan data absensi untuk disimpan
-    $userIds = $request->user_id;
+    $pegawaiIds = $request->pegawai_id;
     $hadir = $request->hadir;
     $sakit = $request->sakit;
     $alpha = $request->alpha;
@@ -70,9 +70,9 @@ class AbsensiController extends Controller
     $attendanceData = [];
 
     // Persiapkan data absensi
-    foreach ($userIds as $index => $userId) {
+    foreach ($pegawaiIds as $index => $pegawaiId) {
         $attendanceData[] = [
-            'user_id' => $userId,
+            'pegawai_id' => $pegawaiId,
             'bulan' => $bulan,
             'tahun' => $tahun,
             'hadir' => $hadir[$index],
@@ -103,8 +103,8 @@ class AbsensiController extends Controller
     public function edit(Absensi $absensi)
     {
         $title = "Edit Data absensi";
-        $np = User::all();
-        return view('absensis.edit', compact('absensi', 'title','np'));
+        $pgw = Pegawai::all();
+        return view('absensis.edit', compact('absensi', 'title','pgw'));
     }
 
     public function update(Request $request, Absensi $absensi)
@@ -175,7 +175,7 @@ class AbsensiController extends Controller
 public function laporan()
     {
         $title = "Laporan";
-        $absensis = Absensi::with('user')->paginate(15);
+        $absensis = Absensi::with('pegawai')->paginate(15);
     
         return view('absensis.laporan_absensi', ['title' => $title, 'absensis' => $absensis]);
     }

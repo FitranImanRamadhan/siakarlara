@@ -27,12 +27,40 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="gapok" class="col-md-4 col-form-label text-md-right">Gaji Pokok<span class="text-danger">*</span></label>
+                            <label for="gaji_perhari" class="col-md-4 col-form-label text-md-right">Gaji Perhari<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="gapok" type="text" class="form-control @error('gapok') is-invalid @enderror" name="gapok" value="{{ $position->gapok }}" required>
+                                <input id="gaji_perhari" type="text" class="form-control @error('gaji_perhari') is-invalid @enderror" name="gaji_perhari" value="{{ $position->gaji_perhari }}" required>
 
-                                @error('gapok')
+                                @error('gaji_perhari')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <label for="tunjangan_jabatan" class="col-md-4 col-form-label text-md-right">Tunjangan Jabatan<span class="text-danger">*</span></label>
+
+                            <div class="col-md-6">
+                                <input id="tunjangan_jabatan" type="text" class="form-control @error('tunjangan_jabatan') is-invalid @enderror" name="tunjangan_jabatan" value="{{ $position->tunjangan_jabatan }}" required>
+
+                                @error('tunjangan_jabatan')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
+                            <label for="uang_makan" class="col-md-4 col-form-label text-md-right">Uang Makan<span class="text-danger">*</span></label>
+
+                            <div class="col-md-6">
+                                <input id="uang_makan" type="text" class="form-control @error('uang_makan') is-invalid @enderror" name="uang_makan" value="{{ $position->uang_makan }}" required>
+
+                                @error('uang_makan')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

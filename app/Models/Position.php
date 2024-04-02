@@ -11,11 +11,11 @@ class Position extends Model
 
     protected $table = "positions";
     protected $primaryKey = "id";
-    protected $fillable = ['jabatan','gapok'];
+    protected $fillable = ['jabatan','gaji_perhari', 'tunjangan_jabatan', 'uang_makan'];
 
-    public function user ()
+    public function pegawai ()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Pegawai::class);
     }
     
 

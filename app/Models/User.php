@@ -18,24 +18,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'position_id',
-        'nip',
+        'nama',
+        'email',
         'password',
-        'level',
-        'departement'
+        'pegawai_id',
+        'hak_akses',
     ];
 
-    public function absensi  ()
+   
+
+    public function pegawai  ()
     {
-        return $this->hasMany(Absensi::class);
+        return $this->belongsTo(Pegawai::class);
     }
 
-    public function position  ()
-    {
-        return $this->belongsTo(Position::class);
-    }
-    
 
 
 

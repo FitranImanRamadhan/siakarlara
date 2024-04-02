@@ -13,7 +13,7 @@ use App\Http\Controllers\PotonganController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\UmrController;
-use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\PegawaiController;
 use App\Models\Absensi;
 use App\Models\Departements;    
 use App\Models\Potongan;
@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('jadwals', JadwalController::class);
     Route::resource('umrs', UmrController::class);
     Route::resource('potongans', PotonganController::class);
+    Route::resource('pegawais', PegawaiController::class);
+
 
 
     Route::get('departement/export-pdf', [DepartementController::class, 'exportPdf'])->name('departements.exportPdf');

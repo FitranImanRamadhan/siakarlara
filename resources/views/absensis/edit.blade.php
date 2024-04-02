@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Edit Data Absensi - {{ $absensi->user->name }}</div>
+                <div class="card-header">Edit Data Absensi - {{ $absensi->pegawai->nama }}</div>
 
                 <div class="card-body">
                     <form action="{{ route('absensis.update', $absensi->id) }}" method="POST">

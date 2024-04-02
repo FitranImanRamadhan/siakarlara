@@ -22,8 +22,8 @@
             @foreach($absensis as $absensi)
             <tr>
                 <td>{{ $absensi->id }}</td>
-                <td>{{ $absensi->user->name }}</td>
-                <td>{{ $absensi->user->position->jabatan }}</td>
+                <td>{{ $absensi->pegawai->nama }}</td>
+                <td>{{ $absensi->pegawai->position->jabatan }}</td>
                 <td>{{ $absensi->bulan }}</td>
                 <td>{{ $absensi->tahun }}</td>
                 <td>{{ $absensi->hadir }}</td>

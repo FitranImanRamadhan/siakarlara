@@ -13,12 +13,12 @@
                         @method('PUT')
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">Nama<span class="text-danger">*</span></label>
+                            <label for="nama" class="col-md-4 col-form-label text-md-right">Nama<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" required autofocus>
+                                <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror" name="nama" value="{{ old('nama', $user->nama) }}" required autofocus>
 
-                                @error('name')
+                                @error('nama')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -27,12 +27,12 @@
                         </div>
 
                         <div class="form-group row mt-2">
-                            <label for="nip" class="col-md-4 col-form-label text-md-right">NIP<span class="text-danger">*</span></label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">Email<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <input id="nip" type="text" class="form-control @error('nip') is-invalid @enderror" name="nip" value="{{ old('nip', $user->nip) }}" required>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required>
 
-                                @error('nip')
+                                @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -40,36 +40,18 @@
                             </div>
                         </div>
 
+
                         <div class="form-group row mt-2">
-                            <label for="position_id" class="col-md-4 col-form-label text-md-right">Jabatan<span class="text-danger">*</span></label>
+                            <label for="hak_akses" class="col-md-4 col-form-label text-md-right">Hak_akses<span class="text-danger">*</span></label>
 
                             <div class="col-md-6">
-                                <select id="position_id" class="form-control @error('position_id') is-invalid @enderror" name="position_id" required>
-                                    <option value="" disabled>Klik untuk memilih position</option>
-                                    @foreach ($pst as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $user->position_id ? 'selected' : '' }}>{{ $item->jabatan }}</option>
-                                    @endforeach
+                                <select id="hak_akses" class="form-control @error('hak_akses') is-invalid @enderror" name="hak_akses" required>
+                                    <option value="" disabled>Select Hak_akses</option>
+                                    <option value="Admin" {{ $user->hak_akses == 'Admin' ? 'selected' : '' }}>Admin</option>
+                                    <option value="User" {{ $user->hak_akses == 'User' ? 'selected' : '' }}>User</option>
                                 </select>
 
-                                @error('position_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row mt-2">
-                            <label for="level" class="col-md-4 col-form-label text-md-right">Level<span class="text-danger">*</span></label>
-
-                            <div class="col-md-6">
-                                <select id="level" class="form-control @error('level') is-invalid @enderror" name="level" required>
-                                    <option value="" disabled>Select Level</option>
-                                    <option value="1" {{ $user->level == 1 ? 'selected' : '' }}>Admin</option>
-                                    <option value="0" {{ $user->level == 0 ? 'selected' : '' }}>User</option>
-                                </select>
-
-                                @error('level')
+                                @error('hak_akses')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

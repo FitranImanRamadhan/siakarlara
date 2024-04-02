@@ -13,14 +13,14 @@ class Absensi extends Model
     protected $primaryKey = "id";
     protected $fillable = ['bulan',
                             'tahun',
-                            'user_id',
+                            'pegawai_id',
                             'hadir',
                             'sakit',
                             'alpha'];
 
-    public function user ()
+    public function pegawai ()
     {
-        return $this->belongsto(User::class);
+        return $this->belongsto(Pegawai::class);
     }
 
     

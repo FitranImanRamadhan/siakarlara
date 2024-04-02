@@ -27,7 +27,9 @@ class PositionController extends Controller
     {
         $request->validate([
             'jabatan' => 'required',
-            'gapok' => 'required',
+            'gaji_perhari' => 'required',
+            'tunjangan_jabatan' => 'required',
+            'uang_makan' => 'required',
         ]);
 
         Position::create($request->post());
@@ -53,7 +55,9 @@ class PositionController extends Controller
     {
         $request->validate([
             'jabatan' => 'required',
-            'gapok' => 'required',
+            'gaji_perhari' => 'required',
+            'tunjangan_jabatan' => 'required',
+            'uang_makan' => 'required',
         ]);
 
         $position->fill($request->post())->save();
