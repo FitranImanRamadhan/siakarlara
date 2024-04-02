@@ -82,7 +82,16 @@
                     <span class="hide-menu">Data User</span>
                   </a>
                 </li>
-                @endif
+
+                <li class="sidebar-item">
+                  <a class="sidebar-link" href="{{ route('pegawais.index') }}" aria-expanded="false">
+                    <span>
+                      <i class="ti ti-typography"></i>
+                    </span>
+                    <span class="hide-menu">Data Pegawai</span>
+                  </a>
+                </li>
+                
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('positions.index') }}" aria-expanded="false">
                     <span>
@@ -91,7 +100,7 @@
                     <span class="hide-menu">Data Jabatan</span>
                   </a>
                 </li>
-                @if(Auth()->user()->hak_akses == "Admin")
+              
                 <li class="sidebar-item">
                   <a class="sidebar-link" href="{{ route('departements.index') }}" aria-expanded="false">
                     <span>
@@ -275,6 +284,7 @@
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script> <!-- Memuat DataTables -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> <!-- Memuat jQuery UI -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js')}}"></script>
 <script src="{{ asset('assets/libs/simplebar/dist/simplebar.js')}}"></script>
 <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

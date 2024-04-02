@@ -8,7 +8,7 @@
                 <div class="card-header">{{ $title }}</div>
 
                 <div class="card-body">
-                    <form action="{{ route('pegawais.update', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
+                    <form id="updateForm" action="{{ route('pegawais.update', $pegawai->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -76,7 +76,7 @@
 
                         <div class="form-group row mt-4">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" id="updateButton">
                                     Update
                                 </button>
                             </div>
@@ -87,4 +87,25 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    document.getElementById('updateButton').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to update the record!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Submit the form if user confirms
+                document.getElementById('updateForm').submit();
+            }
+        })
+    });
+</script>
 @endsection

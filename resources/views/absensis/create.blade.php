@@ -1,4 +1,5 @@
 @extends('tmp')
+
 @section('content')
     <br>
     <form action="{{ route('absensis.store') }}" method="POST" id="attendanceForm">
@@ -28,6 +29,8 @@
         </div>
         <br><br>
 
+        <p id="workdaysInfo"></p>
+        
         <div id="attendanceTable" style="display: none;">
             <!-- Table for inputting attendance data -->
             <div class="table-responsive">
@@ -57,7 +60,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" type="submit"></i>Submit</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
     </form>
 
     <script>
@@ -65,55 +68,42 @@
             var selectedMonth = document.getElementById('bulan').value;
             var selectedYear = document.getElementById('tahun').value;
 
-            // Memeriksa apakah bulan di tahun yang sama sudah diinputkan sebelumnya
-            var existingMonth = document.querySelector(`#attendanceTable input[value='${selectedMonth}'][name^='bulan']`);
-
-            if (existingMonth) {
-                // Tampilkan pesan kesalahan Bootstrap jika bulan di tahun yang sama sudah diinputkan sebelumnya
-                showAlert('Bulan di tahun yang sama sudah diinputkan.', 'danger');
-                return;
-            }
-
             if (selectedMonth && selectedYear) {
-                document.getElementById('attendanceTable').style.display = 'block';
+                // Menghitung jumlah hari kerja tanpa hari Minggu
+                var workdays = getWorkdays(selectedYear, selectedMonth);
+
+                // Menampilkan informasi jumlah hari kerja
+                document.getElementById('workdaysInfo').innerHTML = 'Jumlah hari kerja pada bulan ' + getMonthName(selectedMonth) + ' ' + selectedYear + ': <span class="text-danger">' + workdays + '</span> hari';
+
+                document.getElementById('attendanceTable').style.   display = 'block';
             } else {
-                // Tampilkan pesan kesalahan Bootstrap jika bulan dan tahun tidak dipilih
+                // Menampilkan pesan kesalahan jika bulan dan tahun tidak dipilih
                 showAlert('Please select both month and year.', 'danger');
             }
         });
 
-        // Menambahkan event listener untuk setiap input dengan class 'attendance'
-document.querySelectorAll('.attendance').forEach(function(input) {
-    input.addEventListener('change', function() {
-        var pegawaiRow = input.closest('tr'); // Mengambil baris (row) terdekat yang berisi input ini
-        var totalHadir = 0;
-        var totalSakit = 0;
-        var totalAlpha = 0;
-
-        // Menghitung total hadir, sakit, dan alpha untuk pengguna yang bersangkutan
-        pegawaiRow.querySelectorAll('.attendance').forEach(function(pegawaiInput) {
-            if (pegawaiInput.name.includes('hadir')) {
-                totalHadir += parseInt(pegawaiInput.value) || 0;
-            } else if (pegawaiInput.name.includes('sakit')) {
-                totalSakit += parseInt(pegawaiInput.value) || 0;
-            } else if (pegawaiInput.name.includes('alpha')) {
-                totalAlpha += parseInt(pegawaiInput.value) || 0;
-            }
-        });
-
-        // Memeriksa apakah total hadir, sakit, dan alpha untuk pengguna yang bersangkutan tidak melebihi 26
-        if (totalHadir + totalSakit + totalAlpha > 26) {
-            // Tampilkan pesan kesalahan Bootstrap jika total melebihi 26
-            showAlert('Total absensi (hadir, sakit, dan alpha) untuk pengguna ini tidak boleh melebihi 26.', 'danger');
-            // Mengatur kembali nilai input untuk pengguna ini menjadi kosong
-            pegawaiRow.querySelectorAll('.attendance').forEach(function(pegawaiInput) {
-                pegawaiInput.value = '';
-            });
+        // Fungsi untuk mendapatkan nama bulan berdasarkan nomor bulan
+        function getMonthName(monthNumber) {
+            return new Date(new Date().getFullYear(), monthNumber - 1, 1).toLocaleString('default', { month: 'long' });
         }
-    });
-});
 
+        // Fungsi untuk mendapatkan jumlah hari kerja tanpa hari Minggu dalam bulan dan tahun tertentu
+        function getWorkdays(year, month) {
+            var daysInMonth = new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan tersebut
+            var workdays = 0;
 
+            for (var day = 1; day <= daysInMonth; day++) {
+                var date = new Date(year, month - 1, day);
+                var dayOfWeek = date.getDay(); // Mendapatkan hari dalam seminggu (0: Minggu, 1: Senin, ..., 6: Sabtu)
+                
+                // Menambahkan 1 ke jumlah hari kerja jika bukan hari Minggu (0)
+                if (dayOfWeek !== 0) {
+                    workdays++;
+                }
+            }
+
+            return workdays;
+        }
 
         // Fungsi untuk menampilkan pesan kesalahan Bootstrap
         function showAlert(message, type) {
@@ -124,7 +114,7 @@ document.querySelectorAll('.attendance').forEach(function(input) {
             var form = document.getElementById('attendanceForm');
             form.prepend(alertDiv);
 
-            // Hilangkan pesan kesalahan setelah beberapa detik
+            // Menghilangkan pesan kesalahan setelah beberapa detik
             setTimeout(function() {
                 alertDiv.remove();
             }, 3000);
