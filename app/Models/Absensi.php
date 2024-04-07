@@ -15,8 +15,12 @@ class Absensi extends Model
                             'tahun',
                             'pegawai_id',
                             'hadir',
+                            'izin',
                             'sakit',
-                            'alpha'];
+                            'alpha',
+                            'terlambat',
+                            'selisih',
+                            'penjualan'];
 
     public function pegawai ()
     {

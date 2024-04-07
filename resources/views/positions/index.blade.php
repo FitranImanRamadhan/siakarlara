@@ -13,7 +13,7 @@
         <a class="btn btn-success" href="{{ route('position.exportExcel') }}">Export Excel</a>
 
     </div>
-    <a class="btn btn-success" href="{{ route('positions.create') }}">Tambah Jabatan</a>
+    <a class="btn btn-success" href="{{ route('positions.create') }}">Add Jabatan</a>
 </div>
 
 

@@ -7,8 +7,8 @@
 </div>
 @endif
 <br>
-<div class="d-flex justify-content-between mb-2">
-    <a class="btn btn-success" href="{{ route('umrs.create') }}">Tambah Upah Minimum</a>
+<div class="mb-4">
+    <a class="btn btn-success float-end" href="{{ route('umrs.create') }}">Add Upah Minimum</a>
 </div>
 
 

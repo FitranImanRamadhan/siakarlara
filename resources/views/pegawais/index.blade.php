@@ -7,13 +7,8 @@
 </div>
 @endif
 <br>
-<div class="d-flex justify-content-between mb-2">
-    
-    {{-- <div>
-        <a class="btn btn-success" href="{{ route('pegawai.exportExcel') }}">Export Excel</a>
-        
-    </div> --}}
-    <a class="btn btn-success" href="{{ route('pegawais.create') }}">Tambah Pegawai</a>
+<div class="mb-2">
+    <a class="btn btn-success float-end" href="{{ route('pegawais.create') }}">Add Pegawai</a>
 </div>
 <br>
 <table id="example" class="table table-bordered">

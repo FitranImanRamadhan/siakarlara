@@ -29,9 +29,14 @@
         </div>
         <br><br>
 
-        <p id="workdaysInfo"></p>
-        
+        <div>
+            <p id="workdaysInfo"></p>
+        </div>
+
+
         <div id="attendanceTable" style="display: none;">
+
+            <p>Toleransi <span class="text-danger">15</span> menit</p>
             <!-- Table for inputting attendance data -->
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -40,19 +45,35 @@
                             <th>Nama</th>
                             <th>Jabatan</th>
                             <th>Hadir</th>
+                            <th>Izin</th>
                             <th>Sakit</th>
                             <th>Alpha</th>
+                            <th>Terlambat</th>
+                            <th>Selisih Menit</th>
+                            <th>Penjualan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pgw as $pegawai)
+                        @foreach ($pgw as $pegawai)
                             <tr>
                                 <td>{{ $pegawai->nama }}</td>
                                 <td>{{ $pegawai->position->jabatan }}</td>
                                 <td><input type="hidden" name="pegawai_id[]" value="{{ $pegawai->id }}">
-                                    <input class="form-control attendance" type="number" name="hadir[]" placeholder="Hadir" required></td>
-                                <td><input class="form-control attendance" type="number" name="sakit[]" placeholder="Sakit" required></td>
-                                <td><input class="form-control attendance" type="number" name="alpha[]" placeholder="Alpha" required></td>
+                                    <input class="form-control attendance" type="number" name="hadir[]" placeholder="Hadir"
+                                        required>
+                                </td>
+                                <td><input class="form-control attendance" type="number" name="izin[]" placeholder="Izin"
+                                        required></td>
+                                <td><input class="form-control attendance" type="number" name="sakit[]" placeholder="Sakit"
+                                        required></td>
+                                <td><input class="form-control attendance" type="number" name="alpha[]" placeholder="Alpha"
+                                        required></td>
+                                <td><input class="form-control attendance" type="number" name="terlambat[]"
+                                        placeholder="Terlambat" required></td>
+                                <td><input class="form-control attendance" type="number" name="selisih[]"
+                                        placeholder="Selisih" required></td>
+                                <td><input class="form-control attendance" type="number" name="penjualan[]"
+                                        placeholder="Alpha" required></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -65,59 +86,95 @@
 
     <script>
         document.getElementById('generateButton').addEventListener('click', function() {
-            var selectedMonth = document.getElementById('bulan').value;
-            var selectedYear = document.getElementById('tahun').value;
+    var selectedMonth = document.getElementById('bulan').value;
+    var selectedYear = document.getElementById('tahun').value;
 
-            if (selectedMonth && selectedYear) {
-                // Menghitung jumlah hari kerja tanpa hari Minggu
-                var workdays = getWorkdays(selectedYear, selectedMonth);
+    if (selectedMonth && selectedYear) {
+        // Menghitung jumlah hari kerja tanpa hari Minggu
+        var workdays = getWorkdays(selectedYear, selectedMonth);
 
-                // Menampilkan informasi jumlah hari kerja
-                document.getElementById('workdaysInfo').innerHTML = 'Jumlah hari kerja pada bulan ' + getMonthName(selectedMonth) + ' ' + selectedYear + ': <span class="text-danger">' + workdays + '</span> hari';
+        // Menampilkan informasi jumlah hari kerja
+        document.getElementById('workdaysInfo').innerHTML = 'Jumlah hari kerja pada bulan ' + getMonthName(selectedMonth) + ' ' + selectedYear + ': <span class="text-danger">' + workdays + '</span> hari';
 
-                document.getElementById('attendanceTable').style.   display = 'block';
-            } else {
-                // Menampilkan pesan kesalahan jika bulan dan tahun tidak dipilih
-                showAlert('Please select both month and year.', 'danger');
-            }
-        });
+        document.getElementById('attendanceTable').style.display = 'block';
+    } else {
+        // Menampilkan pesan kesalahan jika bulan dan tahun tidak dipilih
+        showAlert('Please select both month and year.', 'danger');
+    }
+});
 
-        // Fungsi untuk mendapatkan nama bulan berdasarkan nomor bulan
-        function getMonthName(monthNumber) {
-            return new Date(new Date().getFullYear(), monthNumber - 1, 1).toLocaleString('default', { month: 'long' });
+document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+    // Mendapatkan jumlah hari kerja
+    var workdays = parseInt(document.querySelector('#workdaysInfo span').textContent);
+    
+    // Mendapatkan total hadir, izin, sakit, dan alpha dari setiap input
+    var totalHadir = 0;
+    var totalIzin = 0;
+    var totalSakit = 0;
+    var totalAlpha = 0;
+
+    var attendances = document.querySelectorAll('.attendance');
+    attendances.forEach(function(attendance) {
+        var value = parseInt(attendance.value);
+        if (attendance.name === 'hadir[]') {
+            totalHadir += value;
+        } else if (attendance.name === 'izin[]') {
+            totalIzin += value;
+        } else if (attendance.name === 'sakit[]') {
+            totalSakit += value;
+        } else if (attendance.name === 'alpha[]') {
+            totalAlpha += value;
         }
+    });
 
-        // Fungsi untuk mendapatkan jumlah hari kerja tanpa hari Minggu dalam bulan dan tahun tertentu
-        function getWorkdays(year, month) {
-            var daysInMonth = new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan tersebut
-            var workdays = 0;
+    // Menghitung total keseluruhan
+    var totalAll = totalHadir + totalIzin + totalSakit + totalAlpha;
 
-            for (var day = 1; day <= daysInMonth; day++) {
-                var date = new Date(year, month - 1, day);
-                var dayOfWeek = date.getDay(); // Mendapatkan hari dalam seminggu (0: Minggu, 1: Senin, ..., 6: Sabtu)
-                
-                // Menambahkan 1 ke jumlah hari kerja jika bukan hari Minggu (0)
-                if (dayOfWeek !== 0) {
-                    workdays++;
-                }
-            }
+    // Periksa apakah total keseluruhan melebihi jumlah hari kerja
+    if (totalAll > workdays) {
+        // Hentikan pengiriman formulir
+        event.preventDefault();
+        // Tampilkan pesan kesalahan
+        showAlert('Total hadir, izin, sakit, dan alpha tidak boleh melebihi jumlah hari kerja.', 'danger');
+    }
+});
 
-            return workdays;
+// Fungsi untuk mendapatkan nama bulan berdasarkan nomor bulan
+function getMonthName(monthNumber) {
+    return new Date(new Date().getFullYear(), monthNumber - 1, 1).toLocaleString('default', { month: 'long' });
+}
+
+// Fungsi untuk mendapatkan jumlah hari kerja tanpa hari Minggu dalam bulan dan tahun tertentu
+function getWorkdays(year, month) {
+    var daysInMonth = new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan tersebut
+    var workdays = 0;
+
+    for (var day = 1; day <= daysInMonth; day++) {
+        var date = new Date(year, month - 1, day);
+        var dayOfWeek = date.getDay(); // Mendapatkan hari dalam seminggu (0: Minggu, 1: Senin, ..., 6: Sabtu)
+        
+        // Menambahkan 1 ke jumlah hari kerja jika bukan hari Minggu (0)
+        if (dayOfWeek !== 0) {
+            workdays++;
         }
+    }
 
-        // Fungsi untuk menampilkan pesan kesalahan Bootstrap
-        function showAlert(message, type) {
-            var alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-' + type;
-            alertDiv.textContent = message;
+    return workdays;
+}
 
-            var form = document.getElementById('attendanceForm');
-            form.prepend(alertDiv);
+// Fungsi untuk menampilkan pesan kesalahan Bootstrap
+function showAlert(message, type) {
+    var alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-' + type;
+    alertDiv.textContent = message;
 
-            // Menghilangkan pesan kesalahan setelah beberapa detik
-            setTimeout(function() {
-                alertDiv.remove();
-            }, 3000);
-        }
+    var form = document.getElementById('attendanceForm');
+    form.prepend(alertDiv);
+
+    // Menghilangkan pesan kesalahan setelah beberapa detik
+    setTimeout(function() {
+        alertDiv.remove();
+    }, 3000);
+}
     </script>
 @endsection

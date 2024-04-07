@@ -7,16 +7,16 @@
 </div>
 @endif
 <div class="d-flex justify-content-between mb-2">
-<div class="text-end mb-2">
+<div class="text-end">
     <a class="btn btn-success" style="margin-top: 20px;" href="{{ route('users.exportPdf') }}">Export</a>
 </div>
-<div class="text-end mb-2">
+<div class="text-end">
     <a class="btn btn-success" style="margin-top: 20px;" href="{{ route('users.create') }}">Add User</a>
 </div>
 </div>
 
 
-<br>
+
 <table id="example" class="table table-bordered">
     <thead>
         <tr>

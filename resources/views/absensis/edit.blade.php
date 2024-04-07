@@ -27,6 +27,20 @@
                         </div>
 
                         <div class="form-group row mt-2">
+                            <label for="izin" class="col-md-4 col-form-label text-md-right">Izin:</label>
+
+                            <div class="col-md-6">
+                                <input id="izin" type="number" class="form-control @error('izin') is-invalid @enderror" name="izin" value="{{ $absensi->izin }}" required>
+
+                                @error('izin')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-2">
                             <label for="sakit" class="col-md-4 col-form-label text-md-right">Sakit:</label>
 
                             <div class="col-md-6">
@@ -54,10 +68,51 @@
                             </div>
                         </div>
 
+                        <div class="form-group row mt-2">
+                            <label for="terlambat" class="col-md-4 col-form-label text-md-right">Terlambat Menit:</label>
+
+                            <div class="col-md-6">
+                                <input id="terlambat" type="number" class="form-control @error('terlambat') is-invalid @enderror" name="terlambat" value="{{ $absensi->terlambat }}" required>
+
+                                @error('terlambat')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row mt-2">
+                            <label for="selisih" class="col-md-4 col-form-label text-md-right">Selisih Menit:</label>
+
+                            <div class="col-md-6">
+                                <input id="selisih" type="number" class="form-control @error('selisih') is-invalid @enderror" name="selisih" value="{{ $absensi->selisih }}" required>
+
+                                @error('selisih')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row mt-2">
+                            <label for="penjualan" class="col-md-4 col-form-label text-md-right">Total Penjualan:</label>
+
+                            <div class="col-md-6">
+                                <input id="penjualan" type="number" class="form-control @error('penjualan') is-invalid @enderror" name="penjualan" value="{{ $absensi->penjualan }}" required>
+
+                                @error('penjualan')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0 mt-4">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Simpan
+                                    Update
                                 </button>
                             </div>
                         </div>

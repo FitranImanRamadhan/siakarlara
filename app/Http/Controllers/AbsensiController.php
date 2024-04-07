@@ -29,65 +29,86 @@ class AbsensiController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'bulan' => 'required',
-        'tahun' => 'required',
-        'pegawai_id.*' => 'required|exists:pegawais,id',
-        'hadir.*' => 'required|numeric',
-        'sakit.*' => 'required|numeric',
-        'alpha.*' => 'required|numeric',
-    ], [
-        'pegawai_id.*.required' => 'Pegawai ID is required.',
-        'pegawai_id.*.exists' => 'Invalid pegawai ID provided.',
-        'hadir.*.required' => 'Hadir field is required.',
-        'hadir.*.numeric' => 'Hadir field must be numeric.',
-        'sakit.*.required' => 'Sakit field is required.',
-        'sakit.*.numeric' => 'Sakit field must be numeric.',
-        'alpha.*.required' => 'Alpha field is required.',
-        'alpha.*.numeric' => 'Alpha field must be numeric.',
-    ]);
-
-    // Mendapatkan bulan dan tahun dari input
-    $bulan = $request->bulan;
-    $tahun = $request->tahun;
-
-    // Memeriksa apakah sudah ada entri absensi untuk bulan dan tahun yang sama
-    $existingAbsensi = Absensi::where('bulan', $bulan)->where('tahun', $tahun)->exists();
-
-    // Jika sudah ada, kembalikan dengan pesan error
-    if ($existingAbsensi) {
-        return redirect()->back()->withInput()->withErrors(['Absensi untuk bulan dan tahun yang sama sudah ada.']);
+    {
+        // Validasi input
+        $request->validate([
+            'bulan' => 'required',
+            'tahun' => 'required',
+            'pegawai_id.*' => 'required|exists:pegawais,id',
+            'hadir.*' => 'required|numeric',
+            'izin.*' => 'required|numeric',
+            'sakit.*' => 'required|numeric',
+            'alpha.*' => 'required|numeric',
+            'terlambat.*' => 'required|numeric',
+            'selisih.*' => 'required|numeric',
+            'penjualan.*' => 'required|numeric',
+        ], [
+            'pegawai_id.*.required' => 'Pegawai ID is required.',
+            'pegawai_id.*.exists' => 'Invalid pegawai ID provided.',
+            'hadir.*.required' => 'Hadir field is required.',
+            'hadir.*.numeric' => 'Hadir field must be numeric.',
+            'izin.*.required' => 'Izin field is required.',
+            'izin.*.numeric' => 'Izin field must be numeric.',
+            'sakit.*.required' => 'Sakit field is required.',
+            'sakit.*.numeric' => 'Sakit field must be numeric.',
+            'alpha.*.required' => 'Alpha field is required.',
+            'alpha.*.numeric' => 'Alpha field must be numeric.',
+            'terlambat.*.required' => 'Selisih field is required.',
+            'terlambat.*.numeric' => 'Selisih field must be numeric.',
+            'selisih.*.required' => 'Selisih field is required.',
+            'selisih.*.numeric' => 'Selisih field must be numeric.',
+            'penjualan.*.required' => 'Penjualan field is required.',
+            'penjualan.*.numeric' => 'Penjualan field must be numeric.',
+        ]);
+    
+        // Mendapatkan bulan dan tahun dari input
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+    
+        // Memeriksa apakah sudah ada entri absensi untuk bulan dan tahun yang sama
+        $existingAbsensi = Absensi::where('bulan', $bulan)->where('tahun', $tahun)->exists();
+    
+        // Jika sudah ada, kembalikan dengan pesan error
+        if ($existingAbsensi) {
+            return redirect()->back()->withInput()->withErrors(['Absensi untuk bulan dan tahun yang sama sudah ada.']);
+        }
+    
+        // Persiapan data absensi untuk disimpan
+        $pegawaiIds = $request->pegawai_id;
+        $hadir = $request->hadir;
+        $izin = $request->izin;
+        $sakit = $request->sakit;
+        $alpha = $request->alpha;
+        $terlambat = $request->terlambat;
+        $selisih = $request->selisih;
+        $penjualan = $request->penjualan;
+    
+        $attendanceData = [];
+    
+        // Persiapkan data absensi
+        foreach ($pegawaiIds as $index => $pegawaiId) {
+            $attendanceData[] = [
+                'pegawai_id' => $pegawaiId,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'hadir' => $hadir[$index],
+                'izin' => $izin[$index],
+                'sakit' => $sakit[$index],
+                'alpha' => $alpha[$index],
+                'terlambat' => $terlambat[$index],
+                'selisih' => $selisih[$index],
+                'penjualan' => $penjualan[$index],
+                // Anda dapat menambahkan lebih banyak kolom di sini jika diperlukan
+            ];
+        }
+    
+        // Simpan data absensi
+        Absensi::insert($attendanceData);
+    
+        // Redirect dengan pesan sukses
+        return redirect()->route('absensis.index')->with('success', 'Absen berhasil ditambahkan.');
     }
-
-    // Persiapan data absensi untuk disimpan
-    $pegawaiIds = $request->pegawai_id;
-    $hadir = $request->hadir;
-    $sakit = $request->sakit;
-    $alpha = $request->alpha;
-
-    $attendanceData = [];
-
-    // Persiapkan data absensi
-    foreach ($pegawaiIds as $index => $pegawaiId) {
-        $attendanceData[] = [
-            'pegawai_id' => $pegawaiId,
-            'bulan' => $bulan,
-            'tahun' => $tahun,
-            'hadir' => $hadir[$index],
-            'sakit' => $sakit[$index],
-            'alpha' => $alpha[$index],
-            // Anda dapat menambahkan lebih banyak kolom di sini jika diperlukan
-        ];
-    }
-
-    // Simpan data absensi
-    Absensi::insert($attendanceData);
-
-    // Redirect dengan pesan sukses
-    return redirect()->route('absensis.index')->with('success', 'Absen berhasil ditambahkan.');
-}
+    
 
 
 
@@ -112,27 +133,43 @@ class AbsensiController extends Controller
     // Validasi input
     $request->validate([
         'hadir' => 'required|numeric',
+        'izin' => 'required|numeric',
         'sakit' => 'required|numeric',
         'alpha' => 'required|numeric',
+        'terlambat' => 'required|numeric',
+        'selisih' => 'required|numeric',
+        'penjualan' => 'required|numeric',
     ], [
-        // Atur pesan kustom di sini sesuai kebutuhan Anda
-        'hadir.required' => 'Kolom Hadir harus diisi.',
-        'hadir.numeric' => 'Kolom Hadir harus berupa angka.',
-        'sakit.required' => 'Kolom Sakit harus diisi.',
-        'sakit.numeric' => 'Kolom Sakit harus berupa angka.',
-        'alpha.required' => 'Kolom Alpha harus diisi.',
-        'alpha.numeric' => 'Kolom Alpha harus berupa angka.',
+        'hadir.required' => 'Hadir field is required.',
+        'hadir.numeric' => 'Hadir field must be numeric.',
+        'izin.required' => 'Izin field is required.',
+        'izin.numeric' => 'Izin field must be numeric.',
+        'sakit.required' => 'Sakit field is required.',
+        'sakit.numeric' => 'Sakit field must be numeric.',
+        'alpha.required' => 'Alpha field is required.',
+        'alpha.numeric' => 'Alpha field must be numeric.',
+        'terlambat.required' => 'Selisih field is required.',
+        'terlambat.numeric' => 'Selisih field must be numeric.',
+        'selisih.required' => 'Selisih field is required.',
+        'selisih.numeric' => 'Selisih field must be numeric.',
+        'penjualan.required' => 'Penjualan field is required.',
+        'penjualan.numeric' => 'Penjualan field must be numeric.',
     ]);
 
     // Isi model Absensi dengan data dari request dan simpan perubahan
     $absensi->hadir = $request->hadir;
+    $absensi->izin = $request->izin;
     $absensi->sakit = $request->sakit;
     $absensi->alpha = $request->alpha;
+    $absensi->terlambat = $request->terlambat;
+    $absensi->selisih = $request->selisih;
+    $absensi->penjualan = $request->penjualan;
     $absensi->save();
 
     // Redirect kembali ke halaman index dengan pesan sukses
     return redirect()->route('absensis.index')->with('success', 'Data absensi berhasil diperbarui.');
 }
+
 
 
     public function destroy(Absensi $absensi)

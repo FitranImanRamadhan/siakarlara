@@ -19,8 +19,12 @@ return new class extends Migration
             $table->string('tahun');
             $table->unsignedBigInteger('pegawai_id');
             $table->integer('hadir');
+            $table->integer('izin');
             $table->integer('sakit');
             $table->integer('alpha');
+            $table->integer('terlambat');
+            $table->integer('selisih');
+            $table->integer('penjualan');
             $table->timestamps();
         });
     }
