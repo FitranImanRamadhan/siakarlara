@@ -32,7 +32,7 @@
                 </select>
             </div>
             <div class="col-md-2 align-self-end">
-                <button type="submit" class="btn btn-primary">Tampilkan</button>
+                <button type="submit" class="btn btn-primary">View</button>
             </div>
         </div>
 

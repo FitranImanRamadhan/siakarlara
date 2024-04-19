@@ -18,5 +18,8 @@ class potongan extends Model
         return $this->belongsTo(Umr::class);
     }
     
-
+    public function gaji()
+    {
+        return $this->hasMany(Gaji::class);
+    }
 }

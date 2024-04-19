@@ -19,6 +19,7 @@ class Pegawai extends Model
     }
     
 
+
     public function absensi  ()
     {
         return $this->hasMany(Absensi::class);
@@ -28,4 +29,6 @@ class Pegawai extends Model
     {
         return $this->belongsTo(Position::class);
     }
+
+    
 }

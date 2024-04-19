@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('umrs', UmrController::class);
     Route::resource('potongans', PotonganController::class);
     Route::resource('pegawais', PegawaiController::class);
+    Route::resource('gajis', GajiController::class);
 
 
 
