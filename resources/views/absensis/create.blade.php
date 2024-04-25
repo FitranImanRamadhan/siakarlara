@@ -86,95 +86,87 @@
 
     <script>
         document.getElementById('generateButton').addEventListener('click', function() {
-    var selectedMonth = document.getElementById('bulan').value;
-    var selectedYear = document.getElementById('tahun').value;
+            var selectedMonth = document.getElementById('bulan').value;
+            var selectedYear = document.getElementById('tahun').value;
 
-    if (selectedMonth && selectedYear) {
-        // Menghitung jumlah hari kerja tanpa hari Minggu
-        var workdays = getWorkdays(selectedYear, selectedMonth);
+            if (selectedMonth && selectedYear) {
+                // Menghitung jumlah hari kerja tanpa hari Minggu
+                var workdays = getWorkdays(selectedYear, selectedMonth);
 
-        // Menampilkan informasi jumlah hari kerja
-        document.getElementById('workdaysInfo').innerHTML = 'Jumlah hari kerja pada bulan ' + getMonthName(selectedMonth) + ' ' + selectedYear + ': <span class="text-danger">' + workdays + '</span> hari';
+                // Menampilkan informasi jumlah hari kerja
+                document.getElementById('workdaysInfo').innerHTML = 'Jumlah hari kerja pada bulan ' + getMonthName(selectedMonth) + ' ' + selectedYear + ': <span class="text-danger">' + workdays + '</span> hari';
 
-        document.getElementById('attendanceTable').style.display = 'block';
-    } else {
-        // Menampilkan pesan kesalahan jika bulan dan tahun tidak dipilih
-        showAlert('Please select both month and year.', 'danger');
-    }
-});
+                document.getElementById('attendanceTable').style.display = 'block';
+            } else {
+                // Menampilkan pesan kesalahan jika bulan dan tahun tidak dipilih
+                showAlert('Please select both month and year.', 'danger');
+            }
+        });
 
-document.getElementById('attendanceForm').addEventListener('submit', function(event) {
-    // Mendapatkan jumlah hari kerja
-    var workdays = parseInt(document.querySelector('#workdaysInfo span').textContent);
-    
-    // Mendapatkan total hadir, izin, sakit, dan alpha dari setiap input
-    var totalHadir = 0;
-    var totalIzin = 0;
-    var totalSakit = 0;
-    var totalAlpha = 0;
+        document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+            // Mendapatkan jumlah hari kerja
+            var workdays = parseInt(document.querySelector('#workdaysInfo span').textContent);
 
-    var attendances = document.querySelectorAll('.attendance');
-    attendances.forEach(function(attendance) {
-        var value = parseInt(attendance.value);
-        if (attendance.name === 'hadir[]') {
-            totalHadir += value;
-        } else if (attendance.name === 'izin[]') {
-            totalIzin += value;
-        } else if (attendance.name === 'sakit[]') {
-            totalSakit += value;
-        } else if (attendance.name === 'alpha[]') {
-            totalAlpha += value;
+            // Mendapatkan elemen-elemen input untuk setiap individu
+            var hadirs = document.querySelectorAll('input[name="hadir[]"]');
+            var izins = document.querySelectorAll('input[name="izin[]"]');
+            var sakits = document.querySelectorAll('input[name="sakit[]"]');
+            var alphas = document.querySelectorAll('input[name="alpha[]"]');
+
+            // Validasi untuk setiap individu
+            var isValid = true;
+
+            for (var i = 0; i < hadirs.length; i++) {
+                var totalAttendance = parseInt(hadirs[i].value) + parseInt(izins[i].value) + parseInt(sakits[i].value) + parseInt(alphas[i].value);
+                if (totalAttendance > workdays) {
+                    isValid = false;
+                    showAlert('Total hadir, izin, sakit, dan alpha tidak boleh melebihi jumlah hari kerja.', 'danger');
+                    break; // Keluar dari loop jika terdapat salah satu individu yang melebihi
+                }
+            }
+
+            // Hentikan pengiriman formulir jika validasi tidak berhasil
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Fungsi untuk mendapatkan nama bulan berdasarkan nomor bulan
+        function getMonthName(monthNumber) {
+            return new Date(new Date().getFullYear(), monthNumber - 1, 1).toLocaleString('default', { month: 'long' });
         }
-    });
 
-    // Menghitung total keseluruhan
-    var totalAll = totalHadir + totalIzin + totalSakit + totalAlpha;
+        // Fungsi untuk mendapatkan jumlah hari kerja tanpa hari Minggu dalam bulan dan tahun tertentu
+        function getWorkdays(year, month) {
+            var daysInMonth = new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan tersebut
+            var workdays = 0;
 
-    // Periksa apakah total keseluruhan melebihi jumlah hari kerja
-    if (totalAll > workdays) {
-        // Hentikan pengiriman formulir
-        event.preventDefault();
-        // Tampilkan pesan kesalahan
-        showAlert('Total hadir, izin, sakit, dan alpha tidak boleh melebihi jumlah hari kerja.', 'danger');
-    }
-});
+            for (var day = 1; day <= daysInMonth; day++) {
+                var date = new Date(year, month - 1, day);
+                var dayOfWeek = date.getDay(); // Mendapatkan hari dalam seminggu (0: Minggu, 1: Senin, ..., 6: Sabtu)
 
-// Fungsi untuk mendapatkan nama bulan berdasarkan nomor bulan
-function getMonthName(monthNumber) {
-    return new Date(new Date().getFullYear(), monthNumber - 1, 1).toLocaleString('default', { month: 'long' });
-}
+                // Menambahkan 1 ke jumlah hari kerja jika bukan hari Minggu (0)
+                if (dayOfWeek !== 0) {
+                    workdays++;
+                }
+            }
 
-// Fungsi untuk mendapatkan jumlah hari kerja tanpa hari Minggu dalam bulan dan tahun tertentu
-function getWorkdays(year, month) {
-    var daysInMonth = new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan tersebut
-    var workdays = 0;
-
-    for (var day = 1; day <= daysInMonth; day++) {
-        var date = new Date(year, month - 1, day);
-        var dayOfWeek = date.getDay(); // Mendapatkan hari dalam seminggu (0: Minggu, 1: Senin, ..., 6: Sabtu)
-        
-        // Menambahkan 1 ke jumlah hari kerja jika bukan hari Minggu (0)
-        if (dayOfWeek !== 0) {
-            workdays++;
+            return workdays;
         }
-    }
 
-    return workdays;
-}
+        // Fungsi untuk menampilkan pesan kesalahan Bootstrap
+        function showAlert(message, type) {
+            var alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-' + type;
+            alertDiv.textContent = message;
 
-// Fungsi untuk menampilkan pesan kesalahan Bootstrap
-function showAlert(message, type) {
-    var alertDiv = document.createElement('div');
-    alertDiv.className = 'alert alert-' + type;
-    alertDiv.textContent = message;
+            var form = document.getElementById('attendanceForm');
+            form.prepend(alertDiv);
 
-    var form = document.getElementById('attendanceForm');
-    form.prepend(alertDiv);
-
-    // Menghilangkan pesan kesalahan setelah beberapa detik
-    setTimeout(function() {
-        alertDiv.remove();
-    }, 3000);
-}
+            // Menghilangkan pesan kesalahan setelah beberapa detik
+            setTimeout(function() {
+                alertDiv.remove();
+            }, 3000);
+        }
     </script>
 @endsection

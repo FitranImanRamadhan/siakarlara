@@ -244,4 +244,16 @@ public function laporan()
         // Export data ke Excel menggunakan Maatwebsite\Excel
         return Excel::download(new AbsensiExport($absensis), $fileName);
     }
+    public function getByMonth(Request $request)
+    {
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+
+        $absensis = Absensi::where('bulan', $bulan)
+                            ->where('tahun', $tahun)
+                            ->get();
+
+        return response()->json($absensis);
+    }
+    
 }

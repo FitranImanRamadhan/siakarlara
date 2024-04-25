@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateGajisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,28 +15,24 @@ return new class extends Migration
     {
         Schema::create('gajis', function (Blueprint $table) {
             $table->id();
-            $table->string('bulan');
-            $table->string('tahun');
-            $table->unsignedBigInteger('pegawai_id');
-            $table->integer('total_gaji');
-            $table->integer('tnj_jabatan');
-            $table->integer('tnj_makan');
-            $table->integer('lembur');
-            $table->integer('insetif_absen');
-            $table->integer('insentif_sales');
-            $table->integer('gaji_kotor');
+            $table->date('tanggal_gajian');
+            $table->integer('absensi_id');
+            $table->integer('pegawai_id');
             $table->integer('potongan_id');
-            $table->integer('kasbon');
-            $table->integer('barang');
+            $table->string('tahun');
+            $table->string('bulan');
+            $table->integer('total_gaji');
+            $table->integer('gaji_kotor');
             $table->integer('gaji_bersih');
             $table->integer('pembulatan');
             $table->integer('gaji_diterima');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations. 
+     * Reverse the migrations.
      *
      * @return void
      */
@@ -44,4 +40,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('gajis');
     }
-};
+}

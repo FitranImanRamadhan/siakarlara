@@ -8,8 +8,8 @@
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                     class="rounded-circle img-fluid" style="width: 150px;">
                     @auth
-                      <p class="text-dark my-3">{{ Auth::user()->name }}</p>
-                      <p class="text-dark mb-1">{{ Auth::user()->position->jabatan }}</p>
+                      <p class="text-dark my-3"></p>
+                      {{-- <p class="text-dark mb-1">{{ Auth::user()-> }}</p> --}}
                     @endauth
             </div>
         </div>
@@ -22,7 +22,7 @@
                         <p class="mb-0">Full Name</p>
                     </div>
                     <div class="col-sm-9">
-                        <p class="text-muted mb-0">Johnatan Smith</p>
+                        <p class="text-muted mb-0">{{ Auth::user()->nama }}</p>
                     </div>
                 </div>
                 <hr>

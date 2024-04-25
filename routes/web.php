@@ -77,6 +77,7 @@ Route::get('laporan_absensi', [AbsensiController::class, 'laporan'])->name('lapo
 Route::get('/getDataForTable', [AbsensiController::class, 'getDataForTable'])->name('getDataForTable');
 Route::get('/get-data-all', [AbsensiController::class, 'getDataAll'])->name('get.data.all');
 Route::get('/export-by-month-year', [AbsensiController::class, 'exportByMonthYear'])->name('export.by.month.year');
+Route::get('/get-absensi-data', [GajiController::class, 'getAbsensiData'])->name('getAbsensiData');
 
 
 

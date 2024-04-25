@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', $title)</title>
+    {{-- <title>@yield('title', $title)</title> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
@@ -131,7 +131,7 @@
                 @endif
                 @if(Auth()->user()->hak_akses == "Admin")
                 <li class="sidebar-item">
-                  <a class="sidebar-link" aria-expanded="false">
+                  <a class="sidebar-link" href="{{ route('gajis.index') }}" aria-expanded="false">
                     <span>
                       <i class="ti ti-typography"></i>
                     </span>
