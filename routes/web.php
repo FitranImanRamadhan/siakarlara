@@ -14,8 +14,10 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\UmrController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\PenggajianController;
 use App\Models\Absensi;
-use App\Models\Departements;    
+use App\Models\Departements;
+use App\Models\Penggajian;
 use App\Models\Potongan;
 use App\Models\Umr;
 
@@ -58,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('potongans', PotonganController::class);
     Route::resource('pegawais', PegawaiController::class);
     Route::resource('gajis', GajiController::class);
+    Route::resource('penggajians', PenggajianController::class);
 
 
 
@@ -77,8 +80,7 @@ Route::get('laporan_absensi', [AbsensiController::class, 'laporan'])->name('lapo
 Route::get('/getDataForTable', [AbsensiController::class, 'getDataForTable'])->name('getDataForTable');
 Route::get('/get-data-all', [AbsensiController::class, 'getDataAll'])->name('get.data.all');
 Route::get('/export-by-month-year', [AbsensiController::class, 'exportByMonthYear'])->name('export.by.month.year');
-Route::get('/get-absensi-data', [GajiController::class, 'getAbsensiData'])->name('getAbsensiData');
-
+Route::get('/get-absensi-data', [GajiController::class, 'getAbsensiData'])->name('get_absensi_data');
 
 
 

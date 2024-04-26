@@ -44,21 +44,38 @@ class GajiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
+{
+    $absensis = null; // Inisialisasi dengan null, bukan array kosong
+    $pegawais = \App\Models\Pegawai::all();
+    $potongans = \App\Models\Potongan::all();
 
-        $absensis = [];
-        $pegawais = \App\Models\Pegawai::all();
-        $potongans = \App\Models\Potongan::all();
-
-        if($request->has('bulan') && $request->has('tahun') && $request->has('pegawai')){
-            $bulan = $request->input('bulan');
-            $tahun = $request->input('tahun');
-            $pegawai = $request->input('pegawai');
-            $absensis = \App\Models\Absensi::Where(['bulan'=>$bulan, 'tahun'=>$tahun , 'pegawai_id'=> $pegawai])->first();
-        }
-        return view('gajis.create', compact('absensis', 'pegawais', 'potongans'));
+    if ($request->has('bulan') && $request->has('tahun') && $request->has('pegawai')) {
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+        $pegawai = $request->input('pegawai');
+        $absensis = \App\Models\Absensi::where(['bulan' => $bulan, 'tahun' => $tahun, 'pegawai_id' => $pegawai])->first();
     }
 
+    return view('gajis.create', compact('absensis', 'pegawais', 'potongans'));
+}
+
+public function getAbsensiData(Request $request)
+{
+    // Ambil data absensi dari database berdasarkan tahun, bulan, dan pegawai yang dipilih
+    $tahun = $request->input('tahun');
+    $bulan = $request->input('bulan');
+    $pegawaiId = $request->input('pegawai');
+
+    $absensi = Absensi::where('tahun', $tahun)
+                      ->where('bulan', $bulan)
+                      ->where('pegawai_id', $pegawaiId)
+                      ->first();
+
+    // Mengembalikan data hadir dalam format JSON
+    return response()->json([
+        'hadir' => $absensi->hadir ?? null
+    ]);
+}
     /**
      * Store a newly created resource in storage.
      *
@@ -175,23 +192,4 @@ class GajiController extends Controller
         }
     }
 
-    public function getAbsensiData(Request $request)
-    {
-        // Ambil tahun dan bulan dari request
-        $tahun = $request->tahun;
-        $bulan = $request->bulan;
-
-        // Query untuk mendapatkan data absensi berdasarkan tahun dan bulan
-        $absensis = Absensi::where('tahun', $tahun)
-            ->where('bulan', $bulan)
-            ->with('pegawai') // Mengambil relasi pegawai
-            ->get();
-
-        // Mengambil nama-nama pegawai dari data absensi
-        $pegawaiNames = $absensis->pluck('pegawai.nama')->unique();
-
-        return response()->json([
-            'pegawai_names' => $pegawaiNames,
-        ]);
-    }
 }

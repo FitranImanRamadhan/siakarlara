@@ -39,13 +39,37 @@
                         <select class="form-select" id="pegawai_id" name="pegawai_id">
                             <option selected disabled>Select Nama Pegawai</option>
                             @foreach($pegawais as $pegawai)
-                                <option value="{{ $pegawai->id }}" data-jabatan="{{ $pegawai->position->jabatan }}">{{ $pegawai->nama }}</option>
+                                <option value="{{ $pegawai->id }}" 
+                                        data-jabatan="{{ $pegawai->position->jabatan }}" 
+                                        data-gaji_perhari="{{ $pegawai->position->gaji_perhari }}"
+                                        data-tunjangan_jabatan="{{ $pegawai->position->tunjangan_jabatan }}"
+                                        data-uang_makan="{{ $pegawai->position->uang_makan }}">
+                                    {{ $pegawai->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="jabatan" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" id="jabatan" name="jabatan">
+                        <input type="text" class="form-control" id="jabatan" name="jabatan" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hadir" class="form-label">Total Hadir</label>
+                        <input type="text" class="form-control" id="hadir" name="hadir" value="{{ $absensis?->hadir }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gaji_perhari" class="form-label">Gaji Perhari</label>
+                        <input type="text" class="form-control" id="gaji_perhari" name="gaji_perhari" readonly>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="tunjangan_jabatan" class="form-label">Tunjangan Jabatan</label>
+                        <input type="text" class="form-control" id="tunjangan_jabatan" name="tunjangan_jabatan" readonly>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="uang_makan" class="form-label">Uang Makan</label>
+                        <input type="text" class="form-control" id="uang_makan" name="uang_makan" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="potongan_id" class="form-label">Kota</label>
@@ -66,7 +90,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="total_gaji" class="form-label">Total Gaji</label>
-                        <input type="text" class="form-control" id="total_gaji" name="total_gaji" value="{{ $absensis?->hadir }}">
+                        <input type="text" class="form-control" id="total_gaji" name="total_gaji">
                     </div>
                     <div class="mb-3">
                         <label for="gaji_kotor" class="form-label">Gaji Kotor</label>
@@ -95,22 +119,45 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>    
-         $(document).ready(function() {
-        $('#pegawai_id').change(function() {
-            var selectedJabatan = $(this).find('option:selected').data('jabatan');
-            $('#jabatan').val(selectedJabatan);
-            var selectedPegawai = $(this).find('option:selected').val();
-            var selectedBulan = $('#bulan').find('option:selected').val();
-            var selectedTahun = $('#tahun').find('option:selected').val();
-            window.location.href = "{{route('gajis.create')}}?tahun="+selectedTahun+"&bulan="+selectedBulan+"&pegawai="+selectedPegawai;
+    <script>  
+        $(document).ready(function() {
+    $('#pegawai_id').change(function() {
+        var selectedJabatan = $(this).find('option:selected').data('jabatan');
+        $('#jabatan').val(selectedJabatan);
+        
+        var selectedOption = $(this).find('option:selected');
+        $('#gaji_perhari').val(selectedOption.data('gaji_perhari'));
+        $('#tunjangan_jabatan').val(selectedOption.data('tunjangan_jabatan'));
+        $('#uang_makan').val(selectedOption.data('uang_makan'));
+        
+        var selectedPegawai = selectedOption.val();
+        var selectedBulan = $('#bulan').find('option:selected').val();
+        var selectedTahun = $('#tahun').find('option:selected').val();
+
+        // Mengirimkan permintaan AJAX
+        $.ajax({
+            url: "{{ route('get_absensi_data') }}",
+            method: 'GET',
+            data: {
+                tahun: selectedTahun,
+                bulan: selectedBulan,
+                pegawai: selectedPegawai
+            },
+            success: function(response) {
+                $('#hadir').val(response.hadir); // Mengupdate nilai hadir
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
         });
     });
-        // Function to update BPJS values based on selected potongan ID
-        document.getElementById('potongan_id').addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            document.getElementById('bpjs_tk').value = selectedOption.getAttribute('data-bpjs_tk');
-            document.getElementById('bpjs_kes').value = selectedOption.getAttribute('data-bpjs_kes');
-        });
+    
+    // Function to update BPJS values based on selected potongan ID
+    $('#potongan_id').change(function() {
+        var selectedOption = $(this).find('option:selected');
+        $('#bpjs_tk').val(selectedOption.data('bpjs_tk'));
+        $('#bpjs_kes').val(selectedOption.data('bpjs_kes'));
+    });
+});
     </script>
 @endsection
