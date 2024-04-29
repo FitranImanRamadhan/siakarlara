@@ -18,9 +18,8 @@ class Absensi extends Model
                             'izin',
                             'sakit',
                             'alpha',
-                            'terlambat',
                             'selisih',
-                            'penjualan'];
+                            'lembur'];
 
     public function pegawai ()
     {

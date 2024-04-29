@@ -48,9 +48,8 @@
                             <th>Izin</th>
                             <th>Sakit</th>
                             <th>Alpha</th>
-                            <th>Terlambat</th>
-                            <th>Selisih Menit</th>
-                            <th>Penjualan</th>
+                            <th>Selisih Menit (Q)</th>
+                            <th>Lembur</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -68,11 +67,9 @@
                                         required></td>
                                 <td><input class="form-control attendance" type="number" name="alpha[]" placeholder="Alpha"
                                         required></td>
-                                <td><input class="form-control attendance" type="number" name="terlambat[]"
-                                        placeholder="Terlambat" required></td>
                                 <td><input class="form-control attendance" type="number" name="selisih[]"
                                         placeholder="Selisih" required></td>
-                                <td><input class="form-control attendance" type="number" name="penjualan[]"
+                                <td><input class="form-control attendance" type="number" name="lembur[]"
                                         placeholder="Alpha" required></td>
                             </tr>
                         @endforeach

@@ -136,7 +136,7 @@
                                 Laporan
                             </button>
                             <ul class="dropdown-menu">
-                                @if (Auth()->user()->hak_akses == 'Admin')
+                                @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
                                     <li class="sidebar-item">
                                         <a class="sidebar-link" href="{{ route('laporan-absensi') }}"
                                             aria-expanded="false">
@@ -147,7 +147,7 @@
                                         </a>
                                     </li>
                                 @endif
-                                @if (Auth()->user()->hak_akses == 'Admin')
+                                @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
                                     <li class="sidebar-item">
                                         <a class="sidebar-link" aria-expanded="false">
                                             <span>

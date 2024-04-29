@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('tahun');
             $table->string('bulan');
             $table->integer('total_gaji');
+            $table->integer('insentif_absen');
             $table->integer('gaji_kotor');
             $table->integer('bpjs_tk');
             $table->integer('bpjs_kes');

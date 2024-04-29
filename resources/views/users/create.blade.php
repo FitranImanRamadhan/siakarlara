@@ -72,7 +72,8 @@
                                 <select id="hak_akses" class="form-control @error('hak_akses') is-invalid @enderror" name="hak_akses" required>
                                     <option value="">Select Hak_akses</option>
                                     <option value="Admin">Admin</option>
-                                    <option value="User">User</option>
+                                    <option value="User">Karyawan</option>
+                                    <option value="Pimpinan">Pimpinan</option>
                                 </select>
 
                                 @error('hak_akses')

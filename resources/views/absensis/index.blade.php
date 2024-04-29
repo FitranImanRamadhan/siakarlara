@@ -51,9 +51,8 @@
                     <th scope="col">Izin</th>
                     <th scope="col">Sakit</th>
                     <th scope="col">Alpha</th>
-                    <th scope="col">Terlambat</th>
-                    <th scope="col">Selisih Menit</th>
-                    <th scope="col">Total Penjualan</th>
+                    <th scope="col">Selisih Menit (q)</th>
+                    <th scope="col">Lembur</th>
                     <th scope="col">Aksi</th>
                 </tr>
             </thead>
@@ -68,9 +67,8 @@
                         <td>{{ $data->izin }}</td>
                         <td>{{ $data->sakit }}</td>
                         <td>{{ $data->alpha }}</td>
-                        <td>{{ $data->terlambat }}</td>
                         <td>{{ $data->selisih }}</td>
-                        <td>{{ $data->penjualan }}</td>
+                        <td>{{ $data->lembur }}</td>
                         <td>
                             <a class="btn btn-warning" href="{{ route('absensis.edit', $data->id) }}">Edit</a>
                             <form action="{{ route('absensis.destroy', $data->id) }}" method="Post"

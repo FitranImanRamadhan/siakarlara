@@ -49,6 +49,7 @@
                                     <option value="" disabled>Select Hak_akses</option>
                                     <option value="Admin" {{ $user->hak_akses == 'Admin' ? 'selected' : '' }}>Admin</option>
                                     <option value="User" {{ $user->hak_akses == 'User' ? 'selected' : '' }}>User</option>
+                                    <option value="Pimpinan" {{ $user->hak_akses == 'Pimpinan' ? 'selected' : '' }}>Pimpinan</option>
                                 </select>
 
                                 @error('hak_akses')

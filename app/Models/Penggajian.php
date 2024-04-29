@@ -10,7 +10,7 @@ class Penggajian extends Model {
     use HasFactory;
 
     protected $table = 'penggajians';
-    protected $fillable = ["absensi_id", "tahun", "bulan", "total_gaji", "gaji_kotor", "bpjs_tk", "bpjs_kes", "gaji_bersih", "pembulatan", "gaji_diterima"];
+    protected $fillable = ["absensi_id", "tahun", "bulan", "total_gaji", "insentif_absen", "gaji_kotor", "bpjs_tk", "bpjs_kes", "gaji_bersih", "pembulatan", "gaji_diterima"];
 
     public function absensi() {
 		return $this->belongsTo(Absensi::class);

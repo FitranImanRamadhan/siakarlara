@@ -25,6 +25,7 @@
                     <th role='columnheader'>Tahun</th>
                     <th role='columnheader'>Bulan</th>
                     <th role='columnheader'>Total Gaji</th>
+                    <th role='columnheader'>Insentif Absen</th>
                     <th role='columnheader'>Gaji Kotor</th>
                     <th role='columnheader'>Bpjs Tk</th>
                     <th role='columnheader'>Bpjs Kes</th>
@@ -41,6 +42,7 @@
                             <td data-label="Tahun">{{ $penggajian->tahun ?: "(blank)" }}</td>
                             <td data-label="Bulan">{{ $penggajian->bulan ?: "(blank)" }}</td>
                             <td data-label="Total Gaji">{{ $penggajian->total_gaji ?: "(blank)" }}</td>
+                            <td data-label="Total Gaji">{{ $penggajian->insentif_absen ?: "(blank)" }}</td>
                             <td data-label="Gaji Kotor">{{ $penggajian->gaji_kotor ?: "(blank)" }}</td>
                             <td data-label="Bpjs Tk">{{ $penggajian->bpjs_tk ?: "(blank)" }}</td>
                             <td data-label="Bpjs Kes">{{ $penggajian->bpjs_kes ?: "(blank)" }}</td>

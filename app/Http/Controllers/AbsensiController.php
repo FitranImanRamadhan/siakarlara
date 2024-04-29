@@ -39,9 +39,8 @@ class AbsensiController extends Controller
             'izin.*' => 'required|numeric',
             'sakit.*' => 'required|numeric',
             'alpha.*' => 'required|numeric',
-            'terlambat.*' => 'required|numeric',
             'selisih.*' => 'required|numeric',
-            'penjualan.*' => 'required|numeric',
+            'lembur.*' => 'required|numeric',
         ], [
             'pegawai_id.*.required' => 'Pegawai ID is required.',
             'pegawai_id.*.exists' => 'Invalid pegawai ID provided.',
@@ -53,12 +52,10 @@ class AbsensiController extends Controller
             'sakit.*.numeric' => 'Sakit field must be numeric.',
             'alpha.*.required' => 'Alpha field is required.',
             'alpha.*.numeric' => 'Alpha field must be numeric.',
-            'terlambat.*.required' => 'Selisih field is required.',
-            'terlambat.*.numeric' => 'Selisih field must be numeric.',
             'selisih.*.required' => 'Selisih field is required.',
             'selisih.*.numeric' => 'Selisih field must be numeric.',
-            'penjualan.*.required' => 'Penjualan field is required.',
-            'penjualan.*.numeric' => 'Penjualan field must be numeric.',
+            'lembur.*.required' => 'Lembur field is required.',
+            'lembur.*.numeric' => 'Lembur field must be numeric.',
         ]);
     
         // Mendapatkan bulan dan tahun dari input
@@ -79,9 +76,8 @@ class AbsensiController extends Controller
         $izin = $request->izin;
         $sakit = $request->sakit;
         $alpha = $request->alpha;
-        $terlambat = $request->terlambat;
         $selisih = $request->selisih;
-        $penjualan = $request->penjualan;
+        $lembur = $request->lembur;
     
         $attendanceData = [];
     
@@ -95,9 +91,8 @@ class AbsensiController extends Controller
                 'izin' => $izin[$index],
                 'sakit' => $sakit[$index],
                 'alpha' => $alpha[$index],
-                'terlambat' => $terlambat[$index],
                 'selisih' => $selisih[$index],
-                'penjualan' => $penjualan[$index],
+                'lembur' => $lembur[$index],
                 // Anda dapat menambahkan lebih banyak kolom di sini jika diperlukan
             ];
         }
@@ -136,9 +131,8 @@ class AbsensiController extends Controller
         'izin' => 'required|numeric',
         'sakit' => 'required|numeric',
         'alpha' => 'required|numeric',
-        'terlambat' => 'required|numeric',
         'selisih' => 'required|numeric',
-        'penjualan' => 'required|numeric',
+        'lembur' => 'required|numeric',
     ], [
         'hadir.required' => 'Hadir field is required.',
         'hadir.numeric' => 'Hadir field must be numeric.',
@@ -148,12 +142,10 @@ class AbsensiController extends Controller
         'sakit.numeric' => 'Sakit field must be numeric.',
         'alpha.required' => 'Alpha field is required.',
         'alpha.numeric' => 'Alpha field must be numeric.',
-        'terlambat.required' => 'Selisih field is required.',
-        'terlambat.numeric' => 'Selisih field must be numeric.',
         'selisih.required' => 'Selisih field is required.',
         'selisih.numeric' => 'Selisih field must be numeric.',
-        'penjualan.required' => 'Penjualan field is required.',
-        'penjualan.numeric' => 'Penjualan field must be numeric.',
+        'lembur.required' => 'Lembur field is required.',
+        'lembur.numeric' => 'Lembur field must be numeric.',
     ]);
 
     // Isi model Absensi dengan data dari request dan simpan perubahan
@@ -161,9 +153,8 @@ class AbsensiController extends Controller
     $absensi->izin = $request->izin;
     $absensi->sakit = $request->sakit;
     $absensi->alpha = $request->alpha;
-    $absensi->terlambat = $request->terlambat;
     $absensi->selisih = $request->selisih;
-    $absensi->penjualan = $request->penjualan;
+    $absensi->lembur = $request->lembur;
     $absensi->save();
 
     // Redirect kembali ke halaman index dengan pesan sukses

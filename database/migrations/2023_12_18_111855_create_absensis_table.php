@@ -22,9 +22,8 @@ return new class extends Migration
             $table->integer('izin');
             $table->integer('sakit');
             $table->integer('alpha');
-            $table->integer('terlambat');
             $table->integer('selisih');
-            $table->integer('penjualan');
+            $table->integer('lembur');
             $table->timestamps();
         });
     }
