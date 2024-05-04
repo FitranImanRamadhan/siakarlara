@@ -116,7 +116,7 @@
                       </li>
                       
                       <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('penggajians.index') }}" aria-expanded="false">
+                          <a class="sidebar-link" href="{{ route('cetak_slip_gaji') }}" aria-expanded="false">
                               <span>
                                   <i class="ti ti-printer"></i>
                               </span>
@@ -149,7 +149,7 @@
                                 @endif
                                 @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
                                     <li class="sidebar-item">
-                                        <a class="sidebar-link" aria-expanded="false">
+                                        <a class="sidebar-link" href="{{ route('laporan-penggajian') }}" aria-expanded="false">
                                             <span>
                                                 <i class="ti ti-typography"></i>
                                             </span>
@@ -223,6 +223,11 @@
                     </div>
                 </nav>
             </header>
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
             <!--  Header End -->
             <div class="container-fluid">
                 <div class="card mt-2">

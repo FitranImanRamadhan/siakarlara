@@ -10,7 +10,7 @@
 <div class="d-flex justify-content-between mb-2">
     
     <div>
-        <a class="btn btn-success" href="{{ route('position.exportExcel') }}">Export Excel</a>
+      
 
     </div>
     <a class="btn btn-success" href="{{ route('positions.create') }}">Add Jabatan</a>
@@ -35,9 +35,9 @@
         <tr>
             <td>{{ $no++ }}</td>
             <td>{{ $data->jabatan }}</td>
-            <td>{{ $data->gaji_perhari }}</td>
-            '<td>{{ $data->tunjangan_jabatan }}</td>
-            <td>{{ $data->uang_makan }}</td>
+            <td><span>Rp.</span>{{ $data->gaji_perhari }}</td>
+            '<td><span>Rp.</span>{{ $data->tunjangan_jabatan }}</td>
+            <td><span>Rp.</span>{{ $data->uang_makan }}</td>
             <td>
                 <form action="{{ route('positions.destroy',$data->id) }}" method="Post">
                     <a class="btn btn-warning" href="{{ route('positions.edit',$data->id) }}">Edit</a>

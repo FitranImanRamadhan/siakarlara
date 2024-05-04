@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PegawaiController extends Controller
 {
+    
     public function index()
     {
         $title = "Data pegawai";

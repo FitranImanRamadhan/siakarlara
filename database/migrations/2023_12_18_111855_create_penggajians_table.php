@@ -20,11 +20,11 @@ return new class extends Migration
             $table->string('bulan');
             $table->integer('total_gaji');
             $table->integer('insentif_absen');
+            $table->integer('uang_lembur');
             $table->integer('gaji_kotor');
             $table->integer('bpjs_tk');
             $table->integer('bpjs_kes');
             $table->integer('gaji_bersih');
-            $table->integer('pembulatan');
             $table->integer('gaji_diterima');
             $table->timestamps();
         });

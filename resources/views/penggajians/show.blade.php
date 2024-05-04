@@ -30,35 +30,30 @@
             <tr>
             <th scope="row">Bulan:</th>
             <td>{{ $penggajian->bulan ?: "(blank)" }}</td>
-        </tr>
             <tr>
-            <th scope="row">Total Gaji:</th>
-            <td>{{ $penggajian->total_gaji ?: "(blank)" }}</td>
-        </tr>
+                <th scope="row">Total Gaji:</th>
+                <td>{{ $penggajian->total_gaji ? 'Rp ' . number_format($penggajian->total_gaji, 0, ',', '.') : "(blank)" }}</td>
+            </tr>
             <tr>
-            <th scope="row">Gaji Kotor:</th>
-            <td>{{ $penggajian->gaji_kotor ?: "(blank)" }}</td>
-        </tr>
+                <th scope="row">Gaji Kotor:</th>
+                <td>{{ $penggajian->gaji_kotor ? 'Rp ' . number_format($penggajian->gaji_kotor, 0, ',', '.') : "(blank)" }}</td>
+            </tr>
             <tr>
-            <th scope="row">Bpjs Tk:</th>
-            <td>{{ $penggajian->bpjs_tk ?: "(blank)" }}</td>
-        </tr>
+                <th scope="row">Bpjs Tk:</th>
+                <td>{{ $penggajian->bpjs_tk ? 'Rp ' . number_format($penggajian->bpjs_tk, 0, ',', '.') : "(blank)" }}</td>
+            </tr>
             <tr>
-            <th scope="row">Bpjs Kes:</th>
-            <td>{{ $penggajian->bpjs_kes ?: "(blank)" }}</td>
-        </tr>
+                <th scope="row">Bpjs Kes:</th>
+                <td>{{ $penggajian->bpjs_kes ? 'Rp ' . number_format($penggajian->bpjs_kes, 0, ',', '.') : "(blank)" }}</td>
+            </tr>
             <tr>
-            <th scope="row">Gaji Bersih:</th>
-            <td>{{ $penggajian->gaji_bersih ?: "(blank)" }}</td>
-        </tr>
+                <th scope="row">Gaji Bersih:</th>
+                <td>{{ $penggajian->gaji_bersih ? 'Rp ' . number_format($penggajian->gaji_bersih, 0, ',', '.') : "(blank)" }}</td>
+            </tr>
             <tr>
-            <th scope="row">Pembulatan:</th>
-            <td>{{ $penggajian->pembulatan ?: "(blank)" }}</td>
-        </tr>
-            <tr>
-            <th scope="row">Gaji Diterima:</th>
-            <td>{{ $penggajian->gaji_diterima ?: "(blank)" }}</td>
-        </tr>
+                <th scope="row">Gaji Diterima:</th>
+                <td>{{ $penggajian->gaji_diterima ? 'Rp ' . number_format($penggajian->gaji_diterima, 0, ',', '.') : "(blank)" }}</td>
+            </tr>
                 <tr>
             <th scope="row">Created at</th>
             <td>{{Carbon\Carbon::parse($penggajian->created_at)->format('d/m/Y H:i:s')}}</td>

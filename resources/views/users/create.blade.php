@@ -45,7 +45,8 @@
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                 <small id="passwordHelpBlock" class="form-text text-muted">
-                                    Password akan disetel otomatis berdasarkan EMAIL.
+                                    <p>Default Password disetel menggunakan nama depan diikuti dengan angka 12345 <span
+                                        class="text-danger">*</span></p>
                                 </small>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -99,19 +100,19 @@
 </div>
 
 <script>
-document.getElementById('email').addEventListener('input', function() {
-    var emailValue = this.value;
-    var passwordInput = document.getElementById('password');
-    var confirmPasswordInput = document.getElementById('password-confirm');
-    
-    // Jika nilai EMAIL tidak kosong, set nilai password dan konfirmasi password sesuai dengan nilai EMAIL
-    if (emailValue !== '') {
-        passwordInput.value = emailValue;
-        confirmPasswordInput.value = emailValue;
-    } else {
-        passwordInput.value = '';
-        confirmPasswordInput.value = '';
-    }
-});
-</script>
+    document.getElementById('nama').addEventListener('input', function() {
+        var namaValue = this.value;
+        var passwordInput = document.getElementById('password');
+        var confirmPasswordInput = document.getElementById('password-confirm');
+        
+        // Jika nilai Nama tidak kosong, set nilai password dan konfirmasi password sesuai dengan nama diikuti dengan angka 12345
+        if (namaValue !== '') {
+            passwordInput.value = namaValue.toLowerCase().replace(/\s+/g, '') + '12345';
+            confirmPasswordInput.value = namaValue.toLowerCase().replace(/\s+/g, '') + '12345';
+        } else {
+            passwordInput.value = '';
+            confirmPasswordInput.value = '';
+        }
+    });
+    </script>
 @endsection

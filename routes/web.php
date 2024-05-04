@@ -82,6 +82,11 @@ Route::get('/get-data-all', [AbsensiController::class, 'getDataAll'])->name('get
 Route::get('/export-by-month-year', [AbsensiController::class, 'exportByMonthYear'])->name('export.by.month.year');
 Route::get('/get-absensi-data', [GajiController::class, 'getAbsensiData'])->name('get_absensi_data');
 
+Route::get('/getDataForTableGaji', [PenggajianController::class, 'getDataForTableGaji'])->name('getDataForTableGaji');
+Route::get('/export-by-month-year.gaji', [PenggajianController::class, 'exportByMonthYearGaji'])->name('export.by.month.year.gaji');
+Route::get('/cetak-slip-gaji-pdf', [PenggajianController::class, 'cetakSlipGajiPDF'])->name('cetak.slip.gaji.pdf');
+Route::get('laporan_penggajian', [PenggajianController::class, 'laporanGaji'])->name('laporan-penggajian');
+Route::get('/cetak-slip-gaji', [PenggajianController::class, 'cetakSlipGaji'])->name('cetak_slip_gaji');
 
 
 });
