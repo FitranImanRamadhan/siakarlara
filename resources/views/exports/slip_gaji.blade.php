@@ -95,7 +95,7 @@
     ?>
     
     <?php $counter = 0; ?>
-    <?php foreach ($penggajians as $penggajian): ?>
+    <?php foreach ($gajis as $gaji): ?>
     <?php if ($counter % 2 == 0 && $counter != 0): ?>
     <div style="clear:both;"></div>
     <?php endif; ?>
@@ -108,22 +108,22 @@
         <div class="info-pegawai">
             <div class="item">
                 <span class="label">Periode Gaji Untuk Tahun:</span>
-                <span><?= $penggajian->tahun ?></span>
+                <span><?= $gaji->tahun ?></span>
             </div>
 
             <div class="item">
                 <span class="label">Periode Absen:</span>
-                <span>{{ date('F', mktime(0, 0, 0, $penggajian->bulan, 1)) ?: '(blank)' }}</span>
+                <span>{{ date('F', mktime(0, 0, 0, $gaji->bulan, 1)) ?: '(blank)' }}</span>
             </div>
 
             <div class="item">
                 <span class="label">Nama Pegawai:</span>
-                <span><?= $penggajian->absensi->pegawai->nama ?? '(blank)' ?></span>
+                <span><?= $gaji->absensi->pegawai->nama ?? '(blank)' ?></span>
             </div>
 
             <div class="item">
                 <span class="label">Posisi:</span>
-                <span><?= $penggajian->absensi->pegawai->position->jabatan ?? '(blank)' ?></span>
+                <span><?= $gaji->absensi->pegawai->position->jabatan ?? '(blank)' ?></span>
             </div>
         </div>
 
@@ -137,31 +137,31 @@
             <tbody>
                 <tr>
                     <td>Gaji Perhari</td>
-                    <td><?= formatRupiah($penggajian->absensi->pegawai->position->gaji_perhari) ?></td>
+                    <td><?= formatRupiah($gaji->absensi->pegawai->position->gaji_perhari) ?></td>
                 </tr>
                 <tr>
                     <td>Uang Makan</td>
-                    <td><?= formatRupiah($penggajian->absensi->pegawai->position->uang_makan) ?></td>
+                    <td><?= formatRupiah($gaji->absensi->pegawai->position->uang_makan) ?></td>
                 </tr>
                 <tr>
                     <td>Total Uang Makan dan Gaji Perhari</td>
-                    <td><?= formatRupiah($penggajian->total_gaji) ?></td>
+                    <td><?= formatRupiah($gaji->total_gaji) ?></td>
                 </tr>
                 <tr>
                     <td>Insentif Absen</td>
-                    <td><?= formatRupiah($penggajian->insentif_absen) ?></td>
+                    <td><?= formatRupiah($gaji->insentif_absen) ?></td>
                 </tr>
                 <tr>
                     <td>Tunjangan Jabatan</td>
-                    <td><?= formatRupiah($penggajian->absensi->pegawai->position->tunjangan_jabatan) ?></td>
+                    <td><?= formatRupiah($gaji->absensi->pegawai->position->tunjangan_jabatan) ?></td>
                 </tr>
                 <tr>
                     <td>Uang Lembur</td>
-                    <td><?= formatRupiah($penggajian->uang_lembur) ?></td>
+                    <td><?= formatRupiah($gaji->uang_lembur) ?></td>
                 </tr>
                 <tr>
                     <td class="total">Gaji Kotor</td>
-                    <td class="total"><?= formatRupiah($penggajian->gaji_kotor) ?></td>
+                    <td class="total"><?= formatRupiah($gaji->gaji_kotor) ?></td>
                 </tr>
             </tbody>
         </table>
@@ -176,21 +176,21 @@
             <tbody>
                 <tr>
                     <td>BPJS Ketenagakerjaan</td>
-                    <td><?= formatRupiah($penggajian->bpjs_tk) ?></td>
+                    <td><?= formatRupiah($gaji->bpjs_tk) ?></td>
                 </tr>
                 <tr>
                     <td>BPJS Kesehatan</td>
-                    <td><?= formatRupiah($penggajian->bpjs_kes) ?></td>
+                    <td><?= formatRupiah($gaji->bpjs_kes) ?></td>
                 </tr>
                 <tr>
                     <td class="total">Gaji Bersih</td>
-                    <td class="total"><?= formatRupiah($penggajian->gaji_bersih) ?></td>
+                    <td class="total"><?= formatRupiah($gaji->gaji_bersih) ?></td>
                 </tr>
             </tbody>
         </table>
 
         <div class="total-pembayaran">
-            <span>Total Pembayaran Diterima: <?= formatRupiah($penggajian->gaji_diterima) ?></span>
+            <span>Total Pembayaran Diterima: <?= formatRupiah($gaji->gaji_diterima) ?></span>
         </div>
     </div>
     <?php $counter++; ?>

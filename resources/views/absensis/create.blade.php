@@ -69,7 +69,7 @@
                                         required></td>
                                 <td><input class="form-control attendance" type="number" name="selisih[]"
                                         placeholder="Selisih" required></td>
-                                <td><input class="form-control attendance" type="number" name="lembur[]"
+                                <td><input class="form-control attendance" type="decimal" name="lembur[]"
                                         placeholder="Alpha" required></td>
                             </tr>
                         @endforeach

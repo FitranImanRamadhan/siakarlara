@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
+    
     <link rel="icon" href="{{ asset('assets/images/logos/utamaicon.png') }}" type="image/png">
     <style>
         .dropdown-item:hover {
@@ -107,7 +108,7 @@
                       </li>
                       
                       <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('penggajians.index') }}" aria-expanded="false">
+                          <a class="sidebar-link" href="{{ route('gajis.index') }}" aria-expanded="false">
                               <span>
                                   <i class="ti ti-coin"></i>
                               </span>
@@ -124,19 +125,29 @@
                           </a>
                       </li>
                       
+                      
                         @endif
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('gaji.index2') }}" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-calendar"></i>
+                                </span>
+                                <span class="hide-menu">Gaji Saya</span>
+                            </a>
+                        </li>
                         
                         <br>
 
                         <br>
 
+                        @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
                         <div class="sidebar-item"">
                             <button type="button" class="btn btn-success dropdown-toggle custom-btn"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Laporan
                             </button>
                             <ul class="dropdown-menu">
-                                @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
                                     <li class="sidebar-item">
                                         <a class="sidebar-link" href="{{ route('laporan-absensi') }}"
                                             aria-expanded="false">
@@ -146,26 +157,19 @@
                                             <span class="hide-menu">Laporan Absensi</span>
                                         </a>
                                     </li>
-                                @endif
-                                @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
                                     <li class="sidebar-item">
-                                        <a class="sidebar-link" href="{{ route('laporan-penggajian') }}" aria-expanded="false">
+                                        <a class="sidebar-link" href="{{ route('laporan-gaji') }}" aria-expanded="false">
                                             <span>
                                                 <i class="ti ti-typography"></i>
                                             </span>
                                             <span class="hide-menu">Laporan Gaji</span>
                                         </a>
                                     </li>
-                                @endif
                             </ul>
                         </div>
+                        @endif
 
                         <br>
-
-                        
-
-
-
 
                         <li class="nav-small-cap">
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -244,6 +248,7 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Memuat jQuery versi 3.6.0 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js"
         integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous">

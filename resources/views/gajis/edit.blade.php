@@ -1,6 +1,6 @@
-@extends('gajis.layout')
+@extends('tmp')
 
-@section('gajis.content')
+@section('content')
     <div class="container">
         <div class="card">
             <div class="card-header d-flex flex-row align-items-center justify-content-between">
@@ -15,42 +15,10 @@
                     @csrf
                     <div class="card-body">
                         <div class="mb-3">
-        <label for="tanggal_gajian" class="form-label">Tanggal Gajian:</label>
-        <input type="date" name="tanggal_gajian" id="tanggal_gajian" class="form-control" value="{{@old('tanggal_gajian', $gaji->tanggal_gajian)}}" required/>
-        @if($errors->has('tanggal_gajian'))
-			<div class='error small text-danger'>{{$errors->first('tanggal_gajian')}}</div>
-		@endif
-    </div>
-    <div class="mb-3">
-        <label for="absensi_id" class="form-label">Absensi:</label>
-        <div class="d-flex flex-row align-items-center justify-content-between">
-    <select name="absensi_id" id="absensi_id" class="form-control form-select flex-grow-1" required>
-        <option value="">Select Absensi</option>
-        @foreach($absensis as $absensi)
-            <option value="{{ $absensi->id }}" {{ @old('absensi_id', $gaji->absensi_id) == $absensi->id ? "selected" : "" }}>{{ $absensi->bulan }}</option>
-        @endforeach
-    </select>
-
-    <a class="btn btn-light text-nowrap" href="{{route('absensis.create', compact([]))}}"><i class="fa fa-plus-circle"></i> New</a>
-</div>
-        @if($errors->has('absensi_id'))
-			<div class='error small text-danger'>{{$errors->first('absensi_id')}}</div>
-		@endif
-    </div>
-    <div class="mb-3">
-        <label for="pegawai_id" class="form-label">Pegawai:</label>
-        <div class="d-flex flex-row align-items-center justify-content-between">
-    <select name="pegawai_id" id="pegawai_id" class="form-control form-select flex-grow-1" required>
-        <option value="">Select Pegawai</option>
-        @foreach($pegawais as $pegawai)
-            <option value="{{ $pegawai->id }}" {{ @old('pegawai_id', $gaji->pegawai_id) == $pegawai->id ? "selected" : "" }}>{{ $pegawai->nama }}</option>
-        @endforeach
-    </select>
-
-    <a class="btn btn-light text-nowrap" href="{{route('pegawais.create', compact([]))}}"><i class="fa fa-plus-circle"></i> New</a>
-</div>
-        @if($errors->has('pegawai_id'))
-			<div class='error small text-danger'>{{$errors->first('pegawai_id')}}</div>
+        <label for="kode" class="form-label">Kode:</label>
+        <input type="text" name="kode" id="kode" class="form-control" value="{{@old('kode', $gaji->kode)}}" required/>
+        @if($errors->has('kode'))
+			<div class='error small text-danger'>{{$errors->first('kode')}}</div>
 		@endif
     </div>
     <div class="mb-3">
@@ -75,10 +43,38 @@
 		@endif
     </div>
     <div class="mb-3">
+        <label for="insentif_absen" class="form-label">Insentif Absen:</label>
+        <input type="number" name="insentif_absen" id="insentif_absen" class="form-control" value="{{@old('insentif_absen', $gaji->insentif_absen)}}" required/>
+        @if($errors->has('insentif_absen'))
+			<div class='error small text-danger'>{{$errors->first('insentif_absen')}}</div>
+		@endif
+    </div>
+    <div class="mb-3">
+        <label for="uang_lembur" class="form-label">Uang Lembur:</label>
+        <input type="number" name="uang_lembur" id="uang_lembur" class="form-control" value="{{@old('uang_lembur', $gaji->uang_lembur)}}" required/>
+        @if($errors->has('uang_lembur'))
+			<div class='error small text-danger'>{{$errors->first('uang_lembur')}}</div>
+		@endif
+    </div>
+    <div class="mb-3">
         <label for="gaji_kotor" class="form-label">Gaji Kotor:</label>
         <input type="number" name="gaji_kotor" id="gaji_kotor" class="form-control" value="{{@old('gaji_kotor', $gaji->gaji_kotor)}}" required/>
         @if($errors->has('gaji_kotor'))
 			<div class='error small text-danger'>{{$errors->first('gaji_kotor')}}</div>
+		@endif
+    </div>
+    <div class="mb-3">
+        <label for="bpjs_tk" class="form-label">Bpjs Tk:</label>
+        <input type="number" name="bpjs_tk" id="bpjs_tk" class="form-control" value="{{@old('bpjs_tk', $gaji->bpjs_tk)}}" required/>
+        @if($errors->has('bpjs_tk'))
+			<div class='error small text-danger'>{{$errors->first('bpjs_tk')}}</div>
+		@endif
+    </div>
+    <div class="mb-3">
+        <label for="bpjs_kes" class="form-label">Bpjs Kes:</label>
+        <input type="number" name="bpjs_kes" id="bpjs_kes" class="form-control" value="{{@old('bpjs_kes', $gaji->bpjs_kes)}}" required/>
+        @if($errors->has('bpjs_kes'))
+			<div class='error small text-danger'>{{$errors->first('bpjs_kes')}}</div>
 		@endif
     </div>
     <div class="mb-3">
@@ -89,24 +85,10 @@
 		@endif
     </div>
     <div class="mb-3">
-        <label for="pembulatan" class="form-label">Pembulatan:</label>
-        <input type="number" name="pembulatan" id="pembulatan" class="form-control" value="{{@old('pembulatan', $gaji->pembulatan)}}" required/>
-        @if($errors->has('pembulatan'))
-			<div class='error small text-danger'>{{$errors->first('pembulatan')}}</div>
-		@endif
-    </div>
-    <div class="mb-3">
         <label for="gaji_diterima" class="form-label">Gaji Diterima:</label>
         <input type="number" name="gaji_diterima" id="gaji_diterima" class="form-control" value="{{@old('gaji_diterima', $gaji->gaji_diterima)}}" required/>
         @if($errors->has('gaji_diterima'))
 			<div class='error small text-danger'>{{$errors->first('gaji_diterima')}}</div>
-		@endif
-    </div>
-    <div class="mb-3">
-        <label for="remember_token" class="form-label">Remember Token:</label>
-        <input type="text" name="remember_token" id="remember_token" class="form-control" value="{{@old('remember_token', $gaji->remember_token)}}" />
-        @if($errors->has('remember_token'))
-			<div class='error small text-danger'>{{$errors->first('remember_token')}}</div>
 		@endif
     </div>
 

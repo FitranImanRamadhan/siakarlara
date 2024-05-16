@@ -3,161 +3,199 @@
 @section('content')
     <div class="container">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Create New Gaji</h4>
+            <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item"><a href="{{ route('gajis.index', compact([])) }}"> Gajis</a></li>
+                    <li class="breadcrumb-item">@lang('Create new')</li>
+                </ol>
             </div>
             <div class="card-body">
-                <form action="{{ route('gajis.store') }}" method="POST">
+                <form action="{{ route('gajis.create') }}" method="GET" id="attendanceForm">
                     @csrf
-                    <div class="mb-3">
-                        <label for="tanggal_gajian" class="form-label">Tanggal Gajian</label>
-                        <input type="date" class="form-control" id="tanggal_gajian" name="tanggal_gajian">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="bulan" style="font-weight: bold;">Bulan:</label>
+                            <select class="form-select" id="bulan" name="bulan">
+                                <option value="">Pilih Bulan</option>
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="tahun" style="font-weight: bold;">Tahun:</label>
+                            <input class="form-control" id="tahun" name="tahun" value="{{ date('Y') }}">
+                        </div>
+                        <div class="col-md-2 align-self-end">
+                            <button class="btn btn-primary" type="submit">Generate</button>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                    
-                    <div class="mb-3">
-                        <label for="tahun" class="form-label">Tahun</label>
-                        <select class="form-select" id="tahun" name="tahun">
-                            <option selected disabled>Select Tahun</option>
-                            @for ($i = date('Y'); $i >= 2010; $i--)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bulan" class="form-label">Bulan</label>
-                        <select class="form-select" id="bulan" name="bulan">
-                            <option selected disabled>Select Bulan</option>
-                            @for ($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="pegawai_id" class="form-label">Nama Pegawai</label>
-                        <select class="form-select" id="pegawai_id" name="pegawai_id">
-                            <option selected disabled>Select Nama Pegawai</option>
-                            @foreach($pegawais as $pegawai)
-                                <option value="{{ $pegawai->id }}" 
-                                        data-jabatan="{{ $pegawai->position->jabatan }}" 
-                                        data-gaji_perhari="{{ $pegawai->position->gaji_perhari }}"
-                                        data-tunjangan_jabatan="{{ $pegawai->position->tunjangan_jabatan }}"
-                                        data-uang_makan="{{ $pegawai->position->uang_makan }}">
-                                    {{ $pegawai->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jabatan" class="form-label">Jabatan</label>
-                        <input type="text" class="form-control" id="jabatan" name="jabatan" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="hadir" class="form-label">Total Hadir</label>
-                        <input type="text" class="form-control" id="hadir" name="hadir" value="{{ $absensis?->hadir }}">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gaji_perhari" class="form-label">Gaji Perhari</label>
-                        <input type="text" class="form-control" id="gaji_perhari" name="gaji_perhari" readonly>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="tunjangan_jabatan" class="form-label">Tunjangan Jabatan</label>
-                        <input type="text" class="form-control" id="tunjangan_jabatan" name="tunjangan_jabatan" readonly>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="uang_makan" class="form-label">Uang Makan</label>
-                        <input type="text" class="form-control" id="uang_makan" name="uang_makan" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="potongan_id" class="form-label">Kota</label>
-                        <select class="form-select" id="potongan_id" name="potongan_id">
-                            <option selected disabled>Select Potongan</option>
-                            @foreach($potongans as $potongan)
-                                <option value="{{ $potongan->id }}" data-bpjs_tk="{{ $potongan->bpjs_tk }}" data-bpjs_kes="{{ $potongan->bpjs_kes }}">{{ $potongan->umr->kota }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="bpjs_tk" class="form-label">BPJS TK</label>
-                        <input type="text" class="form-control" id="bpjs_tk" name="bpjs_tk">
-                    </div>
-                    <div class="mb-3">
-                        <label for="bpjs_kes" class="form-label">BPJS Kesehatan</label>
-                        <input type="text" class="form-control" id="bpjs_kes" name="bpjs_kes">
-                    </div>
-                    <div class="mb-3">
-                        <label for="total_gaji" class="form-label">Total Gaji</label>
-                        <input type="text" class="form-control" id="total_gaji" name="total_gaji">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gaji_kotor" class="form-label">Gaji Kotor</label>
-                        <input type="text" class="form-control" id="gaji_kotor" name="gaji_kotor">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gaji_bersih" class="form-label">Gaji Bersih</label>
-                        <input type="text" class="form-control" id="gaji_bersih" name="gaji_bersih">
-                    </div>
-                    <div class="mb-3">
-                        <label for="pembulatan" class="form-label">Pembulatan</label>
-                        <input type="text" class="form-control" id="pembulatan" name="pembulatan">
-                    </div>
-                    <div class="mb-3">
-                        <label for="gaji_diterima" class="form-label">Gaji Diterima</label>
-                        <input type="text" class="form-control" id="gaji_diterima" name="gaji_diterima">
-                    </div>
-                    <div class="mb-3">
-                        <label for="remember_token" class="form-label">Remember Token</label>
-                        <input type="text" class="form-control" id="remember_token" name="remember_token">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
+
+                @if ($absensis->isNotEmpty())
+                    <div class="card-body">
+                        <form action="{{ route('gajis.store') }}" method="POST" id="bulkGajiForm">
+                            @csrf
+                            <input type="hidden" name="tahun" value="{{ $tahun }}">
+                            <input type="hidden" name="bulan" value="{{ $bulan }}">
+                            <div class="table-responsive">
+                                <table class="table" style="width: 300%;">
+                                    <thead>
+                                        <tr>
+                                            <th hidden>Kode</th>
+                                            <th>Nama Pegawai</th>
+                                            <th>Jabatan</th>
+                                            <th>Hadir</th>
+                                            <th>Jam Lembur</th>
+                                            <th>Selisih Menit(Q)</th>
+                                            <th>Gaji Perhari</th>
+                                            <th>Uang Makan</th>
+                                            <th>Total Gaji</th>
+                                            <th>Uang Lembur</th>
+                                            <th>Insentif Absen</th>
+                                            <th>Tunjangan Jabatan</th>
+                                            <th>Gaji Kotor</th>
+                                            <th>Bpjs Tk</th>
+                                            <th>Bpjs Kes</th>
+                                            <th>Gaji Bersih</th>
+                                            <th>Gaji Diterima</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($absensis as $key => $absensi)
+                                            <tr>
+                                                <td hidden>
+                                                    <input type="hidden" name="kode[]" value="{{ $absensi->pegawai_id }}">
+                                                    {{ $absensi->pegawai_id }}
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil nama pegawai berdasarkan pegawai_id
+                                                        $pegawai = App\Models\Pegawai::find($absensi->pegawai_id);
+                                                    @endphp
+                                                    {{ $pegawai->nama }}
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil nama pegawai berdasarkan pegawai_id
+                                                        $pegawai = App\Models\Pegawai::find($absensi->pegawai_id);
+                                                    @endphp
+                                                    {{ $pegawai->position->jabatan }}
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil data absensi berdasarkan pegawai_id
+                                                        $dataAbsensi = App\Models\Absensi::where(
+                                                            'pegawai_id',
+                                                            $absensi->pegawai_id,
+                                                        )->first();
+                                                    @endphp
+                                                    {{ $dataAbsensi ? $dataAbsensi->hadir : '-' }}
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil data absensi berdasarkan pegawai_id
+                                                        $dataAbsensi = App\Models\Absensi::where(
+                                                            'pegawai_id',
+                                                            $absensi->pegawai_id,
+                                                        )->first();
+                                                    @endphp
+                                                    {{ $dataAbsensi ? $dataAbsensi->lembur : '-' }}
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil data absensi berdasarkan pegawai_id
+                                                        $dataAbsensi = App\Models\Absensi::where(
+                                                            'pegawai_id',
+                                                            $absensi->pegawai_id,
+                                                        )->first();
+                                                    @endphp
+                                                    {{ $dataAbsensi ? $dataAbsensi->selisih : '-' }}
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil nama pegawai berdasarkan pegawai_id
+                                                        $pegawai = App\Models\Pegawai::find($absensi->pegawai_id);
+                                                    @endphp
+                                                    <input class="form-control" type="number" name="gaji_perhari"
+                                                        value="{{ $pegawai->position->gaji_perhari }}">
+                                                </td>
+                                                <td>
+                                                    @php
+                                                        // Ambil nama pegawai berdasarkan pegawai_id
+                                                        $pegawai = App\Models\Pegawai::find($absensi->pegawai_id);
+                                                    @endphp
+                                                    <input class="form-control" type="number" name="gaji_perhari"
+                                                        value="{{ $pegawai->position->uang_makan }}">
+                                                </td>
+                                                <td><input type="number" name="total_gaji[{{ $key }}]"
+                                                        class="form-control"
+                                                        value="{{ $absensi->hadir * $absensi->pegawai->position->gaji_perhari + $absensi->hadir * $absensi->pegawai->position->uang_makan }}"
+                                                        placeholder="Total Gaji" required readonly></td>
+                                                <td><input type="number" name="uang_lembur[{{ $key }}]"
+                                                        class="form-control"
+                                                        value="{{ $absensi->lembur * (($absensi->pegawai->position->gaji_perhari * 25) / 173) }}"
+                                                        placeholder="Uang_lembur" required readonly></td>
+                                                <td><input type="number" name="insentif_absen[{{ $key }}]"
+                                                        class="form-control"
+                                                        value="{{ $absensi->hadir * $absensi->selisih * 20 * 1.15 }}"
+                                                        placeholder="Insentif Absen" required readonly></td>
+                                                <td>
+                                                    @php
+                                                        // Ambil nama pegawai berdasarkan pegawai_id
+                                                        $pegawai = App\Models\Pegawai::find($absensi->pegawai_id);
+                                                    @endphp
+                                                    <input class="form-control" type="number" name="tunjangan_jabatan"
+                                                        value="{{ $pegawai->position->tunjangan_jabatan }}" required
+                                                        readonly>
+                                                </td>
+                                                <td><input type="number" name="gaji_kotor[{{ $key }}]"
+                                                        class="form-control"
+                                                        value="{{ $absensi->hadir * $absensi->selisih * 20 * 1.15 + ($absensi->hadir * $absensi->pegawai->position->gaji_perhari + $absensi->hadir * $absensi->pegawai->position->uang_makan) + $absensi->pegawai->position->tunjangan_jabatan + $absensi->lembur * (($absensi->pegawai->position->gaji_perhari * 25) / 173) }}"
+                                                        placeholder="Gaji Kotor" required readonly></td>
+                                                <td><input type="number" name="bpjs_tk[{{ $key }}]"
+                                                        class="form-control" value="{{ 2175000 * 0.03 }}" required
+                                                        readonly></td>
+                                                <td><input type="number" name="bpjs_kes[{{ $key }}]"
+                                                        class="form-control" value="{{ 2175000 * 0.01 }}" required
+                                                        readonly></td>
+                                                <td><input type="number" name="gaji_bersih[{{ $key }}]"
+                                                        class="form-control"
+                                                        value="{{ $absensi->hadir * $absensi->selisih * 20 * 1.15 + ($absensi->hadir * $absensi->pegawai->position->gaji_perhari + $absensi->hadir * $absensi->pegawai->position->uang_makan) + $absensi->pegawai->position->tunjangan_jabatan + 53714 - (2175000 * 0.03 + 2175000 * 0.01) }}"
+                                                        required readonly></td>
+                                                <td><input type="number" name="gaji_diterima[{{ $key }}]"
+                                                        class="form-control"
+                                                        value="{{ round($absensi->hadir * $absensi->selisih * 20 * 1.15) + ($absensi->hadir * $absensi->pegawai->position->gaji_perhari + $absensi->hadir * $absensi->pegawai->position->uang_makan) + $absensi->pegawai->position->tunjangan_jabatan + 53714 - (2175000 * 0.03 + 2175000 * 0.01) }}"
+                                                        required readonly></td>
+                                            </tr>
+                                        @endforeach
+                                        <!-- Anda bisa menambahkan baris-baris tambahan dengan tombol "Tambah Baris" -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <!-- Tombol "Tambah Baris" bisa diletakkan di sini -->
+                        </form>
+                    </div>
             </div>
+            @endif
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>  
-        $(document).ready(function() {
-    $('#pegawai_id').change(function() {
-        var selectedJabatan = $(this).find('option:selected').data('jabatan');
-        $('#jabatan').val(selectedJabatan);
-        
-        var selectedOption = $(this).find('option:selected');
-        $('#gaji_perhari').val(selectedOption.data('gaji_perhari'));
-        $('#tunjangan_jabatan').val(selectedOption.data('tunjangan_jabatan'));
-        $('#uang_makan').val(selectedOption.data('uang_makan'));
-        
-        var selectedPegawai = selectedOption.val();
-        var selectedBulan = $('#bulan').find('option:selected').val();
-        var selectedTahun = $('#tahun').find('option:selected').val();
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Loop through all input elements with class "dynamic-width"
+            document.querySelectorAll('.dynamic-width').forEach(function(input) {
+                // Set initial width based on input value length
+                input.style.width = input.value.length + "ch";
 
-        // Mengirimkan permintaan AJAX
-        $.ajax({
-            url: "{{ route('get_absensi_data') }}",
-            method: 'GET',
-            data: {
-                tahun: selectedTahun,
-                bulan: selectedBulan,
-                pegawai: selectedPegawai
-            },
-            success: function(response) {
-                $('#hadir').val(response.hadir); // Mengupdate nilai hadir
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
+                // Update width when input value changes
+                input.addEventListener('input', function() {
+                    this.style.width = this.value.length + "ch";
+                });
+            });
         });
-    });
-    
-    // Function to update BPJS values based on selected potongan ID
-    $('#potongan_id').change(function() {
-        var selectedOption = $(this).find('option:selected');
-        $('#bpjs_tk').val(selectedOption.data('bpjs_tk'));
-        $('#bpjs_kes').val(selectedOption.data('bpjs_kes'));
-    });
-});
+
     </script>
+
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGajisTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,18 +15,17 @@ class CreateGajisTable extends Migration
     {
         Schema::create('gajis', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal_gajian');
-            $table->integer('absensi_id');
-            $table->integer('pegawai_id');
-            $table->integer('potongan_id');
+            $table->string('kode');
             $table->string('tahun');
             $table->string('bulan');
             $table->integer('total_gaji');
+            $table->integer('insentif_absen');
+            $table->integer('uang_lembur');
             $table->integer('gaji_kotor');
+            $table->integer('bpjs_tk');
+            $table->integer('bpjs_kes');
             $table->integer('gaji_bersih');
-            $table->integer('pembulatan');
             $table->integer('gaji_diterima');
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -40,4 +39,4 @@ class CreateGajisTable extends Migration
     {
         Schema::dropIfExists('gajis');
     }
-}
+};

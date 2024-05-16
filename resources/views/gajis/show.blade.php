@@ -1,6 +1,6 @@
-@extends('gajis.layout')
+@extends('tmp')
 
-@section('gajis.content')
+@section('content')
     <div class="container">
         <div class="card">
             <div class="card-header d-flex flex-row align-items-center justify-content-between">
@@ -20,16 +20,8 @@
         <td>{{$gaji->id}}</td>
     </tr>
             <tr>
-            <th scope="row">Tanggal Gajian:</th>
-            <td>{{ $gaji->tanggal_gajian ?: "(blank)" }}</td>
-        </tr>
-            <tr>
-            <th scope="row">Absensi:</th>
-            <td><a href="{{implode('/', ['','absenses',$gaji->absensi_id ?: 0])}}" class="text-dark">{{$gaji?->absensi?->bulan ?: "(blank)"}}</a></td>
-        </tr>
-            <tr>
-            <th scope="row">Pegawai:</th>
-            <td><a href="{{route('pegawais.show', $gaji->pegawai_id ?: 0)}}" class="text-dark">{{$gaji?->pegawai?->nama ?: "(blank)"}}</a></td>
+            <th scope="row">Kode:</th>
+            <td>{{ $gaji->kode ?: "(blank)" }}</td>
         </tr>
             <tr>
             <th scope="row">Tahun:</th>
@@ -44,24 +36,32 @@
             <td>{{ $gaji->total_gaji ?: "(blank)" }}</td>
         </tr>
             <tr>
+            <th scope="row">Insentif Absen:</th>
+            <td>{{ $gaji->insentif_absen ?: "(blank)" }}</td>
+        </tr>
+            <tr>
+            <th scope="row">Uang Lembur:</th>
+            <td>{{ $gaji->uang_lembur ?: "(blank)" }}</td>
+        </tr>
+            <tr>
             <th scope="row">Gaji Kotor:</th>
             <td>{{ $gaji->gaji_kotor ?: "(blank)" }}</td>
+        </tr>
+            <tr>
+            <th scope="row">Bpjs Tk:</th>
+            <td>{{ $gaji->bpjs_tk ?: "(blank)" }}</td>
+        </tr>
+            <tr>
+            <th scope="row">Bpjs Kes:</th>
+            <td>{{ $gaji->bpjs_kes ?: "(blank)" }}</td>
         </tr>
             <tr>
             <th scope="row">Gaji Bersih:</th>
             <td>{{ $gaji->gaji_bersih ?: "(blank)" }}</td>
         </tr>
             <tr>
-            <th scope="row">Pembulatan:</th>
-            <td>{{ $gaji->pembulatan ?: "(blank)" }}</td>
-        </tr>
-            <tr>
             <th scope="row">Gaji Diterima:</th>
             <td>{{ $gaji->gaji_diterima ?: "(blank)" }}</td>
-        </tr>
-            <tr>
-            <th scope="row">Remember Token:</th>
-            <td>{{ $gaji->remember_token ?: "(blank)" }}</td>
         </tr>
                 <tr>
             <th scope="row">Created at</th>

@@ -61,8 +61,8 @@
                 @foreach ($absensis as $data)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $data->pegawai->nama }}</td>
-                        <td>{{ $data->pegawai->position->jabatan }}</td>
+                        <td class="text-left">{{ $data->pegawai->nama }}</td>
+                        <td class="text-left">{{ $data->pegawai->position->jabatan }}</td>
                         <td>{{ $data->hadir }}</td>
                         <td>{{ $data->izin }}</td>
                         <td>{{ $data->sakit }}</td>
