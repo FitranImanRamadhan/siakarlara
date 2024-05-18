@@ -1,6 +1,7 @@
 @extends('tmp')
 
 @section('content')
+
     <br>
     <form action="{{ route('absensis.store') }}" method="POST" id="attendanceForm">
         @csrf

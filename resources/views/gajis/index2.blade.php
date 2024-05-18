@@ -1,6 +1,6 @@
 @extends('tmp')
 @section('content')
-    <title>Gaji Saya</title>
+    <title>Gaji</title>
 
     <?php 
     function formatAngka($angka)
@@ -10,13 +10,13 @@
     ?>
 </head>
 <div class="row">
-    <div class="card">
+    
         <div class="card-header">
-            Gaji Saya
+            Gaji
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table id="" class="table">
+                <table id="example" class="table table-striped table-responsive table-hover">
                     <thead>
                         <tr>
                             <td>No</td>
@@ -41,20 +41,19 @@
                                 <td style="width: 10%">{{ $gaji->nama }}</td>
                                 <td style="width: 5%">{{ $gaji->tahun }}</td>
                                 <td style="width: 10%">{{ date('F', mktime(0, 0, 0, $gaji->bulan, 1)) }}</td>
-                                <td>{{ formatAngka($gaji->total_gaji) }}</td>
-                                <td>{{ formatAngka($gaji->insentif_absen) }}</td>
-                                <td>{{ formatAngka($gaji->uang_lembur) }}</td>
-                                <td>{{ formatAngka($gaji->gaji_kotor) }}</td>
-                                <td>{{ formatAngka($gaji->bpjs_tk) }}</td>
-                                <td>{{ formatAngka($gaji->bpjs_kes) }}</td>
-                                <td>{{ formatAngka($gaji->gaji_bersih) }}</td>
-                                <td>{{ formatAngka($gaji->gaji_diterima) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->total_gaji) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->insentif_absen) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->uang_lembur) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->gaji_kotor) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->bpjs_tk) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->bpjs_kes) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->gaji_bersih) }}</td>
+                                <td style="white-space: nowrap">{{ formatAngka($gaji->gaji_diterima) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
 </div>
 @endsection

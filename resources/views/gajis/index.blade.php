@@ -85,7 +85,7 @@
     <br>
     <div style="overflow-x: auto;">
         @if (isset($gajis) && $gajis->count() > 0 && request()->has('bulan') && request()->has('tahun'))
-            <table class="table table-striped table-responsive table-hover" style="width: 135%;">
+            <table id="example" class="table table-striped table-responsive table-hover" style="width: 135%;">
                 <thead role="rowgroup">
                     <tr role="row">
                         <th role='columnheader'>Nama Pegawai</th>
@@ -190,3 +190,5 @@
         toggleLihatButton();
     </script>
 @endsection
+
+

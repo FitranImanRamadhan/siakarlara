@@ -41,7 +41,7 @@
     <br>
 
     @if (isset($absensis) && $absensis->count() > 0 && request()->has('bulan') && request()->has('tahun'))
-        <table class="table table-bordered">
+        <table id="example" class="table table-striped table-responsive table-hover">
             <thead>
                 <tr>
                     <th scope="col">No</th>

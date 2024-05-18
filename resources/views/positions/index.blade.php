@@ -18,7 +18,7 @@
 
 
 <br>
-<table id="example" class="table table-bordered">
+<table id="example" class="table table-striped table-responsive table-hover">
     <thead>
         <tr>
             <th scope="col">No</th>

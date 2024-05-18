@@ -91,9 +91,23 @@ class GajiController extends Controller
         $bulan = $request->input('bulan');
 
         if ($tahun && $bulan) {
-            $absensis = Absensi::where('tahun', $tahun)
-                ->where('bulan', $bulan)
-                ->get();
+            // Check if salary for the month and year already exists
+            $existingGaji = Gaji::where('tahun', $tahun)->where('bulan', $bulan)->exists();
+
+            if ($existingGaji) {
+                // Convert month number to month name
+                $bulanNama = date('F', mktime(0, 0, 0, $bulan, 1));
+                return redirect()->route('gajis.create')->with('alert', "Gaji pada bulan {$bulanNama} tahun {$tahun} sudah di proses sebelumnya");
+            }
+
+            // Fetch absensi data if the salary hasn't been processed
+            $absensis = Absensi::where('tahun', $tahun)->where('bulan', $bulan)->get();
+
+            if ($absensis->isEmpty()) {
+                // Convert month number to month name
+                $bulanNama = date('F', mktime(0, 0, 0, $bulan, 1));
+                return redirect()->route('gajis.create')->with('alert', "Data rekap absensi pada bulan {$bulanNama} tahun {$tahun} belum di proses");
+            }
         } else {
             $absensis = collect();
             $tahun = null;

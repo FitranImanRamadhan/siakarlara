@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
-    
+
     <link rel="icon" href="{{ asset('assets/images/logos/utamaicon.png') }}" type="image/png">
     <style>
         .dropdown-item:hover {
@@ -71,63 +71,62 @@
                             <span class="hide-menu">Tabel Data</span>
                         </li>
                         @if (Auth()->user()->hak_akses == 'Admin')
-                        <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false">
-                              <span>
-                                  <i class="ti ti-user"></i>
-                              </span>
-                              <span class="hide-menu">User</span>
-                          </a>
-                      </li>
-                      
-                      <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('positions.index') }}" aria-expanded="false">
-                              <span>
-                                  <i class="ti ti-briefcase"></i>
-                              </span>
-                              <span class="hide-menu">Jabatan</span>
-                          </a>
-                      </li>
-                      
-                      <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('pegawais.index') }}" aria-expanded="false">
-                              <span>
-                                  <i class="ti ti-id-badge"></i>
-                              </span>
-                              <span class="hide-menu">Pegawai</span>
-                          </a>
-                      </li>
-                      
-                      <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('absensis.index') }}" aria-expanded="false">
-                              <span>
-                                  <i class="ti ti-calendar"></i>
-                              </span>
-                              <span class="hide-menu">Absensi</span>
-                          </a>
-                      </li>
-                      
-                      <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('gajis.index') }}" aria-expanded="false">
-                              <span>
-                                  <i class="ti ti-coin"></i>
-                              </span>
-                              <span class="hide-menu">Penggajian</span>
-                          </a>
-                      </li>
-                      
-                      <li class="sidebar-item">
-                          <a class="sidebar-link" href="{{ route('cetak_slip_gaji') }}" aria-expanded="false">
-                              <span>
-                                  <i class="ti ti-printer"></i>
-                              </span>
-                              <span class="hide-menu">Cetak Gaji</span>
-                          </a>
-                      </li>
-                      
-                      
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-user"></i>
+                                    </span>
+                                    <span class="hide-menu">User</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('positions.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-briefcase"></i>
+                                    </span>
+                                    <span class="hide-menu">Jabatan</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('pegawais.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-id-badge"></i>
+                                    </span>
+                                    <span class="hide-menu">Pegawai</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('absensis.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-calendar"></i>
+                                    </span>
+                                    <span class="hide-menu">Absensi</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('gajis.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-coin"></i>
+                                    </span>
+                                    <span class="hide-menu">Penggajian</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('cetak_slip_gaji') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-printer"></i>
+                                    </span>
+                                    <span class="hide-menu">Cetak Gaji</span>
+                                </a>
+                            </li>
                         @endif
 
+                        @if (Auth()->user()->hak_akses == 'User' || Auth()->user()->hak_akses == "Admin")
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('gaji.index2') }}" aria-expanded="false">
                                 <span>
@@ -136,18 +135,20 @@
                                 <span class="hide-menu">Gaji Saya</span>
                             </a>
                         </li>
+                        @endif
                         
+
                         <br>
 
                         <br>
 
                         @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
-                        <div class="sidebar-item"">
-                            <button type="button" class="btn btn-success dropdown-toggle custom-btn"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Laporan
-                            </button>
-                            <ul class="dropdown-menu">
+                            <div class="sidebar-item"">
+                                <button type="button" class="btn btn-success dropdown-toggle custom-btn"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Laporan
+                                </button>
+                                <ul class="dropdown-menu">
                                     <li class="sidebar-item">
                                         <a class="sidebar-link" href="{{ route('laporan-absensi') }}"
                                             aria-expanded="false">
@@ -158,15 +159,16 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a class="sidebar-link" href="{{ route('laporan-gaji') }}" aria-expanded="false">
+                                        <a class="sidebar-link" href="{{ route('laporan-gaji') }}"
+                                            aria-expanded="false">
                                             <span>
                                                 <i class="ti ti-typography"></i>
                                             </span>
                                             <span class="hide-menu">Laporan Gaji</span>
                                         </a>
                                     </li>
-                            </ul>
-                        </div>
+                                </ul>
+                            </div>
                         @endif
 
                         <br>
@@ -227,11 +229,11 @@
                     </div>
                 </nav>
             </header>
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <!--  Header End -->
             <div class="container-fluid">
                 <div class="card mt-2">
@@ -263,6 +265,11 @@
     <script src="{{ asset('assets/js/sidebarmenu.js') }}"></script>
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
     @yield('js')
 
 
