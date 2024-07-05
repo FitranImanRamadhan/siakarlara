@@ -10,6 +10,22 @@
                     <div class="card-body">
                         <form action="{{ route('pegawais.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <div class="form-group row">
+                                <label for="id" class="col-md-4 col-form-label text-md-right">Id<span
+                                        class="text-danger">*</span></label>
+
+                                <div class="col-md-6">
+                                    <input id="id" type="text"
+                                        class="form-control @error('id') is-invalid @enderror" name="id"
+                                        value="{{ old('id') }}" required autofocus>
+
+                                    @error('id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
 
                             <div class="form-group row">
                                 <label for="nama" class="col-md-4 col-form-label text-md-right">Nama<span
@@ -29,19 +45,19 @@
                             </div>
 
                             <div class="form-group row mt-2">
-                                <label for="position_id" class="col-md-4 col-form-label text-md-right">Posisi<span
+                                <label for="toko" class="col-md-4 col-form-label text-md-right">Toko<span
                                         class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
-                                    <select id="position_id" class="form-control @error('position_id') is-invalid @enderror"
-                                        name="position_id" required>
-                                        <option value="" disabled selected>Pilih Posisi</option>
-                                        @foreach ($pst as $item)
-                                            <option value="{{ $item->id }}">{{ $item->jabatan }}</option>
+                                    <select id="toko" class="form-control @error('toko') is-invalid @enderror"
+                                        name="toko" required>
+                                        <option value="" disabled selected>Pilih Toko</option>
+                                        @foreach ($tk as $item)
+                                            <option value="{{ $item->toko }}">{{ $item->toko }}</option>
                                         @endforeach
                                     </select>
 
-                                    @error('position_id')
+                                    @error('toko')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
@@ -50,36 +66,35 @@
                             </div>
 
                             <div class="form-group row mt-2">
-                                <label for="jenis_kelamin" class="col-md-4 col-form-label text-md-right">Jenis Kelamin<span
+                                <label for="jabatan" class="col-md-4 col-form-label text-md-right">Posisi<span
                                         class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
-                                    <select id="jenis_kelamin"
-                                        class="form-control @error('jenis_kelamin') is-invalid @enderror"
-                                        name="jenis_kelamin" required>
-                                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
-                                        <option value="Laki-laki">Laki-laki</option>
-                                        <option value="Perempuan">Perempuan</option>
+                                    <select id="jabatan" class="form-control @error('jabatan') is-invalid @enderror"
+                                        name="jabatan" required>
+                                        <option value="" disabled selected>Pilih Posisi</option>
+                                        @foreach ($pst as $item)
+                                            <option value="{{ $item->jabatan }}">{{ $item->jabatan }}</option>
+                                        @endforeach
                                     </select>
 
-                                    @error('jenis_kelamin')
+                                    @error('jabatan')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group row mt-2">
-                                <label for="tanggal_bergabung" class="col-md-4 col-form-label text-md-right">Tanggal
-                                    Bergabung<span class="text-danger">*</span></label>
+                                <label for="score" class="col-md-4 col-form-label text-md-right">
+                                    Score<span class="text-danger">*</span></label>
 
                                 <div class="col-md-6">
-                                    <input id="tanggal_bergabung" type="date"
-                                        class="form-control @error('tanggal_bergabung') is-invalid @enderror"
-                                        name="tanggal_bergabung" value="{{ old('tanggal_bergabung') }}" required>
+                                    <input id="score" type="number"
+                                        class="form-control @error('score') is-invalid @enderror"
+                                        name="score" value="{{ old('score') }}" required>
 
-                                    @error('tanggal_bergabung')
+                                    @error('score')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

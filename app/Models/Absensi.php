@@ -2,31 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Absensi extends Model
-{
+class Absensi extends Model {
     use HasFactory;
 
-    protected $table = "absensis";
-    protected $primaryKey = "id";
-    protected $fillable = ['bulan',
-                            'tahun',
-                            'pegawai_id',
-                            'hadir',
-                            'izin',
-                            'sakit',
-                            'alpha',
-                            'selisih',
-                            'lembur'];
-
-    public function pegawai ()
-    {
-        return $this->belongsto(Pegawai::class);
-    }
-
-    
-    
+    protected $table = 'absensis';
+    protected $fillable = ["urut","id", "tanggal", "jam", "kode1", "kode2", "kode3","keterangan"];
 
 }

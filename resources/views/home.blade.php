@@ -14,7 +14,7 @@
         <div class="card-body">
           <div class="text-center mb-4">
             <p><i class="fas fa-users fa-3x text-primary"></i></p>
-            <h3>{{ $jumlahUsers }}</h3>
+            {{-- <h3>{{ $jumlahUsers }}</h3> --}}
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
         <div class="card-body">
           <div class="text-center mb-4">
             <p><i class="fas fa-users fa-3x text-primary"></i></p>
-            <h3>{{ $jumlahPegawais }}</h3>
+            {{-- <h3>{{ $jumlahPegawais }}</h3> --}}
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
         <div class="card-body">
           <div class="text-center mb-4">
             <p><i class="fas fa-calendar-alt fa-3x text-primary"></i></p>
-            <h3>{{ $jumlahAbsensis }}</h3>
+            {{-- <h3>{{ $jumlahAbsensis }}</h3> --}}
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@
         <div class="card-body">
           <div class="text-center mb-4">
             <p><i class="fas fa-money-bill fa-3x text-primary"></i></p>
-            <h3>{{ $jumlahGajis }}</h3>
+            {{-- <h3>{{ $jumlahGajis }}</h3> --}}
           </div>
         </div>
       </div>

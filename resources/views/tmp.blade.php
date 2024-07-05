@@ -81,6 +81,14 @@
                             </li>
 
                             <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('tokos.index') }}" aria-expanded="false">
+                                    <span>
+                                        <i class="ti ti-calendar"></i>
+                                    </span>
+                                    <span class="hide-menu">Toko</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('positions.index') }}" aria-expanded="false">
                                     <span>
                                         <i class="ti ti-briefcase"></i>
@@ -98,78 +106,25 @@
                                 </a>
                             </li>
 
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="{{ route('absensis.index') }}" aria-expanded="false">
-                                    <span>
-                                        <i class="ti ti-calendar"></i>
-                                    </span>
-                                    <span class="hide-menu">Absensi</span>
-                                </a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="{{ route('gajis.index') }}" aria-expanded="false">
-                                    <span>
-                                        <i class="ti ti-coin"></i>
-                                    </span>
-                                    <span class="hide-menu">Penggajian</span>
-                                </a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" href="{{ route('cetak_slip_gaji') }}" aria-expanded="false">
-                                    <span>
-                                        <i class="ti ti-printer"></i>
-                                    </span>
-                                    <span class="hide-menu">Cetak Gaji</span>
-                                </a>
-                            </li>
-                        @endif
-
-                        @if (Auth()->user()->hak_akses == 'User' || Auth()->user()->hak_akses == "Admin")
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('gaji.index2') }}" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-calendar"></i>
-                                </span>
-                                <span class="hide-menu">Gaji Saya</span>
-                            </a>
-                        </li>
-                        @endif
-                        
-
-                        <br>
-
-                        <br>
-
-                        @if (Auth()->user()->hak_akses == 'Admin' || Auth()->user()->hak_akses == 'Pimpinan')
-                            <div class="sidebar-item"">
-                                <button type="button" class="btn btn-success dropdown-toggle custom-btn"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    Laporan
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Action
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li class="sidebar-item">
-                                        <a class="sidebar-link" href="{{ route('laporan-absensi') }}"
-                                            aria-expanded="false">
-                                            <span>
-                                                <i class="ti ti-file-description"></i>
-                                            </span>
-                                            <span class="hide-menu">Laporan Absensi</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a class="sidebar-link" href="{{ route('laporan-gaji') }}"
-                                            aria-expanded="false">
-                                            <span>
-                                                <i class="ti ti-typography"></i>
-                                            </span>
-                                            <span class="hide-menu">Laporan Gaji</span>
-                                        </a>
-                                    </li>
+                                  <li><a class="dropdown-item" href="{{ route('absensis.index') }}">Import Absen</a></li>
+                                  <li><a class="dropdown-item" href="{{ route('absensi.detail') }}">Detail Absen</a></li>
+                                  <li><a class="dropdown-item" href="{{ route('absensi.rekap') }}">Rekap Absen</a></li>
                                 </ul>
-                            </div>
+                              </div>
+                            
                         @endif
+
+
+                        <br>
+
+                        <br>
+
+
 
                         <br>
 

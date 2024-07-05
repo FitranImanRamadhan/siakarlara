@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pegawais', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary(); // Menggunakan unsignedBigInteger tanpa auto increment
-            $table->string('nama');
+        Schema::create('tokos', function (Blueprint $table) {
+            $table->id();
             $table->string('toko');
-            $table->string('jabatan');
-            $table->integer('score');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pegawais');
+        Schema::dropIfExists('tokos');
     }
 };

@@ -14,15 +14,13 @@ class HomeController extends Controller
     {
         $jumlahUsers = User::count(); // Menghitung jumlah user
         $jumlahPegawais = Pegawai::count(); // Menghitung jumlah pegawai
-        $jumlahAbsensis = Absensi::count(); // Menghitung jumlah absensi
-        $jumlahGajis = Gaji::count(); // Menghitung jumlah gaji
+        $jumlahAbsensis = Absensi::count(); // Menghitung jumlah absensi 
 
         return view('home', [
             'title' => 'Home',
             'jumlahUsers' => $jumlahUsers,
             'jumlahPegawais' => $jumlahPegawais,
             'jumlahAbsensis' => $jumlahAbsensis,
-            'jumlahGajis' => $jumlahGajis,
         ]);
     }
 }

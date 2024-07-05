@@ -1,170 +1,60 @@
 @extends('tmp')
-
 @section('content')
-
-    <br>
-    <form action="{{ route('absensis.store') }}" method="POST" id="attendanceForm">
-        @csrf
-        <div class="row">
-            <div class="col-md-3">
-                <label for="bulan" style="font-weight: bold;">Bulan:</label>
-                <select class="form-select" id="bulan" name="bulan">
-                    <option value="">Pilih Bulan</option>
-                    @for ($i = 1; $i <= 12; $i++)
-                        <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
-                    @endfor
-                </select>
+    <div class="container">
+        <div class="card">
+            <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                <ol class="breadcrumb m-0 p-0">
+                    <li class="breadcrumb-item"><a href="{{ implode('/', ['', 'absensis']) }}"> Absensis</a></li>
+                    <li class="breadcrumb-item">@lang('Create new')</li>
+                </ol>
             </div>
-            <div class="col-md-3">
-                <label for="tahun" style="font-weight: bold;">Tahun:</label>
-                <select class="form-select" id="tahun" name="tahun">
-                    <option value="">Pilih Tahun</option>
-                    @for ($year = 2022; $year <= 2025; $year++)
-                        <option value="{{ $year }}">{{ $year }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div class="col-md-2 align-self-end">
-                <button id="generateButton" class="btn btn-primary">Generate</button>
-            </div>
-        </div>
-        <br><br>
+            <div class="card-body">
+                <form action="{{ route('absensis.store', []) }}" method="POST" class="m-0 p-0">
+                    <div class="card-body">
+                        @csrf
+                        <div class="container">
+                            <div class="mb-3">
+                                <label for="id" class="form-label">Id:</label>
+                                <select name="id" id="id" class="form-control" required>
+                                    <option value="">-- Pilih Id - Nama --</option>
+                                    @foreach ($pegawais as $pegawai)
+                                        <option value="{{ $pegawai->id }}" {{ old('id') == $pegawai->id ? 'selected' : '' }}>
+                                            {{ $pegawai->id }} - {{ $pegawai->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('nama'))
+                                    <div class='error small text-danger'>{{ $errors->first('nama') }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggal" class="form-label">Tanggal:</label>
+                            <input type="date" name="tanggal" id="tanggal" class="form-control"
+                                value="{{ @old('tanggal') }}" required />
+                            @if ($errors->has('tanggal'))
+                                <div class='error small text-danger'>{{ $errors->first('tanggal') }}</div>
+                            @endif
+                        </div>
+                        <div class="mb-3">
+                            <label for="keterangan" class="form-label">Keterangan:</label>
+                            <input type="number" name="keterangan" id="keterangan" class="form-control"
+                                value="{{ @old('keterangan') }}" required />
+                            @if ($errors->has('keterangan'))
+                                <div class='error small text-danger'>{{ $errors->first('keterangan') }}</div>
+                            @endif
+                        </div>
 
-        <div>
-            <p id="workdaysInfo"></p>
-        </div>
+                    </div>
 
-
-        <div id="attendanceTable" style="display: none;">
-
-            <p>Toleransi <span class="text-danger">15</span> menit</p>
-            <!-- Table for inputting attendance data -->
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Jabatan</th>
-                            <th>Hadir</th>
-                            <th>Izin</th>
-                            <th>Sakit</th>
-                            <th>Alpha</th>
-                            <th>Selisih Menit (Q)</th>
-                            <th>Lembur</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($pgw as $pegawai)
-                            <tr>
-                                <td>{{ $pegawai->nama }}</td>
-                                <td>{{ $pegawai->position->jabatan }}</td>
-                                <td><input type="hidden" name="pegawai_id[]" value="{{ $pegawai->id }}">
-                                    <input class="form-control attendance" type="number" name="hadir[]" placeholder="Hadir"
-                                        required>
-                                </td>
-                                <td><input class="form-control attendance" type="number" name="izin[]" placeholder="Izin"
-                                        required></td>
-                                <td><input class="form-control attendance" type="number" name="sakit[]" placeholder="Sakit"
-                                        required></td>
-                                <td><input class="form-control attendance" type="number" name="alpha[]" placeholder="Alpha"
-                                        required></td>
-                                <td><input class="form-control attendance" type="number" name="selisih[]"
-                                        placeholder="Selisih" required></td>
-                                <td><input class="form-control attendance" type="decimal" name="lembur[]"
-                                        placeholder="Alpha" required></td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    <div class="card-footer">
+                        <div class="d-flex flex-row align-items-center justify-content-between">
+                            <a href="{{ route('absensis.index', []) }}" class="btn btn-light">@lang('Cancel')</a>
+                            <button type="submit" class="btn btn-primary">@lang('Create new Absensi')</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
-
-    <script>
-        document.getElementById('generateButton').addEventListener('click', function() {
-            var selectedMonth = document.getElementById('bulan').value;
-            var selectedYear = document.getElementById('tahun').value;
-
-            if (selectedMonth && selectedYear) {
-                // Menghitung jumlah hari kerja tanpa hari Minggu
-                var workdays = getWorkdays(selectedYear, selectedMonth);
-
-                // Menampilkan informasi jumlah hari kerja
-                document.getElementById('workdaysInfo').innerHTML = 'Jumlah hari kerja pada bulan ' + getMonthName(selectedMonth) + ' ' + selectedYear + ': <span class="text-danger">' + workdays + '</span> hari';
-
-                document.getElementById('attendanceTable').style.display = 'block';
-            } else {
-                // Menampilkan pesan kesalahan jika bulan dan tahun tidak dipilih
-                showAlert('Please select both month and year.', 'danger');
-            }
-        });
-
-        document.getElementById('attendanceForm').addEventListener('submit', function(event) {
-            // Mendapatkan jumlah hari kerja
-            var workdays = parseInt(document.querySelector('#workdaysInfo span').textContent);
-
-            // Mendapatkan elemen-elemen input untuk setiap individu
-            var hadirs = document.querySelectorAll('input[name="hadir[]"]');
-            var izins = document.querySelectorAll('input[name="izin[]"]');
-            var sakits = document.querySelectorAll('input[name="sakit[]"]');
-            var alphas = document.querySelectorAll('input[name="alpha[]"]');
-
-            // Validasi untuk setiap individu
-            var isValid = true;
-
-            for (var i = 0; i < hadirs.length; i++) {
-                var totalAttendance = parseInt(hadirs[i].value) + parseInt(izins[i].value) + parseInt(sakits[i].value) + parseInt(alphas[i].value);
-                if (totalAttendance > workdays) {
-                    isValid = false;
-                    showAlert('Total hadir, izin, sakit, dan alpha tidak boleh melebihi jumlah hari kerja.', 'danger');
-                    break; // Keluar dari loop jika terdapat salah satu individu yang melebihi
-                }
-            }
-
-            // Hentikan pengiriman formulir jika validasi tidak berhasil
-            if (!isValid) {
-                event.preventDefault();
-            }
-        });
-
-        // Fungsi untuk mendapatkan nama bulan berdasarkan nomor bulan
-        function getMonthName(monthNumber) {
-            return new Date(new Date().getFullYear(), monthNumber - 1, 1).toLocaleString('default', { month: 'long' });
-        }
-
-        // Fungsi untuk mendapatkan jumlah hari kerja tanpa hari Minggu dalam bulan dan tahun tertentu
-        function getWorkdays(year, month) {
-            var daysInMonth = new Date(year, month, 0).getDate(); // Mendapatkan jumlah hari dalam bulan tersebut
-            var workdays = 0;
-
-            for (var day = 1; day <= daysInMonth; day++) {
-                var date = new Date(year, month - 1, day);
-                var dayOfWeek = date.getDay(); // Mendapatkan hari dalam seminggu (0: Minggu, 1: Senin, ..., 6: Sabtu)
-
-                // Menambahkan 1 ke jumlah hari kerja jika bukan hari Minggu (0)
-                if (dayOfWeek !== 0) {
-                    workdays++;
-                }
-            }
-
-            return workdays;
-        }
-
-        // Fungsi untuk menampilkan pesan kesalahan Bootstrap
-        function showAlert(message, type) {
-            var alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-' + type;
-            alertDiv.textContent = message;
-
-            var form = document.getElementById('attendanceForm');
-            form.prepend(alertDiv);
-
-            // Menghilangkan pesan kesalahan setelah beberapa detik
-            setTimeout(function() {
-                alertDiv.remove();
-            }, 3000);
-        }
-    </script>
+    </div>
 @endsection

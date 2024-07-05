@@ -11,24 +11,27 @@ class Pegawai extends Model
 
     protected $table = "pegawais";
     protected $primaryKey = "id";
-    protected $fillable = ['nama','position_id', 'jenis_kelamin', 'tanggal_bergabung'];
+    
+    // Menyatakan bahwa kolom 'id' bukan auto-incrementing
+    public $incrementing = false;
+
+    // Menyatakan tipe data primary key sebagai 'unsignedBigInteger'
+    protected $keyType = 'unsignedBigInteger';
+
+    protected $fillable = ['id','nama', 'toko', 'score', 'jabatan'];
 
     public function user()
     {
         return $this->hasOne(User::class);
     }
-    
 
-
-    public function absensi  ()
+    public function position()
     {
-        return $this->hasMany(Absensi::class);
+        return $this->belongsTo(Position::class, 'jabatan', 'jabatan');
     }
 
-    public function position  ()
+    public function toko()
     {
-        return $this->belongsTo(Position::class);
+        return $this->belongsTo(Toko::class, 'toko', 'toko');
     }
-
-    
 }

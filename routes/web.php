@@ -16,6 +16,7 @@ use App\Http\Controllers\UmrController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenggajianController;
+use App\Http\Controllers\TokoController;
 use App\Models\Absensi;
 use App\Models\Departements;
 use App\Models\Penggajian;
@@ -32,6 +33,7 @@ use App\Models\Umr;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function () {
     return redirect()->route('login'); // Redirect ke route login
 })->name('welcome')->middleware('guest');
@@ -48,50 +50,35 @@ Route::middleware('auth')->group(function () {
     Route::get('password', [UserController::class, 'password'])->name('password');
     Route::post('password', [UserController::class, 'password_action'])->name('password.action');
     Route::get('change-password', [UserController::class, 'password'])->name('change.password');
-    
+
 
     Route::resource('positions', PositionController::class);
-    Route::resource('departements', DepartementController::class);
+
     Route::resource('users', UserController::class);
-    Route::resource('absensis', AbsensiController::class);
+
     Route::resource('jadwals', JadwalController::class);
-    Route::resource('umrs', UmrController::class);
-    Route::resource('potongans', PotonganController::class);
+
     Route::resource('pegawais', PegawaiController::class);
-    Route::resource('gajis', GajiController::class);
+    Route::post('/pegawais/import', [PegawaiController::class, 'importExcel'])->name('pegawais.import');
+    Route::get('/export-pegawais', [PegawaiController::class, 'export'])->name('export.pegawais');
 
-    Route::get('/gaji/saya', [GajiController::class, 'index2'])->name('gaji.index2');
+    Route::resource('absensis', AbsensiController::class);
+    Route::get('/export-absensis', [AbsensiController::class, 'export'])->name('export.absensis');
+    Route::post('/absensis/import', [AbsensiController::class, 'import'])->name('absensis.import');
+    Route::get('/absensi/detail', [AbsensiController::class, 'detailabsen'])->name('absensi.detail');
+    Route::get('/detailabsen', [AbsensiController::class, 'detailabsen'])->name('detailabsen');
+    Route::get('/absensi/rekap', [AbsensiController::class, 'rekapabsen'])->name('absensi.rekap');
+    Route::get('/absensis/filter', [AbsensiController::class, 'filter'])->name('absensis.filter');
+    Route::get('/detailabsen/detailexport', [AbsensiController::class, 'detailexport'])->name('detailabsen.detailexport');
+
+    Route::resource('tokos', TokoController::class);
 
 
-    Route::get('departement/export-pdf', [DepartementController::class, 'exportPdf'])->name('departements.exportPdf');
     Route::get('user/export-pdf', [UserController::class, 'exportPdf'])->name('users.exportPdf');
     Route::get('position/export-excel', [PositionController::class, 'exportExcel'])->name('position.exportExcel');
-    Route::get('departement/export-excel', [DepartementController::class, 'exportExcel'])->name('departement.exportExcel');
-    
-    
+
+
     // New profile route
     Route::get('profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/users/create', [UserController::class, 'create'])->name('users.create');
-
-
-    //absensi
-Route::get('laporan_absensi', [AbsensiController::class, 'laporan'])->name('laporan-absensi');
-Route::get('/getDataForTable', [AbsensiController::class, 'getDataForTable'])->name('getDataForTable');
-Route::get('/get-data-all', [AbsensiController::class, 'getDataAll'])->name('get.data.all');
-Route::get('/export-by-month-year', [AbsensiController::class, 'exportByMonthYear'])->name('export.by.month.year');
-Route::get('/get-absensi-data', [GajiController::class, 'getAbsensiData'])->name('get_absensi_data');
-
-Route::get('/getDataForTableGaji', [GajiController::class, 'getDataForTableGaji'])->name('getDataForTableGaji');
-Route::get('/export-by-month-year.gaji', [GajiController::class, 'exportByMonthYearGaji'])->name('export.by.month.year.gaji');
-Route::get('/cetak-slip-gaji-pdf', [GajiController::class, 'cetakSlipGajiPDF'])->name('cetak.slip.gaji.pdf');
-Route::get('laporan_gaji', [GajiController::class, 'laporanGaji'])->name('laporan-gaji');
-Route::get('/cetak-slip-gaji', [GajiController::class, 'cetakSlipGaji'])->name('cetak_slip_gaji');
-// Define the route for showing own salary
-Route::get('/gaji-saya', [GajiController::class, 'showOwnGaji'])->name('gajis_saya');
-
-
-
-
 });
-
-
