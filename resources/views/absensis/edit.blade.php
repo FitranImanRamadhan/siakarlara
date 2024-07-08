@@ -1,4 +1,4 @@
-@extends('tmp')
+@extends('adminlayout')
 @section('content')
     <div class="container">
         <div class="card">
@@ -67,6 +67,14 @@
                                 value="{{ @old('kode3', $absensi->kode3) }}" required />
                             @if ($errors->has('kode3'))
                                 <div class='error small text-danger'>{{ $errors->first('kode3') }}</div>
+                            @endif
+                        </div>
+                        <div class="mb-3">
+                            <label for="keterangan  " class="form-label">Keterangan   :</label>
+                            <input type="text" name="keterangan   " id="keterangan   " class="form-control"
+                                value="{{ @old('keterangan  ', $absensi->keterangan   ) }}" required />
+                            @if ($errors->has('keterangan   '))
+                                <div class='error small text-danger'>{{ $errors->first('keterangan  ') }}</div>
                             @endif
                         </div>
 

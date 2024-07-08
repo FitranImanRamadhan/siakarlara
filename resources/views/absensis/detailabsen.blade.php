@@ -1,4 +1,4 @@
-@extends('tmp')
+@extends('adminlayout')
 
 @section('content')
     @if (session('success'))
@@ -12,7 +12,7 @@
         <h3 class="text-dark mb-4">Detail Absensi</h3>
 
         {{-- Form Filter Toko dan Tanggal --}}
-        <form action="{{ route('detailabsen') }}" method="GET" class="mb-4">
+        <form id="filterForm" action="{{ route('detailabsen') }}" method="GET" class="mb-4">
             @csrf
             <div class="row">
                 <div class="col-md-3">
@@ -54,72 +54,85 @@
                     @enderror
                 </div>
 
-                <div class="col-md-2 d-flex align-items-end">
+                <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">Filter</button>
-                    <button type="submit" name="export" value="excel" class="btn btn-success">Export</button>
+                    <button type="submit" name="export" value="excel" class="btn btn-success ml-2">Export</button>
+                    <button type="submit" name="export" value="rekap" class="btn btn-success ml-2">Rekap</button>
                 </div>
             </div>
         </form>
 
-        {{-- Daftar Absensi --}}
-        <div id="daftarAbsensi">
-            @foreach ($groupedAbsensis as $pegawaiId => $absensiPegawai)
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Pegawai ID: {{ $pegawaiId }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text text-dark mb-3">Nama: {{ $absensiPegawai->first()['nama'] }}</p>
-                        <p class="card-text text-dark mb-3">Toko: {{ $absensiPegawai->first()['toko'] }}</p>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Tanggal</th>
-                                        <th scope="col">Jam Masuk</th>
-                                        <th scope="col">Jam Keluar</th>
-                                        <th scope="col">Shift</th>
-                                        <th scope="col">Jam Kerja</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $start_date = request('start_date') ?? date('Y-m-01');
-                                        $end_date = request('end_date') ?? date('Y-m-t');
-                                        $tanggalRange = new DatePeriod(
-                                            new DateTime($start_date),
-                                            new DateInterval('P1D'),
-                                            new DateTime($end_date),
-                                        );
-                                    @endphp
-
-                                    @foreach ($tanggalRange as $tanggal)
-                                        @php
-                                            $tanggalFormatted = $tanggal->format('Y-m-d');
-                                            $absensiTanggal = $absensiPegawai[$tanggalFormatted] ?? null;
-                                        @endphp
+        {{-- Tampilkan tabel absensi hanya jika sudah difilter --}}
+        @if (isset($groupedAbsensis))
+            <div id="daftarAbsensi">
+                @foreach ($groupedAbsensis as $pegawaiId => $absensiPegawai)
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Pegawai ID: {{ $pegawaiId }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-dark mb-3">Nama: {{ $absensiPegawai->first()['nama'] }}</p>
+                            <p class="card-text text-dark mb-3">Toko: {{ $absensiPegawai->first()['toko'] }}</p>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
                                         <tr>
-                                            <td>{{ $tanggalFormatted }}</td>
-                                            @if ($absensiTanggal)
-                                                <td>{{ $absensiTanggal['jam_masuk'] }}</td>
-                                                <td>{{ $absensiTanggal['jam_keluar'] }}</td>
-                                                <td>{{ $absensiTanggal['shift'] }}</td>
-                                                <td>{{ $absensiTanggal['jam_kerja'] }}</td>
-                                                <td>{{ $absensiTanggal['status_shift'] }}</td>
-                                                <td>{{ $absensiTanggal['keterangan'] }}</td>
-                                                @else
-                                                <td colspan="6" class="text-muted">{!! nl2br(e($absensiTanggal)) !!}</td>
-                                            @endif
+                                            <th scope="col">Tanggal</th>
+                                            <th scope="col">Jam Masuk</th>
+                                            <th scope="col">Jam Keluar</th>
+                                            <th scope="col">Shift</th>
+                                            <th scope="col">Jam Kerja</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Keterangan</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $start_date = request('start_date') ?? date('Y-m-01');
+                                            $end_date = request('end_date') ?? date('Y-m-t');
+                                            $tanggalRange = new DatePeriod(
+                                                new DateTime($start_date),
+                                                new DateInterval('P1D'),
+                                                new DateTime($end_date),
+                                            );
+                                        @endphp
+
+                                        @foreach ($tanggalRange as $tanggal)
+                                            @php
+                                                $tanggalFormatted = $tanggal->format('Y-m-d');
+                                                $absensiTanggal = $absensiPegawai[$tanggalFormatted] ?? null;
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $tanggalFormatted }}</td>
+                                                @if ($absensiTanggal)
+                                                    <td>{{ $absensiTanggal['jam_masuk'] }}</td>
+                                                    <td>{{ $absensiTanggal['jam_keluar'] }}</td>
+                                                    <td>{{ $absensiTanggal['shift'] }}</td>
+                                                    <td>{{ $absensiTanggal['jam_kerja'] }}</td>
+                                                    <td>{{ $absensiTanggal['status_shift'] }}</td>
+                                                    <td>{{ $absensiTanggal['keterangan'] }}</td>
+                                                @else
+                                                    <td colspan="6" class="text-muted">-</td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
+        @endif
     </div>
+
+    <script>
+        // Fungsi untuk mengosongkan form saat halaman direfresh
+        function clearForm() {
+            document.getElementById("filterForm").reset();
+        }
+
+        // Panggil fungsi clearForm saat halaman dimuat
+        window.onload = clearForm;
+    </script>
 @endsection

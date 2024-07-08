@@ -15,7 +15,7 @@
                                 <form action="{{ route('login.action') }}" method="POST">
                                     @csrf
                                     <div class="d-flex justify-content-center align-items-center mb-5 pb-1">
-                                    <img src="{{asset('assets/images/logos/utamalogo.png')}}" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; max-width: 250px; height: auto;" />
+                                    <img src="{{ asset('assets/images/logos/logo_tasco.png') }}" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; max-width: 250px; height: auto;" />
                                     </div>
 
                                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>

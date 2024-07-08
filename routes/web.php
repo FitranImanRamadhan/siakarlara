@@ -67,7 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/absensis/import', [AbsensiController::class, 'import'])->name('absensis.import');
     Route::get('/absensi/detail', [AbsensiController::class, 'detailabsen'])->name('absensi.detail');
     Route::get('/detailabsen', [AbsensiController::class, 'detailabsen'])->name('detailabsen');
-    Route::get('/absensi/rekap', [AbsensiController::class, 'rekapabsen'])->name('absensi.rekap');
+    Route::get('/rekapabsen', [AbsensiController::class, 'rekapabsen'])->name('rekapabsen');
     Route::get('/absensis/filter', [AbsensiController::class, 'filter'])->name('absensis.filter');
     Route::get('/detailabsen/detailexport', [AbsensiController::class, 'detailexport'])->name('detailabsen.detailexport');
 

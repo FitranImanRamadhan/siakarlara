@@ -1,4 +1,4 @@
-@extends('tmp')
+@extends('adminlayout')
 @section('content')
 <div class="container">
   <div class="card-header bg-primary text-white">

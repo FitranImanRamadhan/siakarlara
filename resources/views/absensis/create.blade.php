@@ -1,4 +1,4 @@
-@extends('tmp')
+@extends('adminlayout')
 @section('content')
     <div class="container">
         <div class="card">
@@ -12,21 +12,19 @@
                 <form action="{{ route('absensis.store', []) }}" method="POST" class="m-0 p-0">
                     <div class="card-body">
                         @csrf
-                        <div class="container">
-                            <div class="mb-3">
-                                <label for="id" class="form-label">Id:</label>
-                                <select name="id" id="id" class="form-control" required>
-                                    <option value="">-- Pilih Id - Nama --</option>
-                                    @foreach ($pegawais as $pegawai)
-                                        <option value="{{ $pegawai->id }}" {{ old('id') == $pegawai->id ? 'selected' : '' }}>
-                                            {{ $pegawai->id }} - {{ $pegawai->nama }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('nama'))
-                                    <div class='error small text-danger'>{{ $errors->first('nama') }}</div>
-                                @endif
-                            </div>
+                        <div>
+                            <label for="id" class="form-label">Id:</label>
+                            <select name="id" id="id" class="form-control" required>
+                                <option value="">-- Pilih Id - Nama --</option>
+                                @foreach ($pegawais as $pegawai)
+                                    <option value="{{ $pegawai->id }}" {{ old('id') == $pegawai->id ? 'selected' : '' }}>
+                                        {{ $pegawai->id }} - {{ $pegawai->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('nama'))
+                                <div class='error small text-danger'>{{ $errors->first('nama') }}</div>
+                            @endif
                         </div>
                         <div class="mb-3">
                             <label for="tanggal" class="form-label">Tanggal:</label>

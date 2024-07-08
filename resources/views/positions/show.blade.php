@@ -1,6 +1,5 @@
-@extends('positions.layout')
-
-@section('positions.content')
+@extends('adminlayout')
+@section('content')
     <div class="container">
         <div class="card">
             <div class="card-header d-flex flex-row align-items-center justify-content-between">

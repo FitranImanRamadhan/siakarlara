@@ -1,4 +1,4 @@
-@extends('tmp')
+@extends('adminlayout')
 @section('content')
     @if(session('success'))
         <div class="alert alert-primary alert-dismissible fade show">

@@ -1,4 +1,4 @@
-@extends('tmp')
+@extends('adminlayout')
 @section('content')
     <div class="content-wrapper pb-3 pt-3">
         <div class="content pb-5">
