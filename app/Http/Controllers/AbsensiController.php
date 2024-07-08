@@ -349,7 +349,8 @@ class AbsensiController extends Controller
         $end_date = $request->end_date ?? date('Y-m-t');
 
         if ($request->has('export') && $request->export == 'excel') {
-            return Excel::download(new DetailAbsenExport($groupedAbsensis), 'detail_absen.xlsx');
+            $fileName = 'Detail absen ' . $request->toko . ' tanggal ' . Carbon::parse($start_date)->format('d-m-Y') . ' sampai tanggal ' . Carbon::parse($end_date)->format('d-m-Y') . '.xlsx';
+            return Excel::download(new DetailAbsenExport($groupedAbsensis), $fileName);
         }
 
         return view('absensis.detailabsen', compact('groupedAbsensis', 'tokos', 'start_date', 'end_date'));
@@ -505,7 +506,8 @@ class AbsensiController extends Controller
         }
     
         if ($request->has('export') && $request->export == 'excel') {
-            return Excel::download(new RekapAbsensiExport($groupedAbsensis, $start_date, $end_date, $request->toko), 'rekap_absensi.xlsx');
+            $fileName = 'Data rekap absen ' . $request->toko . ' tanggal ' . Carbon::parse($start_date)->format('d-m-Y') . ' sampai tanggal ' . Carbon::parse($end_date)->format('d-m-Y') . '.xlsx';
+            return Excel::download(new RekapAbsensiExport($groupedAbsensis, $start_date, $end_date, $request->toko), $fileName);
         }
     
         return view('absensis.rekapabsen', compact('groupedAbsensis', 'tokos', 'start_date', 'end_date'));
