@@ -29,25 +29,25 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithEvents
         $header = [
             ['Data rekapitulasi Tanggal ' . $this->start_date . ' Sampai Tanggal ' . $this->end_date],
             ['Toko: ' . $this->toko],
-            [],
+            $this->headings(), // Include headings here
         ];
 
         // Convert numeric values to ensure they are treated as numbers in Excel
         $formattedData = $this->data->map(function ($item) {
             return [
-                $item['nama'] ?? '',
-                $item['jumlah_masuk'] ?? 0,
-                $item['jumlah_terlambat'] ?? 0,
-                $item['jumlah_pulang_cepat'] ?? 0,
-                $item['jumlah_tidak_ada_in_out'] ?? 0,
-                $item['jumlah_full'] ?? 0,
-                $item['jumlah_off'] ?? 0,
-                $item['jumlah_setengah_hari'] ?? 0,
-                $item['total_jam_kerja'] ?? 0,
-                $item['jumlah_sakit'] ?? 0,
-                $item['jumlah_cuti'] ?? 0,
-                $item['jumlah_ijin'] ?? 0,
-                $item['jumlah_alpha'] ?? 0,
+                'Nama' => $item['nama'] ?? '',
+                'Jumlah Masuk' => $item['jumlah_masuk'] ?? 0,
+                'Jumlah Terlambat' => $item['jumlah_terlambat'] ?? 0,
+                'Jumlah Pulang Cepat' => $item['jumlah_pulang_cepat'] ?? 0,
+                'Tidak Ada IN/OUT' => $item['jumlah_tidak_ada_in_out'] ?? 0,
+                'Jumlah Full' => $item['jumlah_full'] ?? 0,
+                'Jumlah Off' => $item['jumlah_off'] ?? 0,
+                'Jumlah Setengah Hari' => $item['jumlah_setengah_hari'] ?? 0,
+                'Total Jam Kerja' => $item['total_jam_kerja'] ?? 0,
+                'Jumlah Sakit' => $item['jumlah_sakit'] ?? 0,
+                'Jumlah Cuti' => $item['jumlah_cuti'] ?? 0,
+                'Jumlah Ijin' => $item['jumlah_ijin'] ?? 0,
+                'Jumlah Alpha' => $item['jumlah_alpha'] ?? 0,
             ];
         });
 
@@ -80,8 +80,8 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithEvents
                 $sheet = $event->sheet->getDelegate();
 
                 // Styling untuk judul
-                $sheet->mergeCells('A1:N1');
-                $sheet->mergeCells('A2:N2');
+                $sheet->mergeCells('A1:M1');
+                $sheet->mergeCells('A2:M2');
                 $sheet->setCellValue('A1', 'Data rekapitulasi Tanggal ' . $this->start_date . ' Sampai Tanggal ' . $this->end_date);
                 $sheet->setCellValue('A2', 'Toko: ' . $this->toko);
                 $sheet->getStyle('A1:A2')->applyFromArray([
@@ -92,10 +92,10 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithEvents
                 ]);
 
                 // Styling untuk heading data (baris 4)
-                $sheet->getStyle('A4:N4')->applyFromArray([
+                $sheet->getStyle('A4:M4')->applyFromArray([
                     'font' => [
                         'bold' => true,
-                        'size' => 8, // Ukuran font untuk header data
+                        'size' => 10, // Ukuran font untuk header data
                     ],
                     'borders' => [
                         'allBorders' => [
@@ -105,9 +105,9 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithEvents
                 ]);
 
                 // Styling untuk baris data
-                $sheet->getStyle('A5:N' . ($this->data->count() + 4))->applyFromArray([
+                $sheet->getStyle('A5:M' . ($this->data->count() + 4))->applyFromArray([
                     'font' => [
-                        'size' => 8, // Ukuran font untuk baris data
+                        'size' => 10, // Ukuran font untuk baris data
                     ],
                     'borders' => [
                         'allBorders' => [
@@ -118,9 +118,9 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithEvents
 
                 // Mengatur lebar kolom untuk optimalkan tampilan
                 $columnWidths = [
-                    'A' => 10, 'B' => 10, 'C' => 10, 'D' => 12, 'E' => 10,
-                    'F' => 12, 'G' => 9, 'H' => 9, 'I' => 12, 'J' => 11,
-                    'K' => 9, 'L' => 9, 'M' => 9, 'N' => 9,
+                    'A' => 20, 'B' => 15, 'C' => 15, 'D' => 18, 'E' => 15,
+                    'F' => 18, 'G' => 12, 'H' => 12, 'I' => 18, 'J' => 18,
+                    'K' => 12, 'L' => 12, 'M' => 12,
                 ];
 
                 foreach ($columnWidths as $column => $width) {
@@ -128,7 +128,7 @@ class RekapAbsensiExport implements FromCollection, WithHeadings, WithEvents
                 }
 
                 // Mengatur tinggi baris jika diperlukan
-                $sheet->getDefaultRowDimension()->setRowHeight(10);
+                $sheet->getDefaultRowDimension()->setRowHeight(15);
             },
         ];
     }
