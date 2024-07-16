@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('kode1')->nullable();
             $table->integer('kode2')->nullable();
             $table->integer('kode3')->nullable();
-            $table->integer('keterangan')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

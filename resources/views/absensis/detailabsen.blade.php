@@ -57,7 +57,6 @@
                 <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary">Filter</button>
                     <button type="submit" name="export" value="excel" class="btn btn-success ml-2">Export</button>
-                    <button type="submit" name="export" value="rekap" class="btn btn-success ml-2">Rekap</button>
                 </div>
             </div>
         </form>

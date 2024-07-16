@@ -12,6 +12,7 @@ use App\Http\Controllers\GajiController;
 use App\Http\Controllers\PotonganController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\CutiController;
 use App\Http\Controllers\UmrController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\HomeController;
@@ -72,6 +73,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/detailabsen/detailexport', [AbsensiController::class, 'detailexport'])->name('detailabsen.detailexport');
 
     Route::resource('tokos', TokoController::class);
+
+    Route::resource('cutis', CutiController::class);
+    Route::post('/cutis/{cuti}/acc', [CutiController::class, 'acc'])->name('cutis.acc');
+    Route::post('/cutis/{cuti}/reject', [CutiController::class, 'reject'])->name('cutis.reject');
+    
+
+
 
 
     Route::get('user/export-pdf', [UserController::class, 'exportPdf'])->name('users.exportPdf');

@@ -71,7 +71,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="keterangan  " class="form-label">Keterangan   :</label>
-                            <input type="text" name="keterangan   " id="keterangan   " class="form-control"
+                            <input type="text" name="keterangan   " id="keterangan" class="form-control"
                                 value="{{ @old('keterangan  ', $absensi->keterangan   ) }}" required />
                             @if ($errors->has('keterangan   '))
                                 <div class='error small text-danger'>{{ $errors->first('keterangan  ') }}</div>

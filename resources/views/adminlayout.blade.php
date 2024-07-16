@@ -56,19 +56,11 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block">NiceAdmin</span>
+                <img src="{{ asset('assets1/img/logo_tasco.png') }}" alt="">
+                <span class="d-none d-lg-block">Siakar</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
-
-        <div class="search-bar">
-            <form class="search-form d-flex align-items-center" method="POST" action="#">
-                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-            </form>
-        </div><!-- End Search Bar -->
-
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
 
@@ -262,27 +254,40 @@
                     <span>Dashboard</span>
                 </a>
             </li><!-- End Dashboard Nav -->
-
+            <hr>
+            <br>
             @if (Auth()->user()->hak_akses == 'Admin')
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('positions.index') }}">
-                        <i class="bi bi-grid"></i>
-                        <span>Jabatan</span>
+                    <a class="nav-link collapsed" href="{{ route('users.index') }}">
+                        <i class="bi bi-person"></i>
+                        <span>User</span>
                     </a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('tokos.index') }}">
-                        <i class="bi bi-grid"></i>
+                    <a class="nav-link collapsed" href="{{ route('tokos.index') }}">
+                        <i class="bi bi-wallet-fill"></i>
                         <span>Department</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="{{ route('pegawais.index') }}">
-                        <i class="bi bi-grid"></i>
+                    <a class="nav-link collapsed" href="{{ route('positions.index') }}">
+                        <i class="bi bi-box-fill"></i>
+                        <span>Jabatan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('pegawais.index') }}">
+                        <i class="bi bi-list-ul"></i>
                         <span>Karyawan</span>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="{{ route('cutis.index') }}">
+                        <i class="bi bi-list-ul"></i>
+                        <span>Cuti</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse"
                         href="#">
@@ -318,7 +323,7 @@
     </main><!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    <footer id="footer" class="footer relative">
+    <footer id="footer" class="footer absolute">
         <div class="copyright">
             &copy; Copyright <strong><span>Tasco Minimart</span></strong>. All Rights Reserved
         </div>
@@ -358,5 +363,6 @@
     @yield('js')
 
 </body>
+
 
 </html>

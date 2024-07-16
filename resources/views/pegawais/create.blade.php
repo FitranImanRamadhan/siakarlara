@@ -233,4 +233,4 @@
             passwordInput.value = password;
         }
     </script>
-@endsection
+@endsection 
