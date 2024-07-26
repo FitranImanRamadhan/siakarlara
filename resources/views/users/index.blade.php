@@ -7,15 +7,13 @@
 </div>
 @endif
 <div class="d-flex justify-content-between mb-2">
-<div class="text-end">
-    
-</div>
-<div class="text-end">
-    <a class="btn btn-success" style="margin-top: 20px;" href="{{ route('users.create') }}">Add User</a>
-</div>
-</div>
+    <div class="text-end">
 
-
+    </div>
+    <div class="text-end">
+        <a class="btn btn-success" style="margin-top: 20px;" href="{{ route('users.create') }}">Add User</a>
+    </div>
+</div>
 
 <table id="example" class="table table-striped table-responsive table-hover">
     <thead>
@@ -23,7 +21,7 @@
             <th scope="col">No</th>
             <th scope="col">Nama</th>
             <th scope="col">Email</th>
-            <th scope="col">Level</th>  
+            <th scope="col">Level</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -36,12 +34,31 @@
             <td>{{$data->email}}</td>
             <td>{{$data->hak_akses}}</td>
             <td>
-                <form id="delete-form-{{ $data->id }}" action="{{ route('users.destroy', $data->id) }}" method="POST">
-                    <a class="btn btn-warning" href="{{ route('users.edit', $data->id) }}">Edit</a>
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-danger" onclick="deleteUser({{ $data->id }})">Delete</button>
-                </form>
+                <a class="btn btn-warning" href="{{ route('users.edit', $data->id) }}">Edit</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $data->id }}">Delete</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="deleteModal{{ $data->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $data->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel{{ $data->id }}">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this user?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <form id="delete-form-{{ $data->id }}" action="{{ route('users.destroy', $data->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger" onclick="deleteUser({{ $data->id }})">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         @endforeach
@@ -58,20 +75,8 @@
     });
 
     function deleteUser(id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Submit the form after confirmation
-                document.getElementById('delete-form-' + id).submit();
-            }
-        });
+        // Submit the form after confirmation
+        document.getElementById('delete-form-' + id).submit();
     }
 </script>
 @endsection

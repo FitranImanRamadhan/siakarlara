@@ -7,35 +7,32 @@
             <div class="col col-xl-10">
                 <div class="card rounded-4 shadow-lg">
                     <div class="row g-0">
+                        <!-- Image Section -->
                         <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="{{asset('assets/images/backgrounds/login2.jpg')}}" alt="login form" class="img-fluid rounded-start-4" />
+                            <img src="{{ asset('assets1/img/logo_tasco.png') }}" alt="login form" class="img-fluid rounded-start-4" />
                         </div>
+                        <!-- Form Section -->
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black">
                                 <form action="{{ route('login.action') }}" method="POST">
                                     @csrf
-                                    <div class="d-flex justify-content-center align-items-center mb-5 pb-1">
-                                    <img src="{{ asset('assets/images/logos/logo_tasco.png') }}" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem; max-width: 250px; height: auto;" />
-                                    </div>
-
-                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+                                    <h5 class="fw-normal mb-4" style="letter-spacing: 1px;">Sign into your account</h5>
 
                                     <div class="form-outline mb-4">
-                                        <input type="email" id="form2Example17" class="form-control form-control-lg" name="email" />
-                                        <label class="form-label" for="form2Example17">Email</label>
+                                        <input type="email" id="email" class="form-control form-control-lg" name="email" required />
+                                        <label class="form-label" for="email">Email</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input type="password" id="form2Example27" class="form-control form-control-lg" name="password" />
-                                        <label class="form-label" for="form2Example27">Password</label>
+                                        <input type="password" id="password" class="form-control form-control-lg" name="password" required />
+                                        <label class="form-label" for="password">Password</label>
                                     </div>
 
                                     <div class="pt-1 mb-4">
                                         <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
                                     </div>
 
-                                    <a class="small text-muted" href="#!">Forgot password?</a>
-
+                                    <a class="small text-muted" href="{{ route('password') }}">Forgot password?</a>
                                 </form>
                             </div>
                         </div>

@@ -39,7 +39,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group row mt-2">
                             <label for="hak_akses" class="col-md-4 col-form-label text-md-right">Hak_akses<span class="text-danger">*</span></label>
 
@@ -61,7 +60,7 @@
 
                         <div class="form-group row mt-4">
                             <div class="col-md-6 offset-md-4">
-                                <button type="button" id="updateBtn" class="btn btn-primary">
+                                <button type="submit" id="updateBtn" class="btn btn-primary">
                                     Update
                                 </button>
                             </div>
@@ -72,26 +71,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('js')
-<script>
-    $(document).ready(function() {
-        $('#updateBtn').click(function() {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You are about to update this user's information!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, update it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $('#updateForm').submit();
-                }
-            });
-        });
-    });
-</script>
 @endsection

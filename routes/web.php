@@ -75,8 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('tokos', TokoController::class);
 
     Route::resource('cutis', CutiController::class);
-    Route::post('/cutis/{cuti}/acc', [CutiController::class, 'acc'])->name('cutis.acc');
-    Route::post('/cutis/{cuti}/reject', [CutiController::class, 'reject'])->name('cutis.reject');
+    Route::patch('/cutis/{cuti}/status', [CutiController::class, 'updateStatus'])->name('cutis.updateStatus');
+    Route::get('/print-surat/{id}', [CutiController::class, 'printSurat'])->name('print.surat');
+    
     
 
 
