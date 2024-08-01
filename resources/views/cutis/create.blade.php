@@ -16,7 +16,7 @@
     @endif
 
     <!-- Form untuk input data -->
-    <form action="{{ route('cutis.store') }}" method="POST">
+    <form action="{{ route('cutis.store') }}" method="POST" onsubmit="return submitForm();">
         @csrf
 
         <div class="form-group">
@@ -75,8 +75,12 @@
         </div>
 
         <div class="form-group">
-            <label for="image_data">Image Data</label>
-            <input type="text" name="image_data" id="image_data" class="form-control" value="{{ old('image_data') }}">
+            <label for="image_data">Signature</label>
+            <div class="signature-pad" id="signature-pad">
+                <canvas id="signature-canvas" style="border: 1px solid #000; width: 100%; height: 200px;"></canvas>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="clearSignature()">Clear</button>
+            <input type="hidden" name="image_data" id="image_data" value="{{ old('image_data') }}">
         </div>
 
         <div class="form-group">
@@ -97,4 +101,21 @@
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script>
+    var canvas = document.getElementById('signature-canvas');
+    var signaturePad = new SignaturePad(canvas);
+
+    function clearSignature() {
+        signaturePad.clear();
+    }
+
+    function submitForm() {
+        if (!signaturePad.isEmpty()) {
+            var dataUrl = signaturePad.toDataURL('image/png');
+            document.getElementById('image_data').value = dataUrl;
+        }
+        return true; // proceed with the form submission
+    }
+</script>
 @endsection

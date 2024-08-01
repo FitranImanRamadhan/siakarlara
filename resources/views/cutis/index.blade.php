@@ -56,7 +56,16 @@
                             <td data-label="Alasan Cuti">{{ $cuti->alasan_cuti ?: "(blank)" }}</td>
                             <td data-label="Ambil Tugas">{{ $cuti->ambil_tugas ?: "(blank)" }}</td>
                             <td data-label="Filename">{{ $cuti->filename ?: "(blank)" }}</td>
-                            <td data-label="Image Data">{{ $cuti->image_data ?: "(blank)" }}</td>
+                            <td>
+                                @if($cuti->image_data)
+                                    @php
+                                        $imagePath = asset('assets1/img/' . $cuti->image_data);
+                                    @endphp
+                                    <img src="{{ $imagePath }}" alt="Signature" style="max-width: 150px;">
+                                @else
+                                    N/A
+                                @endif
+                            </td>                            
                             <td data-label="Status">
                                 @if($cuti->status == 'Acc')
                                     <span class="badge bg-success">{{ $cuti->status }}</span>
@@ -123,7 +132,16 @@
                             <td data-label="Alasan Cuti">{{ $cuti->alasan_cuti ?: "(blank)" }}</td>
                             <td data-label="Ambil Tugas">{{ $cuti->ambil_tugas ?: "(blank)" }}</td>
                             <td data-label="Filename">{{ $cuti->filename ?: "(blank)" }}</td>
-                            <td data-label="Image Data">{{ $cuti->image_data ?: "(blank)" }}</td>
+                            <td>
+                                @if($cuti->image_data)
+                                    @php
+                                        $imagePath = asset('assets1/img/' . $cuti->image_data);
+                                    @endphp
+                                    <img src="{{ $imagePath }}" alt="Signature" style="max-width: 150px;">
+                                @else
+                                    N/A
+                                @endif
+                            </td>
                             <td data-label="Status">
                                 @if($cuti->status == 'Acc')
                                     <span class="badge bg-success">{{ $cuti->status }}</span>

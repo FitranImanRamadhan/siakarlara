@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\Cuti;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\File;
 
 class CutiController extends Controller
 {
@@ -65,7 +66,7 @@ class CutiController extends Controller
     {
         // Validasi data yang masuk
         $request->validate([
-            'id' => 'nullable|integer', // Tidak perlu unique
+            'id' => 'nullable|integer',
             'nama' => 'nullable|string',
             'date_cuti' => 'nullable|string',
             'end_cuti' => 'nullable|string',
@@ -80,7 +81,7 @@ class CutiController extends Controller
             'status' => 'nullable|string',
             'kode' => 'nullable|string',
             'date_acc' => 'nullable|string',
-            'urut' => 'unique:cutis,urut' // Validasi unique untuk 'urut'
+            'urut' => 'unique:cutis,urut'
         ]);
 
         try {
@@ -97,17 +98,34 @@ class CutiController extends Controller
             $cuti->alasan_cuti = $request->alasan_cuti;
             $cuti->ambil_tugas = $request->ambil_tugas;
             $cuti->filename = $request->filename;
-            $cuti->image_data = $request->image_data;
+
+            // Proses data tanda tangan
+            if ($request->filled('image_data')) {
+                $image_data = $request->image_data;
+                $image_data = str_replace('data:image/png;base64,', '', $image_data);
+                $image_data = str_replace(' ', '+', $image_data);
+
+                // Menentukan nama file
+                $directory = public_path('assets1/img/');
+                $files = File::files($directory);
+                $file_count = count($files) + 1;
+                $imageName = 'ttd_' . str_pad($file_count, 2, '0', STR_PAD_LEFT) . '.png';
+
+                // Menyimpan file
+                File::put($directory . $imageName, base64_decode($image_data));
+                $cuti->image_data = $imageName;
+            }
+
             $cuti->status = $request->status ?? 'Pending';
             $cuti->kode = $request->kode;
             $cuti->date_acc = $request->date_acc;
-            $cuti->urut = $request->urut; // Menyimpan nilai urut
+            $cuti->urut = $request->urut;
             $cuti->save();
 
             // Kirim notifikasi ke Telegram
             $client = new Client();
-            $token = '7260078077:AAFCgbDBM-IGvD4ysQQLVeIHrItSEShM05E'; // Token bot Anda
-            $chat_id = '7429020681'; // Chat ID Anda
+            $token = env('BOT_TELEGRAM_TOKEN');
+            $chat_id = env('CHAT_ID');
 
             $message = "Pengajuan Cuti Dari Tanggal " . $request->date_cuti . " Sampai Tanggal " . $request->end_cuti . ":\n";
             $message .= "Toko: " . $request->toko . "\n";
@@ -236,15 +254,5 @@ class CutiController extends Controller
         $cuti->save();
 
         return redirect()->route('cutis.index')->with('success', 'Status cuti berhasil diperbarui.');
-    }
-
-
-    public function printSurat($id)
-    {
-        $cuti = Cuti::findOrFail($id);
-
-        $pdf = PDF::loadView('print.surat', compact('cuti'));
-
-        return $pdf->download('surat_cuti_' . $cuti->id . '.pdf');
     }
 }
