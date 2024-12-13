@@ -11,9 +11,6 @@ tinymce.Resource.add('tinymce.html-i18n.help-keynav.sv_SE',
   '  <dt>Fokusera på verktygsraden</dt>\n' +
   '  <dd>Windows eller Linux: Alt+F11</dd>\n' +
   '  <dd>macOS: &#x2325;F11</dd>\n' +
-  '  <dt>Fokusera aviseringen</dt>\n' +
-  '  <dd>Windows eller Linux: Alt+F12</dd>\n' +
-  '  <dd>macOS: &#x2325;F12</dd>\n' +
   '  <dt>Fokusera på en snabbverktygsrad</dt>\n' +
   '  <dd>Windows, Linux eller macOS: Ctrl+F9</dd>\n' +
   '</dl>\n' +

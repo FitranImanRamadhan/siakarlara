@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 7.2.0 (2024-06-19)
+ * TinyMCE version 7.0.1 (2024-04-10)
  */
 
 (function () {
@@ -336,9 +336,9 @@
       copy.sort(comparator);
       return copy;
     };
-    const get$i = (xs, i) => i >= 0 && i < xs.length ? Optional.some(xs[i]) : Optional.none();
-    const head = xs => get$i(xs, 0);
-    const last$1 = xs => get$i(xs, xs.length - 1);
+    const get$h = (xs, i) => i >= 0 && i < xs.length ? Optional.some(xs[i]) : Optional.none();
+    const head = xs => get$h(xs, 0);
+    const last$1 = xs => get$h(xs, xs.length - 1);
     const from = isFunction(Array.from) ? Array.from : x => nativeSlice.call(x);
     const findMap = (arr, f) => {
       for (let i = 0; i < arr.length; i++) {
@@ -417,7 +417,7 @@
     const values = obj => {
       return mapToArray(obj, identity);
     };
-    const get$h = (obj, key) => {
+    const get$g = (obj, key) => {
       return has$2(obj, key) ? Optional.from(obj[key]) : Optional.none();
     };
     const has$2 = (obj, key) => hasOwnProperty.call(obj, key);
@@ -712,16 +712,16 @@
         rawSet(dom, k, v);
       });
     };
-    const get$g = (element, key) => {
+    const get$f = (element, key) => {
       const v = element.dom.getAttribute(key);
       return v === null ? undefined : v;
     };
-    const getOpt = (element, key) => Optional.from(get$g(element, key));
+    const getOpt = (element, key) => Optional.from(get$f(element, key));
     const has$1 = (element, key) => {
       const dom = element.dom;
       return dom && dom.hasAttribute ? dom.hasAttribute(key) : false;
     };
-    const remove$8 = (element, key) => {
+    const remove$7 = (element, key) => {
       element.dom.removeAttribute(key);
     };
     const clone$2 = element => foldl(element.dom.attributes, (acc, attr) => {
@@ -763,7 +763,7 @@
         });
       });
     };
-    const get$f = (element, property) => {
+    const get$e = (element, property) => {
       const dom = element.dom;
       const styles = window.getComputedStyle(dom);
       const r = styles.getPropertyValue(property);
@@ -792,11 +792,11 @@
       const style = getRaw(element, property);
       return style.isSome();
     };
-    const remove$7 = (element, property) => {
+    const remove$6 = (element, property) => {
       const dom = element.dom;
       internalRemove(dom, property);
       if (is$1(getOpt(element, 'style').map(trim$1), '')) {
-        remove$8(element, 'style');
+        remove$7(element, 'style');
       }
     };
     const reflow = e => e.dom.offsetWidth;
@@ -814,14 +814,14 @@
       const get = element => {
         const r = getOffset(element);
         if (r <= 0 || r === null) {
-          const css = get$f(element, name);
+          const css = get$e(element, name);
           return parseFloat(css) || 0;
         }
         return r;
       };
       const getOuter = get;
       const aggregate = (element, properties) => foldl(properties, (acc, property) => {
-        const val = get$f(element, property);
+        const val = get$e(element, property);
         const value = val === undefined ? 0 : parseInt(val, 10);
         return isNaN(value) ? acc : acc + value;
       }, 0);
@@ -843,7 +843,7 @@
       const dom = element.dom;
       return inBody(element) ? dom.getBoundingClientRect().height : dom.offsetHeight;
     });
-    const get$e = element => api$2.get(element);
+    const get$d = element => api$2.get(element);
     const getOuter$2 = element => api$2.getOuter(element);
     const setMax$1 = (element, value) => {
       const inclusions = [
@@ -908,7 +908,7 @@
 
     const api$1 = Dimension('width', element => element.dom.offsetWidth);
     const set$7 = (element, h) => api$1.set(element, h);
-    const get$d = element => api$1.get(element);
+    const get$c = element => api$1.get(element);
     const getOuter$1 = element => api$1.getOuter(element);
     const setMax = (element, value) => {
       const inclusions = [
@@ -1328,17 +1328,17 @@
     const empty = element => {
       element.dom.textContent = '';
       each$1(children(element), rogue => {
-        remove$6(rogue);
+        remove$5(rogue);
       });
     };
-    const remove$6 = element => {
+    const remove$5 = element => {
       const dom = element.dom;
       if (dom.parentNode !== null) {
         dom.parentNode.removeChild(dom);
       }
     };
 
-    const get$c = _DOC => {
+    const get$b = _DOC => {
       const doc = _DOC !== undefined ? _DOC.dom : document;
       const x = doc.body.scrollLeft || doc.documentElement.scrollLeft;
       const y = doc.body.scrollTop || doc.documentElement.scrollTop;
@@ -1352,7 +1352,7 @@
       }
     };
 
-    const get$b = _win => {
+    const get$a = _win => {
       const win = _win === undefined ? window : _win;
       if (detect$1().browser.isFirefox()) {
         return Optional.none();
@@ -1371,8 +1371,8 @@
     const getBounds$3 = _win => {
       const win = _win === undefined ? window : _win;
       const doc = win.document;
-      const scroll = get$c(SugarElement.fromDom(doc));
-      return get$b(win).fold(() => {
+      const scroll = get$b(SugarElement.fromDom(doc));
+      return get$a(win).fold(() => {
         const html = win.document.documentElement;
         const width = html.clientWidth;
         const height = html.clientHeight;
@@ -1411,7 +1411,7 @@
 
     const find$2 = element => {
       const doc = getDocument();
-      const scroll = get$c(doc);
+      const scroll = get$b(doc);
       const path = pathTo(element, Navigation);
       return path.fold(curry(absolute$3, element), frames => {
         const offset = viewport$1(element);
@@ -1474,54 +1474,9 @@
     };
     const win = () => getBounds$3(window);
 
-    const Cell = initial => {
-      let value = initial;
-      const get = () => {
-        return value;
-      };
-      const set = v => {
-        value = v;
-      };
-      return {
-        get,
-        set
-      };
-    };
-
-    const singleton$1 = doRevoke => {
-      const subject = Cell(Optional.none());
-      const revoke = () => subject.get().each(doRevoke);
-      const clear = () => {
-        revoke();
-        subject.set(Optional.none());
-      };
-      const isSet = () => subject.get().isSome();
-      const get = () => subject.get();
-      const set = s => {
-        revoke();
-        subject.set(Optional.some(s));
-      };
-      return {
-        clear,
-        isSet,
-        get,
-        set
-      };
-    };
-    const destroyable = () => singleton$1(s => s.destroy());
-    const unbindable = () => singleton$1(s => s.unbind());
-    const value$4 = () => {
-      const subject = singleton$1(noop);
-      const on = f => subject.get().each(f);
-      return {
-        ...subject,
-        on
-      };
-    };
-
     var global$a = tinymce.util.Tools.resolve('tinymce.ThemeManager');
 
-    const value$3 = value => {
+    const value$4 = value => {
       const applyHelper = fn => fn(value);
       const constHelper = constant$1(value);
       const outputHelper = () => output;
@@ -1571,9 +1526,9 @@
       };
       return output;
     };
-    const fromOption = (optional, err) => optional.fold(() => error$1(err), value$3);
+    const fromOption = (optional, err) => optional.fold(() => error$1(err), value$4);
     const Result = {
-      value: value$3,
+      value: value$4,
       error: error$1,
       fromOption
     };
@@ -1759,7 +1714,7 @@
     const unsupportedFields = (path, unsupported) => nu$a(path, () => 'There are unsupported fields: [' + unsupported.join(', ') + '] specified');
     const custom = (path, err) => nu$a(path, constant$1(err));
 
-    const value$2 = validator => {
+    const value$3 = validator => {
       const extract = (path, val) => {
         return SimpleResult.bindError(validator(val), err => custom(path, err));
       };
@@ -1769,16 +1724,16 @@
         toString
       };
     };
-    const anyValue$1 = value$2(SimpleResult.svalue);
+    const anyValue$1 = value$3(SimpleResult.svalue);
 
-    const requiredAccess = (path, obj, key, bundle) => get$h(obj, key).fold(() => missingRequired(path, key, obj), bundle);
+    const requiredAccess = (path, obj, key, bundle) => get$g(obj, key).fold(() => missingRequired(path, key, obj), bundle);
     const fallbackAccess = (obj, key, fallback, bundle) => {
-      const v = get$h(obj, key).getOrThunk(() => fallback(obj));
+      const v = get$g(obj, key).getOrThunk(() => fallback(obj));
       return bundle(v);
     };
-    const optionAccess = (obj, key, bundle) => bundle(get$h(obj, key));
+    const optionAccess = (obj, key, bundle) => bundle(get$g(obj, key));
     const optionDefaultedAccess = (obj, key, fallback, bundle) => {
-      const opt = get$h(obj, key).map(val => val === true ? fallback(obj) : val);
+      const opt = get$g(obj, key).map(val => val === true ? fallback(obj) : val);
       return bundle(opt);
     };
     const extractField = (field, path, obj, key, prop) => {
@@ -1890,7 +1845,7 @@
       };
     };
     const setOf$1 = (validator, prop) => {
-      const validateKeys = (path, keys) => arrOf(value$2(validator)).extract(path, keys);
+      const validateKeys = (path, keys) => arrOf(value$3(validator)).extract(path, keys);
       const extract = (path, o) => {
         const keys$1 = keys(o);
         const validatedKeys = validateKeys(path, keys$1);
@@ -1919,7 +1874,7 @@
     const arrOfObj = compose(arrOf, objOf);
 
     const anyValue = constant$1(anyValue$1);
-    const typedValue = (validator, expectedType) => value$2(a => {
+    const typedValue = (validator, expectedType) => value$3(a => {
       const actualType = typeof a;
       return validator(a) ? SimpleResult.svalue(a) : SimpleResult.serror(`Expected type: ${ expectedType } but got: ${ actualType }`);
     });
@@ -1950,7 +1905,7 @@
         return false;
       }
     };
-    const postMessageable = value$2(a => {
+    const postMessageable = value$3(a => {
       if (isPostMessageable(a)) {
         return SimpleResult.svalue(a);
       } else {
@@ -1959,12 +1914,12 @@
     });
 
     const chooseFrom = (path, input, branches, ch) => {
-      const fields = get$h(branches, ch);
+      const fields = get$g(branches, ch);
       return fields.fold(() => missingBranch(path, branches, ch), vp => vp.extract(path.concat(['branch: ' + ch]), input));
     };
     const choose$2 = (key, branches) => {
       const extract = (path, input) => {
-        const choice = get$h(input, key);
+        const choice = get$g(input, key);
         return choice.fold(() => missingKey(path, key), chosen => chooseFrom(path, input, branches, chosen));
       };
       const toString = () => 'chooseOn(' + key + '). Possible values: ' + keys(branches);
@@ -1975,7 +1930,7 @@
     };
 
     const arrOfVal = () => arrOf(anyValue$1);
-    const valueOf = validator => value$2(v => validator(v).fold(SimpleResult.serror, SimpleResult.svalue));
+    const valueOf = validator => value$3(v => validator(v).fold(SimpleResult.serror, SimpleResult.svalue));
     const setOf = (validator, prop) => setOf$1(v => SimpleResult.fromResult(validator(v)), prop);
     const extractValue = (label, prop, obj) => {
       const res = prop.extract([label], obj);
@@ -2007,7 +1962,7 @@
     const requiredStringEnum = (key, values) => field$1(key, key, required$2(), validateEnum(values));
     const requiredBoolean = key => requiredOf(key, boolean);
     const requiredFunction = key => requiredOf(key, functionProcessor);
-    const forbid = (key, message) => field$1(key, key, asOption(), value$2(_v => SimpleResult.serror('The field: ' + key + ' is forbidden. ' + message)));
+    const forbid = (key, message) => field$1(key, key, asOption(), value$3(_v => SimpleResult.serror('The field: ' + key + ' is forbidden. ' + message)));
     const requiredObjOf = (key, objSchema) => field$1(key, key, required$2(), objOf(objSchema));
     const requiredArrayOfObj = (key, objFields) => field$1(key, key, required$2(), arrOfObj(objFields));
     const requiredArrayOf = (key, schema) => field$1(key, key, required$2(), arrOf(schema));
@@ -2030,6 +1985,20 @@
     const defaultedPostMsg = (key, fallback) => defaultedOf(key, fallback, postMessageable);
     const defaultedArrayOf = (key, fallback, schema) => defaultedOf(key, fallback, arrOf(schema));
     const defaultedObjOf = (key, fallback, objSchema) => defaultedOf(key, fallback, objOf(objSchema));
+
+    const Cell = initial => {
+      let value = initial;
+      const get = () => {
+        return value;
+      };
+      const set = v => {
+        value = v;
+      };
+      return {
+        get,
+        set
+      };
+    };
 
     const generate$7 = cases => {
       if (!isArray(cases)) {
@@ -2406,6 +2375,125 @@
     const runOnInit = runOnSourceName(systemInit());
     const runOnExecute$1 = runOnName(execute$5());
 
+    const fromHtml$1 = (html, scope) => {
+      const doc = scope || document;
+      const div = doc.createElement('div');
+      div.innerHTML = html;
+      return children(SugarElement.fromDom(div));
+    };
+
+    const get$9 = element => element.dom.innerHTML;
+    const set$6 = (element, content) => {
+      const owner = owner$4(element);
+      const docDom = owner.dom;
+      const fragment = SugarElement.fromDom(docDom.createDocumentFragment());
+      const contentElements = fromHtml$1(content, docDom);
+      append$1(fragment, contentElements);
+      empty(element);
+      append$2(element, fragment);
+    };
+    const getOuter = element => {
+      const container = SugarElement.fromTag('div');
+      const clone = SugarElement.fromDom(element.dom.cloneNode(true));
+      append$2(container, clone);
+      return get$9(container);
+    };
+
+    const clone$1 = (original, isDeep) => SugarElement.fromDom(original.dom.cloneNode(isDeep));
+    const shallow = original => clone$1(original, false);
+    const deep = original => clone$1(original, true);
+
+    const getHtml = element => {
+      if (isShadowRoot(element)) {
+        return '#shadow-root';
+      } else {
+        const clone = shallow(element);
+        return getOuter(clone);
+      }
+    };
+
+    const element = elem => getHtml(elem);
+
+    const isRecursive = (component, originator, target) => eq(originator, component.element) && !eq(originator, target);
+    const events$i = derive$2([can(focus$4(), (component, simulatedEvent) => {
+        const event = simulatedEvent.event;
+        const originator = event.originator;
+        const target = event.target;
+        if (isRecursive(component, originator, target)) {
+          console.warn(focus$4() + ' did not get interpreted by the desired target. ' + '\nOriginator: ' + element(originator) + '\nTarget: ' + element(target) + '\nCheck the ' + focus$4() + ' event handlers');
+          return false;
+        } else {
+          return true;
+        }
+      })]);
+
+    var DefaultEvents = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        events: events$i
+    });
+
+    let unique = 0;
+    const generate$6 = prefix => {
+      const date = new Date();
+      const time = date.getTime();
+      const random = Math.floor(Math.random() * 1000000000);
+      unique++;
+      return prefix + '_' + random + unique + String(time);
+    };
+
+    const prefix$1 = constant$1('alloy-id-');
+    const idAttr$1 = constant$1('data-alloy-id');
+
+    const prefix = prefix$1();
+    const idAttr = idAttr$1();
+    const write = (label, elem) => {
+      const id = generate$6(prefix + label);
+      writeOnly(elem, id);
+      return id;
+    };
+    const writeOnly = (elem, uid) => {
+      Object.defineProperty(elem.dom, idAttr, {
+        value: uid,
+        writable: true
+      });
+    };
+    const read$1 = elem => {
+      const id = isElement$1(elem) ? elem.dom[idAttr] : null;
+      return Optional.from(id);
+    };
+    const generate$5 = prefix => generate$6(prefix);
+
+    const make$8 = identity;
+
+    const NoContextApi = getComp => {
+      const getMessage = event => `The component must be in a context to execute: ${ event }` + (getComp ? '\n' + element(getComp().element) + ' is not in context.' : '');
+      const fail = event => () => {
+        throw new Error(getMessage(event));
+      };
+      const warn = event => () => {
+        console.warn(getMessage(event));
+      };
+      return {
+        debugInfo: constant$1('fake'),
+        triggerEvent: warn('triggerEvent'),
+        triggerFocus: warn('triggerFocus'),
+        triggerEscape: warn('triggerEscape'),
+        broadcast: warn('broadcast'),
+        broadcastOn: warn('broadcastOn'),
+        broadcastEvent: warn('broadcastEvent'),
+        build: fail('build'),
+        buildOrPatch: fail('buildOrPatch'),
+        addToWorld: fail('addToWorld'),
+        removeFromWorld: fail('removeFromWorld'),
+        addToGui: fail('addToGui'),
+        removeFromGui: fail('removeFromGui'),
+        getByUid: fail('getByUid'),
+        getByDom: fail('getByDom'),
+        isConnected: never
+      };
+    };
+    const singleton$1 = NoContextApi();
+
     const markAsBehaviourApi = (f, apiName, apiFunction) => {
       const delegate = apiFunction.toString();
       const endIndex = delegate.indexOf(')') + 1;
@@ -2441,896 +2529,6 @@
       return f;
     };
 
-    const nu$8 = s => ({
-      classes: isUndefined(s.classes) ? [] : s.classes,
-      attributes: isUndefined(s.attributes) ? {} : s.attributes,
-      styles: isUndefined(s.styles) ? {} : s.styles
-    });
-    const merge = (defnA, mod) => ({
-      ...defnA,
-      attributes: {
-        ...defnA.attributes,
-        ...mod.attributes
-      },
-      styles: {
-        ...defnA.styles,
-        ...mod.styles
-      },
-      classes: defnA.classes.concat(mod.classes)
-    });
-
-    const executeEvent = (bConfig, bState, executor) => runOnExecute$1(component => {
-      executor(component, bConfig, bState);
-    });
-    const loadEvent = (bConfig, bState, f) => runOnInit((component, _simulatedEvent) => {
-      f(component, bConfig, bState);
-    });
-    const create$5 = (schema, name, active, apis, extra, state) => {
-      const configSchema = objOfOnly(schema);
-      const schemaSchema = optionObjOf(name, [optionObjOfOnly('config', schema)]);
-      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
-    };
-    const createModes$1 = (modes, name, active, apis, extra, state) => {
-      const configSchema = modes;
-      const schemaSchema = optionObjOf(name, [optionOf('config', modes)]);
-      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
-    };
-    const wrapApi = (bName, apiFunction, apiName) => {
-      const f = (component, ...rest) => {
-        const args = [component].concat(rest);
-        return component.config({ name: constant$1(bName) }).fold(() => {
-          throw new Error('We could not find any behaviour configuration for: ' + bName + '. Using API: ' + apiName);
-        }, info => {
-          const rest = Array.prototype.slice.call(args, 1);
-          return apiFunction.apply(undefined, [
-            component,
-            info.config,
-            info.state
-          ].concat(rest));
-        });
-      };
-      return markAsBehaviourApi(f, apiName, apiFunction);
-    };
-    const revokeBehaviour = name => ({
-      key: name,
-      value: undefined
-    });
-    const doCreate = (configSchema, schemaSchema, name, active, apis, extra, state) => {
-      const getConfig = info => hasNonNullableKey(info, name) ? info[name]() : Optional.none();
-      const wrappedApis = map$1(apis, (apiF, apiName) => wrapApi(name, apiF, apiName));
-      const wrappedExtra = map$1(extra, (extraF, extraName) => markAsExtraApi(extraF, extraName));
-      const me = {
-        ...wrappedExtra,
-        ...wrappedApis,
-        revoke: curry(revokeBehaviour, name),
-        config: spec => {
-          const prepared = asRawOrDie$1(name + '-config', configSchema, spec);
-          return {
-            key: name,
-            value: {
-              config: prepared,
-              me,
-              configAsRaw: cached(() => asRawOrDie$1(name + '-config', configSchema, spec)),
-              initialConfig: spec,
-              state
-            }
-          };
-        },
-        schema: constant$1(schemaSchema),
-        exhibit: (info, base) => {
-          return lift2(getConfig(info), get$h(active, 'exhibit'), (behaviourInfo, exhibitor) => {
-            return exhibitor(base, behaviourInfo.config, behaviourInfo.state);
-          }).getOrThunk(() => nu$8({}));
-        },
-        name: constant$1(name),
-        handlers: info => {
-          return getConfig(info).map(behaviourInfo => {
-            const getEvents = get$h(active, 'events').getOr(() => ({}));
-            return getEvents(behaviourInfo.config, behaviourInfo.state);
-          }).getOr({});
-        }
-      };
-      return me;
-    };
-
-    const NoState = { init: () => nu$7({ readState: constant$1('No State required') }) };
-    const nu$7 = spec => spec;
-
-    const derive$1 = capabilities => wrapAll(capabilities);
-    const simpleSchema = objOfOnly([
-      required$1('fields'),
-      required$1('name'),
-      defaulted('active', {}),
-      defaulted('apis', {}),
-      defaulted('state', NoState),
-      defaulted('extra', {})
-    ]);
-    const create$4 = data => {
-      const value = asRawOrDie$1('Creating behaviour: ' + data.name, simpleSchema, data);
-      return create$5(value.fields, value.name, value.active, value.apis, value.extra, value.state);
-    };
-    const modeSchema = objOfOnly([
-      required$1('branchKey'),
-      required$1('branches'),
-      required$1('name'),
-      defaulted('active', {}),
-      defaulted('apis', {}),
-      defaulted('state', NoState),
-      defaulted('extra', {})
-    ]);
-    const createModes = data => {
-      const value = asRawOrDie$1('Creating behaviour: ' + data.name, modeSchema, data);
-      return createModes$1(choose$1(value.branchKey, value.branches), value.name, value.active, value.apis, value.extra, value.state);
-    };
-    const revoke = constant$1(undefined);
-
-    const read$1 = (element, attr) => {
-      const value = get$g(element, attr);
-      return value === undefined || value === '' ? [] : value.split(' ');
-    };
-    const add$4 = (element, attr, id) => {
-      const old = read$1(element, attr);
-      const nu = old.concat([id]);
-      set$9(element, attr, nu.join(' '));
-      return true;
-    };
-    const remove$5 = (element, attr, id) => {
-      const nu = filter$2(read$1(element, attr), v => v !== id);
-      if (nu.length > 0) {
-        set$9(element, attr, nu.join(' '));
-      } else {
-        remove$8(element, attr);
-      }
-      return false;
-    };
-
-    const supports = element => element.dom.classList !== undefined;
-    const get$a = element => read$1(element, 'class');
-    const add$3 = (element, clazz) => add$4(element, 'class', clazz);
-    const remove$4 = (element, clazz) => remove$5(element, 'class', clazz);
-    const toggle$5 = (element, clazz) => {
-      if (contains$2(get$a(element), clazz)) {
-        return remove$4(element, clazz);
-      } else {
-        return add$3(element, clazz);
-      }
-    };
-
-    const add$2 = (element, clazz) => {
-      if (supports(element)) {
-        element.dom.classList.add(clazz);
-      } else {
-        add$3(element, clazz);
-      }
-    };
-    const cleanClass = element => {
-      const classList = supports(element) ? element.dom.classList : get$a(element);
-      if (classList.length === 0) {
-        remove$8(element, 'class');
-      }
-    };
-    const remove$3 = (element, clazz) => {
-      if (supports(element)) {
-        const classList = element.dom.classList;
-        classList.remove(clazz);
-      } else {
-        remove$4(element, clazz);
-      }
-      cleanClass(element);
-    };
-    const toggle$4 = (element, clazz) => {
-      const result = supports(element) ? element.dom.classList.toggle(clazz) : toggle$5(element, clazz);
-      cleanClass(element);
-      return result;
-    };
-    const has = (element, clazz) => supports(element) && element.dom.classList.contains(clazz);
-
-    const add$1 = (element, classes) => {
-      each$1(classes, x => {
-        add$2(element, x);
-      });
-    };
-    const remove$2 = (element, classes) => {
-      each$1(classes, x => {
-        remove$3(element, x);
-      });
-    };
-    const toggle$3 = (element, classes) => {
-      each$1(classes, x => {
-        toggle$4(element, x);
-      });
-    };
-    const hasAll = (element, classes) => forall(classes, clazz => has(element, clazz));
-    const getNative = element => {
-      const classList = element.dom.classList;
-      const r = new Array(classList.length);
-      for (let i = 0; i < classList.length; i++) {
-        const item = classList.item(i);
-        if (item !== null) {
-          r[i] = item;
-        }
-      }
-      return r;
-    };
-    const get$9 = element => supports(element) ? getNative(element) : get$a(element);
-
-    const NuPositionCss = (position, left, top, right, bottom) => {
-      const toPx = num => num + 'px';
-      return {
-        position,
-        left: left.map(toPx),
-        top: top.map(toPx),
-        right: right.map(toPx),
-        bottom: bottom.map(toPx)
-      };
-    };
-    const toOptions = position => ({
-      ...position,
-      position: Optional.some(position.position)
-    });
-    const applyPositionCss = (element, position) => {
-      setOptions(element, toOptions(position));
-    };
-
-    const getOffsetParent = element => {
-      const isFixed = is$1(getRaw(element, 'position'), 'fixed');
-      const offsetParent$1 = isFixed ? Optional.none() : offsetParent(element);
-      return offsetParent$1.orThunk(() => {
-        const marker = SugarElement.fromTag('span');
-        return parent(element).bind(parent => {
-          append$2(parent, marker);
-          const offsetParent$1 = offsetParent(marker);
-          remove$6(marker);
-          return offsetParent$1;
-        });
-      });
-    };
-    const getOrigin = element => getOffsetParent(element).map(absolute$3).getOrThunk(() => SugarPosition(0, 0));
-
-    const appear = (component, contextualInfo) => {
-      const elem = component.element;
-      add$2(elem, contextualInfo.transitionClass);
-      remove$3(elem, contextualInfo.fadeOutClass);
-      add$2(elem, contextualInfo.fadeInClass);
-      contextualInfo.onShow(component);
-    };
-    const disappear = (component, contextualInfo) => {
-      const elem = component.element;
-      add$2(elem, contextualInfo.transitionClass);
-      remove$3(elem, contextualInfo.fadeInClass);
-      add$2(elem, contextualInfo.fadeOutClass);
-      contextualInfo.onHide(component);
-    };
-    const isPartiallyVisible = (box, bounds) => box.y < bounds.bottom && box.bottom > bounds.y;
-    const isTopCompletelyVisible = (box, bounds) => box.y >= bounds.y;
-    const isBottomCompletelyVisible = (box, bounds) => box.bottom <= bounds.bottom;
-    const forceTopPosition = (winBox, leftX, viewport) => ({
-      location: 'top',
-      leftX,
-      topY: viewport.bounds.y - winBox.y
-    });
-    const forceBottomPosition = (winBox, leftX, viewport) => ({
-      location: 'bottom',
-      leftX,
-      bottomY: winBox.bottom - viewport.bounds.bottom
-    });
-    const getDockedLeftPosition = bounds => {
-      return bounds.box.x - bounds.win.x;
-    };
-    const tryDockingPosition = (modes, bounds, viewport) => {
-      const winBox = bounds.win;
-      const box = bounds.box;
-      const leftX = getDockedLeftPosition(bounds);
-      return findMap(modes, mode => {
-        switch (mode) {
-        case 'bottom':
-          return !isBottomCompletelyVisible(box, viewport.bounds) ? Optional.some(forceBottomPosition(winBox, leftX, viewport)) : Optional.none();
-        case 'top':
-          return !isTopCompletelyVisible(box, viewport.bounds) ? Optional.some(forceTopPosition(winBox, leftX, viewport)) : Optional.none();
-        default:
-          return Optional.none();
-        }
-      }).getOr({ location: 'no-dock' });
-    };
-    const isVisibleForModes = (modes, box, viewport) => forall(modes, mode => {
-      switch (mode) {
-      case 'bottom':
-        return isBottomCompletelyVisible(box, viewport.bounds);
-      case 'top':
-        return isTopCompletelyVisible(box, viewport.bounds);
-      }
-    });
-    const getXYForRestoring = (pos, viewport) => {
-      const priorY = viewport.optScrollEnv.fold(constant$1(pos.bounds.y), scrollEnv => scrollEnv.scrollElmTop + (pos.bounds.y - scrollEnv.currentScrollTop));
-      return SugarPosition(pos.bounds.x, priorY);
-    };
-    const getXYForSaving = (box, viewport) => {
-      const priorY = viewport.optScrollEnv.fold(constant$1(box.y), scrollEnv => box.y + scrollEnv.currentScrollTop - scrollEnv.scrollElmTop);
-      return SugarPosition(box.x, priorY);
-    };
-    const getPrior = (elem, viewport, state) => state.getInitialPos().map(pos => {
-      const xy = getXYForRestoring(pos, viewport);
-      return {
-        box: bounds(xy.left, xy.top, get$d(elem), get$e(elem)),
-        location: pos.location
-      };
-    });
-    const storePrior = (elem, box, viewport, state, decision) => {
-      const xy = getXYForSaving(box, viewport);
-      const bounds$1 = bounds(xy.left, xy.top, box.width, box.height);
-      state.setInitialPos({
-        style: getAllRaw(elem),
-        position: get$f(elem, 'position') || 'static',
-        bounds: bounds$1,
-        location: decision.location
-      });
-    };
-    const storePriorIfNone = (elem, box, viewport, state, decision) => {
-      state.getInitialPos().fold(() => storePrior(elem, box, viewport, state, decision), () => noop);
-    };
-    const revertToOriginal = (elem, box, state) => state.getInitialPos().bind(position => {
-      var _a;
-      state.clearInitialPos();
-      switch (position.position) {
-      case 'static':
-        return Optional.some({ morph: 'static' });
-      case 'absolute':
-        const offsetParent = getOffsetParent(elem).getOr(body());
-        const offsetBox = box$1(offsetParent);
-        const scrollDelta = (_a = offsetParent.dom.scrollTop) !== null && _a !== void 0 ? _a : 0;
-        return Optional.some({
-          morph: 'absolute',
-          positionCss: NuPositionCss('absolute', get$h(position.style, 'left').map(_left => box.x - offsetBox.x), get$h(position.style, 'top').map(_top => box.y - offsetBox.y + scrollDelta), get$h(position.style, 'right').map(_right => offsetBox.right - box.right), get$h(position.style, 'bottom').map(_bottom => offsetBox.bottom - box.bottom))
-        });
-      default:
-        return Optional.none();
-      }
-    });
-    const tryMorphToOriginal = (elem, viewport, state) => getPrior(elem, viewport, state).filter(({box}) => isVisibleForModes(state.getModes(), box, viewport)).bind(({box}) => revertToOriginal(elem, box, state));
-    const tryDecisionToFixedMorph = decision => {
-      switch (decision.location) {
-      case 'top': {
-          return Optional.some({
-            morph: 'fixed',
-            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.some(decision.topY), Optional.none(), Optional.none())
-          });
-        }
-      case 'bottom': {
-          return Optional.some({
-            morph: 'fixed',
-            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.none(), Optional.none(), Optional.some(decision.bottomY))
-          });
-        }
-      default:
-        return Optional.none();
-      }
-    };
-    const tryMorphToFixed = (elem, viewport, state) => {
-      const box = box$1(elem);
-      const winBox = win();
-      const decision = tryDockingPosition(state.getModes(), {
-        win: winBox,
-        box
-      }, viewport);
-      if (decision.location === 'top' || decision.location === 'bottom') {
-        storePrior(elem, box, viewport, state, decision);
-        return tryDecisionToFixedMorph(decision);
-      } else {
-        return Optional.none();
-      }
-    };
-    const tryMorphToOriginalOrUpdateFixed = (elem, viewport, state) => {
-      return tryMorphToOriginal(elem, viewport, state).orThunk(() => {
-        return viewport.optScrollEnv.bind(_ => getPrior(elem, viewport, state)).bind(({box, location}) => {
-          const winBox = win();
-          const leftX = getDockedLeftPosition({
-            win: winBox,
-            box
-          });
-          const decision = location === 'top' ? forceTopPosition(winBox, leftX, viewport) : forceBottomPosition(winBox, leftX, viewport);
-          return tryDecisionToFixedMorph(decision);
-        });
-      });
-    };
-    const tryMorph = (component, viewport, state) => {
-      const elem = component.element;
-      const isDocked = is$1(getRaw(elem, 'position'), 'fixed');
-      return isDocked ? tryMorphToOriginalOrUpdateFixed(elem, viewport, state) : tryMorphToFixed(elem, viewport, state);
-    };
-    const calculateMorphToOriginal = (component, viewport, state) => {
-      const elem = component.element;
-      return getPrior(elem, viewport, state).bind(({box}) => revertToOriginal(elem, box, state));
-    };
-    const forceDockWith = (elem, viewport, state, getDecision) => {
-      const box = box$1(elem);
-      const winBox = win();
-      const leftX = getDockedLeftPosition({
-        win: winBox,
-        box
-      });
-      const decision = getDecision(winBox, leftX, viewport);
-      if (decision.location === 'bottom' || decision.location === 'top') {
-        storePriorIfNone(elem, box, viewport, state, decision);
-        return tryDecisionToFixedMorph(decision);
-      } else {
-        return Optional.none();
-      }
-    };
-
-    const morphToStatic = (component, config, state) => {
-      state.setDocked(false);
-      each$1([
-        'left',
-        'right',
-        'top',
-        'bottom',
-        'position'
-      ], prop => remove$7(component.element, prop));
-      config.onUndocked(component);
-    };
-    const morphToCoord = (component, config, state, position) => {
-      const isDocked = position.position === 'fixed';
-      state.setDocked(isDocked);
-      applyPositionCss(component.element, position);
-      const method = isDocked ? config.onDocked : config.onUndocked;
-      method(component);
-    };
-    const updateVisibility = (component, config, state, viewport, morphToDocked = false) => {
-      config.contextual.each(contextInfo => {
-        contextInfo.lazyContext(component).each(box => {
-          const isVisible = isPartiallyVisible(box, viewport.bounds);
-          if (isVisible !== state.isVisible()) {
-            state.setVisible(isVisible);
-            if (morphToDocked && !isVisible) {
-              add$1(component.element, [contextInfo.fadeOutClass]);
-              contextInfo.onHide(component);
-            } else {
-              const method = isVisible ? appear : disappear;
-              method(component, contextInfo);
-            }
-          }
-        });
-      });
-    };
-    const applyFixedMorph = (component, config, state, viewport, morph) => {
-      updateVisibility(component, config, state, viewport, true);
-      morphToCoord(component, config, state, morph.positionCss);
-    };
-    const applyMorph = (component, config, state, viewport, morph) => {
-      switch (morph.morph) {
-      case 'static': {
-          return morphToStatic(component, config, state);
-        }
-      case 'absolute': {
-          return morphToCoord(component, config, state, morph.positionCss);
-        }
-      case 'fixed': {
-          return applyFixedMorph(component, config, state, viewport, morph);
-        }
-      }
-    };
-    const refreshInternal = (component, config, state) => {
-      const viewport = config.lazyViewport(component);
-      updateVisibility(component, config, state, viewport);
-      tryMorph(component, viewport, state).each(morph => {
-        applyMorph(component, config, state, viewport, morph);
-      });
-    };
-    const resetInternal = (component, config, state) => {
-      const elem = component.element;
-      state.setDocked(false);
-      const viewport = config.lazyViewport(component);
-      calculateMorphToOriginal(component, viewport, state).each(staticOrAbsoluteMorph => {
-        switch (staticOrAbsoluteMorph.morph) {
-        case 'static': {
-            morphToStatic(component, config, state);
-            break;
-          }
-        case 'absolute': {
-            morphToCoord(component, config, state, staticOrAbsoluteMorph.positionCss);
-            break;
-          }
-        }
-      });
-      state.setVisible(true);
-      config.contextual.each(contextInfo => {
-        remove$2(elem, [
-          contextInfo.fadeInClass,
-          contextInfo.fadeOutClass,
-          contextInfo.transitionClass
-        ]);
-        contextInfo.onShow(component);
-      });
-      refresh$4(component, config, state);
-    };
-    const refresh$4 = (component, config, state) => {
-      if (component.getSystem().isConnected()) {
-        refreshInternal(component, config, state);
-      }
-    };
-    const reset$2 = (component, config, state) => {
-      if (state.isDocked()) {
-        resetInternal(component, config, state);
-      }
-    };
-    const forceDockWithDecision = getDecision => (component, config, state) => {
-      const viewport = config.lazyViewport(component);
-      const optMorph = forceDockWith(component.element, viewport, state, getDecision);
-      optMorph.each(morph => {
-        applyFixedMorph(component, config, state, viewport, morph);
-      });
-    };
-    const forceDockToTop = forceDockWithDecision(forceTopPosition);
-    const forceDockToBottom = forceDockWithDecision(forceBottomPosition);
-    const isDocked$2 = (component, config, state) => state.isDocked();
-    const setModes = (component, config, state, modes) => state.setModes(modes);
-    const getModes = (component, config, state) => state.getModes();
-
-    var DockingApis = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        refresh: refresh$4,
-        reset: reset$2,
-        isDocked: isDocked$2,
-        getModes: getModes,
-        setModes: setModes,
-        forceDockToTop: forceDockToTop,
-        forceDockToBottom: forceDockToBottom
-    });
-
-    const events$i = (dockInfo, dockState) => derive$2([
-      runOnSource(transitionend(), (component, simulatedEvent) => {
-        dockInfo.contextual.each(contextInfo => {
-          if (has(component.element, contextInfo.transitionClass)) {
-            remove$2(component.element, [
-              contextInfo.transitionClass,
-              contextInfo.fadeInClass
-            ]);
-            const notify = dockState.isVisible() ? contextInfo.onShown : contextInfo.onHidden;
-            notify(component);
-          }
-          simulatedEvent.stop();
-        });
-      }),
-      run$1(windowScroll(), (component, _) => {
-        refresh$4(component, dockInfo, dockState);
-      }),
-      run$1(externalElementScroll(), (component, _) => {
-        refresh$4(component, dockInfo, dockState);
-      }),
-      run$1(windowResize(), (component, _) => {
-        reset$2(component, dockInfo, dockState);
-      })
-    ]);
-
-    var ActiveDocking = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        events: events$i
-    });
-
-    const fromHtml$1 = (html, scope) => {
-      const doc = scope || document;
-      const div = doc.createElement('div');
-      div.innerHTML = html;
-      return children(SugarElement.fromDom(div));
-    };
-
-    const get$8 = element => element.dom.innerHTML;
-    const set$6 = (element, content) => {
-      const owner = owner$4(element);
-      const docDom = owner.dom;
-      const fragment = SugarElement.fromDom(docDom.createDocumentFragment());
-      const contentElements = fromHtml$1(content, docDom);
-      append$1(fragment, contentElements);
-      empty(element);
-      append$2(element, fragment);
-    };
-    const getOuter = element => {
-      const container = SugarElement.fromTag('div');
-      const clone = SugarElement.fromDom(element.dom.cloneNode(true));
-      append$2(container, clone);
-      return get$8(container);
-    };
-
-    const clone$1 = (original, isDeep) => SugarElement.fromDom(original.dom.cloneNode(isDeep));
-    const shallow = original => clone$1(original, false);
-    const deep = original => clone$1(original, true);
-
-    const getHtml = element => {
-      if (isShadowRoot(element)) {
-        return '#shadow-root';
-      } else {
-        const clone = shallow(element);
-        return getOuter(clone);
-      }
-    };
-
-    const element = elem => getHtml(elem);
-
-    const unknown = 'unknown';
-    var EventConfiguration;
-    (function (EventConfiguration) {
-      EventConfiguration[EventConfiguration['STOP'] = 0] = 'STOP';
-      EventConfiguration[EventConfiguration['NORMAL'] = 1] = 'NORMAL';
-      EventConfiguration[EventConfiguration['LOGGING'] = 2] = 'LOGGING';
-    }(EventConfiguration || (EventConfiguration = {})));
-    const eventConfig = Cell({});
-    const makeEventLogger = (eventName, initialTarget) => {
-      const sequence = [];
-      const startTime = new Date().getTime();
-      return {
-        logEventCut: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'cut',
-            target,
-            purpose
-          });
-        },
-        logEventStopped: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'stopped',
-            target,
-            purpose
-          });
-        },
-        logNoParent: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'no-parent',
-            target,
-            purpose
-          });
-        },
-        logEventNoHandlers: (_name, target) => {
-          sequence.push({
-            outcome: 'no-handlers-left',
-            target
-          });
-        },
-        logEventResponse: (_name, target, purpose) => {
-          sequence.push({
-            outcome: 'response',
-            purpose,
-            target
-          });
-        },
-        write: () => {
-          const finishTime = new Date().getTime();
-          if (contains$2([
-              'mousemove',
-              'mouseover',
-              'mouseout',
-              systemInit()
-            ], eventName)) {
-            return;
-          }
-          console.log(eventName, {
-            event: eventName,
-            time: finishTime - startTime,
-            target: initialTarget.dom,
-            sequence: map$2(sequence, s => {
-              if (!contains$2([
-                  'cut',
-                  'stopped',
-                  'response'
-                ], s.outcome)) {
-                return s.outcome;
-              } else {
-                return '{' + s.purpose + '} ' + s.outcome + ' at (' + element(s.target) + ')';
-              }
-            })
-          });
-        }
-      };
-    };
-    const processEvent = (eventName, initialTarget, f) => {
-      const status = get$h(eventConfig.get(), eventName).orThunk(() => {
-        const patterns = keys(eventConfig.get());
-        return findMap(patterns, p => eventName.indexOf(p) > -1 ? Optional.some(eventConfig.get()[p]) : Optional.none());
-      }).getOr(EventConfiguration.NORMAL);
-      switch (status) {
-      case EventConfiguration.NORMAL:
-        return f(noLogger());
-      case EventConfiguration.LOGGING: {
-          const logger = makeEventLogger(eventName, initialTarget);
-          const output = f(logger);
-          logger.write();
-          return output;
-        }
-      case EventConfiguration.STOP:
-        return true;
-      }
-    };
-    const path = [
-      'alloy/data/Fields',
-      'alloy/debugging/Debugging'
-    ];
-    const getTrace = () => {
-      const err = new Error();
-      if (err.stack !== undefined) {
-        const lines = err.stack.split('\n');
-        return find$5(lines, line => line.indexOf('alloy') > 0 && !exists(path, p => line.indexOf(p) > -1)).getOr(unknown);
-      } else {
-        return unknown;
-      }
-    };
-    const ignoreEvent = {
-      logEventCut: noop,
-      logEventStopped: noop,
-      logNoParent: noop,
-      logEventNoHandlers: noop,
-      logEventResponse: noop,
-      write: noop
-    };
-    const monitorEvent = (eventName, initialTarget, f) => processEvent(eventName, initialTarget, f);
-    const noLogger = constant$1(ignoreEvent);
-
-    const menuFields = constant$1([
-      required$1('menu'),
-      required$1('selectedMenu')
-    ]);
-    const itemFields = constant$1([
-      required$1('item'),
-      required$1('selectedItem')
-    ]);
-    constant$1(objOf(itemFields().concat(menuFields())));
-    const itemSchema$3 = constant$1(objOf(itemFields()));
-
-    const _initSize = requiredObjOf('initSize', [
-      required$1('numColumns'),
-      required$1('numRows')
-    ]);
-    const itemMarkers = () => requiredOf('markers', itemSchema$3());
-    const tieredMenuMarkers = () => requiredObjOf('markers', [required$1('backgroundMenu')].concat(menuFields()).concat(itemFields()));
-    const markers$1 = required => requiredObjOf('markers', map$2(required, required$1));
-    const onPresenceHandler = (label, fieldName, presence) => {
-      getTrace();
-      return field$1(fieldName, fieldName, presence, valueOf(f => Result.value((...args) => {
-        return f.apply(undefined, args);
-      })));
-    };
-    const onHandler = fieldName => onPresenceHandler('onHandler', fieldName, defaulted$1(noop));
-    const onKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, defaulted$1(Optional.none));
-    const onStrictHandler = fieldName => onPresenceHandler('onHandler', fieldName, required$2());
-    const onStrictKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, required$2());
-    const output$1 = (name, value) => customField(name, constant$1(value));
-    const snapshot = name => customField(name, identity);
-    const initSize = constant$1(_initSize);
-
-    var DockingSchema = [
-      optionObjOf('contextual', [
-        requiredString('fadeInClass'),
-        requiredString('fadeOutClass'),
-        requiredString('transitionClass'),
-        requiredFunction('lazyContext'),
-        onHandler('onShow'),
-        onHandler('onShown'),
-        onHandler('onHide'),
-        onHandler('onHidden')
-      ]),
-      defaultedFunction('lazyViewport', () => ({
-        bounds: win(),
-        optScrollEnv: Optional.none()
-      })),
-      defaultedArrayOf('modes', [
-        'top',
-        'bottom'
-      ], string),
-      onHandler('onDocked'),
-      onHandler('onUndocked')
-    ];
-
-    const init$g = spec => {
-      const docked = Cell(false);
-      const visible = Cell(true);
-      const initialBounds = value$4();
-      const modes = Cell(spec.modes);
-      const readState = () => `docked:  ${ docked.get() }, visible: ${ visible.get() }, modes: ${ modes.get().join(',') }`;
-      return nu$7({
-        isDocked: docked.get,
-        setDocked: docked.set,
-        getInitialPos: initialBounds.get,
-        setInitialPos: initialBounds.set,
-        clearInitialPos: initialBounds.clear,
-        isVisible: visible.get,
-        setVisible: visible.set,
-        getModes: modes.get,
-        setModes: modes.set,
-        readState
-      });
-    };
-
-    var DockingState = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        init: init$g
-    });
-
-    const Docking = create$4({
-      fields: DockingSchema,
-      name: 'docking',
-      active: ActiveDocking,
-      apis: DockingApis,
-      state: DockingState
-    });
-
-    const isRecursive = (component, originator, target) => eq(originator, component.element) && !eq(originator, target);
-    const events$h = derive$2([can(focus$4(), (component, simulatedEvent) => {
-        const event = simulatedEvent.event;
-        const originator = event.originator;
-        const target = event.target;
-        if (isRecursive(component, originator, target)) {
-          console.warn(focus$4() + ' did not get interpreted by the desired target. ' + '\nOriginator: ' + element(originator) + '\nTarget: ' + element(target) + '\nCheck the ' + focus$4() + ' event handlers');
-          return false;
-        } else {
-          return true;
-        }
-      })]);
-
-    var DefaultEvents = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        events: events$h
-    });
-
-    let unique = 0;
-    const generate$6 = prefix => {
-      const date = new Date();
-      const time = date.getTime();
-      const random = Math.floor(Math.random() * 1000000000);
-      unique++;
-      return prefix + '_' + random + unique + String(time);
-    };
-
-    const prefix$1 = constant$1('alloy-id-');
-    const idAttr$1 = constant$1('data-alloy-id');
-
-    const prefix = prefix$1();
-    const idAttr = idAttr$1();
-    const write = (label, elem) => {
-      const id = generate$6(prefix + label);
-      writeOnly(elem, id);
-      return id;
-    };
-    const writeOnly = (elem, uid) => {
-      Object.defineProperty(elem.dom, idAttr, {
-        value: uid,
-        writable: true
-      });
-    };
-    const read = elem => {
-      const id = isElement$1(elem) ? elem.dom[idAttr] : null;
-      return Optional.from(id);
-    };
-    const generate$5 = prefix => generate$6(prefix);
-
-    const make$8 = identity;
-
-    const NoContextApi = getComp => {
-      const getMessage = event => `The component must be in a context to execute: ${ event }` + (getComp ? '\n' + element(getComp().element) + ' is not in context.' : '');
-      const fail = event => () => {
-        throw new Error(getMessage(event));
-      };
-      const warn = event => () => {
-        console.warn(getMessage(event));
-      };
-      return {
-        debugInfo: constant$1('fake'),
-        triggerEvent: warn('triggerEvent'),
-        triggerFocus: warn('triggerFocus'),
-        triggerEscape: warn('triggerEscape'),
-        broadcast: warn('broadcast'),
-        broadcastOn: warn('broadcastOn'),
-        broadcastEvent: warn('broadcastEvent'),
-        build: fail('build'),
-        buildOrPatch: fail('buildOrPatch'),
-        addToWorld: fail('addToWorld'),
-        removeFromWorld: fail('removeFromWorld'),
-        addToGui: fail('addToGui'),
-        removeFromGui: fail('removeFromGui'),
-        getByUid: fail('getByUid'),
-        getByDom: fail('getByDom'),
-        isConnected: never
-      };
-    };
-    const singleton = NoContextApi();
-
     const premadeTag = generate$6('alloy-premade');
     const premade$1 = comp => {
       Object.defineProperty(comp.element.dom, premadeTag, {
@@ -3340,8 +2538,11 @@
       return wrap$1(premadeTag, comp);
     };
     const isPremade = element => has$2(element.dom, premadeTag);
-    const getPremade = spec => get$h(spec, premadeTag);
+    const getPremade = spec => get$g(spec, premadeTag);
     const makeApi = f => markAsSketchApi((component, ...rest) => f(component.getApis(), component, ...rest), f);
+
+    const NoState = { init: () => nu$8({ readState: constant$1('No State required') }) };
+    const nu$8 = spec => spec;
 
     const generateFrom$1 = (spec, all) => {
       const schema = map$2(all, a => optionObjOf(a.name(), [
@@ -3369,12 +2570,30 @@
       const r = {};
       each(data, (detail, key) => {
         each(detail, (value, indexKey) => {
-          const chain = get$h(r, indexKey).getOr([]);
+          const chain = get$g(r, indexKey).getOr([]);
           r[indexKey] = chain.concat([tuple(key, value)]);
         });
       });
       return r;
     };
+
+    const nu$7 = s => ({
+      classes: isUndefined(s.classes) ? [] : s.classes,
+      attributes: isUndefined(s.attributes) ? {} : s.attributes,
+      styles: isUndefined(s.styles) ? {} : s.styles
+    });
+    const merge = (defnA, mod) => ({
+      ...defnA,
+      attributes: {
+        ...defnA.attributes,
+        ...mod.attributes
+      },
+      styles: {
+        ...defnA.styles,
+        ...mod.styles
+      },
+      classes: defnA.classes.concat(mod.classes)
+    });
 
     const combine$2 = (info, baseMod, behaviours, base) => {
       const modsByBehaviour = { ...baseMod };
@@ -3392,7 +2611,7 @@
       const combinedClasses = foldr(byAspect.classes, (b, a) => a.modification.concat(b), []);
       const combinedAttributes = combineObjects(byAspect.attributes);
       const combinedStyles = combineObjects(byAspect.styles);
-      return nu$8({
+      return nu$7({
         classes: combinedClasses,
         attributes: combinedAttributes,
         styles: combinedStyles
@@ -3570,10 +2789,100 @@
       uid: detail.uid,
       domChildren: map$2(detail.components, comp => comp.element)
     });
-    const toModification = detail => detail.domModification.fold(() => nu$8({}), nu$8);
+    const toModification = detail => detail.domModification.fold(() => nu$7({}), nu$7);
     const toEvents = info => info.events;
 
-    const get$7 = element => element.dom.value;
+    const read = (element, attr) => {
+      const value = get$f(element, attr);
+      return value === undefined || value === '' ? [] : value.split(' ');
+    };
+    const add$4 = (element, attr, id) => {
+      const old = read(element, attr);
+      const nu = old.concat([id]);
+      set$9(element, attr, nu.join(' '));
+      return true;
+    };
+    const remove$4 = (element, attr, id) => {
+      const nu = filter$2(read(element, attr), v => v !== id);
+      if (nu.length > 0) {
+        set$9(element, attr, nu.join(' '));
+      } else {
+        remove$7(element, attr);
+      }
+      return false;
+    };
+
+    const supports = element => element.dom.classList !== undefined;
+    const get$8 = element => read(element, 'class');
+    const add$3 = (element, clazz) => add$4(element, 'class', clazz);
+    const remove$3 = (element, clazz) => remove$4(element, 'class', clazz);
+    const toggle$5 = (element, clazz) => {
+      if (contains$2(get$8(element), clazz)) {
+        return remove$3(element, clazz);
+      } else {
+        return add$3(element, clazz);
+      }
+    };
+
+    const add$2 = (element, clazz) => {
+      if (supports(element)) {
+        element.dom.classList.add(clazz);
+      } else {
+        add$3(element, clazz);
+      }
+    };
+    const cleanClass = element => {
+      const classList = supports(element) ? element.dom.classList : get$8(element);
+      if (classList.length === 0) {
+        remove$7(element, 'class');
+      }
+    };
+    const remove$2 = (element, clazz) => {
+      if (supports(element)) {
+        const classList = element.dom.classList;
+        classList.remove(clazz);
+      } else {
+        remove$3(element, clazz);
+      }
+      cleanClass(element);
+    };
+    const toggle$4 = (element, clazz) => {
+      const result = supports(element) ? element.dom.classList.toggle(clazz) : toggle$5(element, clazz);
+      cleanClass(element);
+      return result;
+    };
+    const has = (element, clazz) => supports(element) && element.dom.classList.contains(clazz);
+
+    const add$1 = (element, classes) => {
+      each$1(classes, x => {
+        add$2(element, x);
+      });
+    };
+    const remove$1 = (element, classes) => {
+      each$1(classes, x => {
+        remove$2(element, x);
+      });
+    };
+    const toggle$3 = (element, classes) => {
+      each$1(classes, x => {
+        toggle$4(element, x);
+      });
+    };
+    const hasAll = (element, classes) => forall(classes, clazz => has(element, clazz));
+    const getNative = element => {
+      const classList = element.dom.classList;
+      const r = new Array(classList.length);
+      for (let i = 0; i < classList.length; i++) {
+        const item = classList.item(i);
+        if (item !== null) {
+          r[i] = item;
+        }
+      }
+      return r;
+    };
+    const get$7 = element => supports(element) ? getNative(element) : get$8(element);
+
+    const get$6 = element => element.dom.value;
     const set$5 = (element, value) => {
       if (value === undefined) {
         throw new Error('Value.set was undefined');
@@ -3599,14 +2908,14 @@
       obsoleted.fold(() => append$2(parent, child), obs => {
         if (!eq(obs, child)) {
           before$1(obs, child);
-          remove$6(obs);
+          remove$5(obs);
         }
       });
     };
     const patchChildrenWith = (parent, nu, f) => {
       const builtChildren = map$2(nu, f);
       const currentChildren = children(parent);
-      each$1(currentChildren.slice(builtChildren.length), remove$6);
+      each$1(currentChildren.slice(builtChildren.length), remove$5);
       return builtChildren;
     };
     const patchSpecChild = (parent, index, spec, build) => {
@@ -3646,7 +2955,7 @@
         toRemove: attrsToRemove
       } = diffKeyValueSet(definition.attributes, existingAttributes);
       const updateAttrs = () => {
-        each$1(attrsToRemove, a => remove$8(obsoleted, a));
+        each$1(attrsToRemove, a => remove$7(obsoleted, a));
         setAll$1(obsoleted, attrsToSet);
       };
       const existingStyles = getAllRaw(obsoleted);
@@ -3655,15 +2964,15 @@
         toRemove: stylesToRemove
       } = diffKeyValueSet(definition.styles, existingStyles);
       const updateStyles = () => {
-        each$1(stylesToRemove, s => remove$7(obsoleted, s));
+        each$1(stylesToRemove, s => remove$6(obsoleted, s));
         setAll(obsoleted, stylesToSet);
       };
-      const existingClasses = get$9(obsoleted);
+      const existingClasses = get$7(obsoleted);
       const classesToRemove = difference(existingClasses, definition.classes);
       const classesToAdd = difference(definition.classes, existingClasses);
       const updateClasses = () => {
         add$1(obsoleted, classesToAdd);
-        remove$2(obsoleted, classesToRemove);
+        remove$1(obsoleted, classesToRemove);
       };
       const updateHtml = html => {
         set$6(obsoleted, html);
@@ -3675,7 +2984,7 @@
       const updateValue = () => {
         const valueElement = obsoleted;
         const value = definition.value.getOrUndefined();
-        if (value !== get$7(valueElement)) {
+        if (value !== get$6(valueElement)) {
           set$5(valueElement, value !== null && value !== void 0 ? value : '');
         }
       };
@@ -3717,7 +3026,7 @@
     };
 
     const getBehaviours$2 = spec => {
-      const behaviours = get$h(spec, 'behaviours').getOr({});
+      const behaviours = get$g(spec, 'behaviours').getOr({});
       return bind$3(keys(behaviours), name => {
         const behaviour = behaviours[name];
         return isNonNullable(behaviour) ? [behaviour.me] : [];
@@ -3742,7 +3051,7 @@
     };
     const build$2 = (spec, obsoleted) => {
       const getMe = () => me;
-      const systemApi = Cell(singleton);
+      const systemApi = Cell(singleton$1);
       const info = getOrDie(toInfo(spec));
       const bBlob = generate$4(spec);
       const bList = getBehaviours$3(bBlob);
@@ -3791,7 +3100,7 @@
     };
 
     const buildSubcomponents = (spec, obsoleted) => {
-      const components = get$h(spec, 'components').getOr([]);
+      const components = get$g(spec, 'components').getOr([]);
       return obsoleted.fold(() => map$2(components, build$1), obs => map$2(components, (c, i) => {
         return buildOrPatch(c, child$2(obs, i));
       }));
@@ -3934,11 +3243,11 @@
         if (!isElement$1(elem)) {
           return false;
         }
-        const id = get$g(elem, 'id');
+        const id = get$f(elem, 'id');
         return id !== undefined && id.indexOf(attribute) > -1;
       });
       return dependent.bind(dep => {
-        const id = get$g(dep, 'id');
+        const id = get$f(dep, 'id');
         const dos = getRootNode(dep);
         return descendant(dos, `[${ attribute }="${ id }"]`);
       });
@@ -3949,7 +3258,7 @@
         set$9(elem, attribute, ariaId);
       };
       const unlink = elem => {
-        remove$8(elem, attribute);
+        remove$7(elem, attribute);
       };
       return {
         id: ariaId,
@@ -3960,6 +3269,155 @@
 
     const isAriaPartOf = (component, queryElem) => find$1(queryElem).exists(owner => isPartOf$1(component, owner));
     const isPartOf$1 = (component, queryElem) => closest$2(queryElem, el => eq(el, component.element), never) || isAriaPartOf(component, queryElem);
+
+    const unknown = 'unknown';
+    var EventConfiguration;
+    (function (EventConfiguration) {
+      EventConfiguration[EventConfiguration['STOP'] = 0] = 'STOP';
+      EventConfiguration[EventConfiguration['NORMAL'] = 1] = 'NORMAL';
+      EventConfiguration[EventConfiguration['LOGGING'] = 2] = 'LOGGING';
+    }(EventConfiguration || (EventConfiguration = {})));
+    const eventConfig = Cell({});
+    const makeEventLogger = (eventName, initialTarget) => {
+      const sequence = [];
+      const startTime = new Date().getTime();
+      return {
+        logEventCut: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'cut',
+            target,
+            purpose
+          });
+        },
+        logEventStopped: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'stopped',
+            target,
+            purpose
+          });
+        },
+        logNoParent: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'no-parent',
+            target,
+            purpose
+          });
+        },
+        logEventNoHandlers: (_name, target) => {
+          sequence.push({
+            outcome: 'no-handlers-left',
+            target
+          });
+        },
+        logEventResponse: (_name, target, purpose) => {
+          sequence.push({
+            outcome: 'response',
+            purpose,
+            target
+          });
+        },
+        write: () => {
+          const finishTime = new Date().getTime();
+          if (contains$2([
+              'mousemove',
+              'mouseover',
+              'mouseout',
+              systemInit()
+            ], eventName)) {
+            return;
+          }
+          console.log(eventName, {
+            event: eventName,
+            time: finishTime - startTime,
+            target: initialTarget.dom,
+            sequence: map$2(sequence, s => {
+              if (!contains$2([
+                  'cut',
+                  'stopped',
+                  'response'
+                ], s.outcome)) {
+                return s.outcome;
+              } else {
+                return '{' + s.purpose + '} ' + s.outcome + ' at (' + element(s.target) + ')';
+              }
+            })
+          });
+        }
+      };
+    };
+    const processEvent = (eventName, initialTarget, f) => {
+      const status = get$g(eventConfig.get(), eventName).orThunk(() => {
+        const patterns = keys(eventConfig.get());
+        return findMap(patterns, p => eventName.indexOf(p) > -1 ? Optional.some(eventConfig.get()[p]) : Optional.none());
+      }).getOr(EventConfiguration.NORMAL);
+      switch (status) {
+      case EventConfiguration.NORMAL:
+        return f(noLogger());
+      case EventConfiguration.LOGGING: {
+          const logger = makeEventLogger(eventName, initialTarget);
+          const output = f(logger);
+          logger.write();
+          return output;
+        }
+      case EventConfiguration.STOP:
+        return true;
+      }
+    };
+    const path = [
+      'alloy/data/Fields',
+      'alloy/debugging/Debugging'
+    ];
+    const getTrace = () => {
+      const err = new Error();
+      if (err.stack !== undefined) {
+        const lines = err.stack.split('\n');
+        return find$5(lines, line => line.indexOf('alloy') > 0 && !exists(path, p => line.indexOf(p) > -1)).getOr(unknown);
+      } else {
+        return unknown;
+      }
+    };
+    const ignoreEvent = {
+      logEventCut: noop,
+      logEventStopped: noop,
+      logNoParent: noop,
+      logEventNoHandlers: noop,
+      logEventResponse: noop,
+      write: noop
+    };
+    const monitorEvent = (eventName, initialTarget, f) => processEvent(eventName, initialTarget, f);
+    const noLogger = constant$1(ignoreEvent);
+
+    const menuFields = constant$1([
+      required$1('menu'),
+      required$1('selectedMenu')
+    ]);
+    const itemFields = constant$1([
+      required$1('item'),
+      required$1('selectedItem')
+    ]);
+    constant$1(objOf(itemFields().concat(menuFields())));
+    const itemSchema$3 = constant$1(objOf(itemFields()));
+
+    const _initSize = requiredObjOf('initSize', [
+      required$1('numColumns'),
+      required$1('numRows')
+    ]);
+    const itemMarkers = () => requiredOf('markers', itemSchema$3());
+    const tieredMenuMarkers = () => requiredObjOf('markers', [required$1('backgroundMenu')].concat(menuFields()).concat(itemFields()));
+    const markers$1 = required => requiredObjOf('markers', map$2(required, required$1));
+    const onPresenceHandler = (label, fieldName, presence) => {
+      getTrace();
+      return field$1(fieldName, fieldName, presence, valueOf(f => Result.value((...args) => {
+        return f.apply(undefined, args);
+      })));
+    };
+    const onHandler = fieldName => onPresenceHandler('onHandler', fieldName, defaulted$1(noop));
+    const onKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, defaulted$1(Optional.none));
+    const onStrictHandler = fieldName => onPresenceHandler('onHandler', fieldName, required$2());
+    const onStrictKeyboardHandler = fieldName => onPresenceHandler('onKeyboardHandler', fieldName, required$2());
+    const output$1 = (name, value) => customField(name, constant$1(value));
+    const snapshot = name => customField(name, identity);
+    const initSize = constant$1(_initSize);
 
     const nu$6 = (x, y, bubble, direction, placement, boundsRestriction, labelPrefix, alwaysFit = false) => ({
       x,
@@ -4023,7 +3481,7 @@
       'right',
       'top',
       'bottom'
-    ], dir => get$h(restrictions, dir).map(restriction => getRestriction(anchor, restriction)));
+    ], dir => get$g(restrictions, dir).map(restriction => getRestriction(anchor, restriction)));
     const adjustBounds = (bounds$1, restriction, bubbleOffset) => {
       const applyRestriction = (dir, current) => restriction[dir].map(pos => {
         const isVerticalAxis = dir === 'top' || dir === 'bottom';
@@ -4122,7 +3580,7 @@
     ];
 
     const chooseChannels = (channels, message) => message.universal ? channels : filter$2(channels, ch => contains$2(message.channels, ch));
-    const events$g = receiveConfig => derive$2([run$1(receive(), (component, message) => {
+    const events$h = receiveConfig => derive$2([run$1(receive(), (component, message) => {
         const channelMap = receiveConfig.channels;
         const channels = keys(channelMap);
         const receivingData = message;
@@ -4137,7 +3595,7 @@
 
     var ActiveReceiving = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$g
+        events: events$h
     });
 
     var ReceivingSchema = [requiredOf('channels', setOf(Result.value, objOfOnly([
@@ -4145,13 +3603,115 @@
         defaulted('schema', anyValue())
       ])))];
 
+    const executeEvent = (bConfig, bState, executor) => runOnExecute$1(component => {
+      executor(component, bConfig, bState);
+    });
+    const loadEvent = (bConfig, bState, f) => runOnInit((component, _simulatedEvent) => {
+      f(component, bConfig, bState);
+    });
+    const create$5 = (schema, name, active, apis, extra, state) => {
+      const configSchema = objOfOnly(schema);
+      const schemaSchema = optionObjOf(name, [optionObjOfOnly('config', schema)]);
+      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
+    };
+    const createModes$1 = (modes, name, active, apis, extra, state) => {
+      const configSchema = modes;
+      const schemaSchema = optionObjOf(name, [optionOf('config', modes)]);
+      return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
+    };
+    const wrapApi = (bName, apiFunction, apiName) => {
+      const f = (component, ...rest) => {
+        const args = [component].concat(rest);
+        return component.config({ name: constant$1(bName) }).fold(() => {
+          throw new Error('We could not find any behaviour configuration for: ' + bName + '. Using API: ' + apiName);
+        }, info => {
+          const rest = Array.prototype.slice.call(args, 1);
+          return apiFunction.apply(undefined, [
+            component,
+            info.config,
+            info.state
+          ].concat(rest));
+        });
+      };
+      return markAsBehaviourApi(f, apiName, apiFunction);
+    };
+    const revokeBehaviour = name => ({
+      key: name,
+      value: undefined
+    });
+    const doCreate = (configSchema, schemaSchema, name, active, apis, extra, state) => {
+      const getConfig = info => hasNonNullableKey(info, name) ? info[name]() : Optional.none();
+      const wrappedApis = map$1(apis, (apiF, apiName) => wrapApi(name, apiF, apiName));
+      const wrappedExtra = map$1(extra, (extraF, extraName) => markAsExtraApi(extraF, extraName));
+      const me = {
+        ...wrappedExtra,
+        ...wrappedApis,
+        revoke: curry(revokeBehaviour, name),
+        config: spec => {
+          const prepared = asRawOrDie$1(name + '-config', configSchema, spec);
+          return {
+            key: name,
+            value: {
+              config: prepared,
+              me,
+              configAsRaw: cached(() => asRawOrDie$1(name + '-config', configSchema, spec)),
+              initialConfig: spec,
+              state
+            }
+          };
+        },
+        schema: constant$1(schemaSchema),
+        exhibit: (info, base) => {
+          return lift2(getConfig(info), get$g(active, 'exhibit'), (behaviourInfo, exhibitor) => {
+            return exhibitor(base, behaviourInfo.config, behaviourInfo.state);
+          }).getOrThunk(() => nu$7({}));
+        },
+        name: constant$1(name),
+        handlers: info => {
+          return getConfig(info).map(behaviourInfo => {
+            const getEvents = get$g(active, 'events').getOr(() => ({}));
+            return getEvents(behaviourInfo.config, behaviourInfo.state);
+          }).getOr({});
+        }
+      };
+      return me;
+    };
+
+    const derive$1 = capabilities => wrapAll(capabilities);
+    const simpleSchema = objOfOnly([
+      required$1('fields'),
+      required$1('name'),
+      defaulted('active', {}),
+      defaulted('apis', {}),
+      defaulted('state', NoState),
+      defaulted('extra', {})
+    ]);
+    const create$4 = data => {
+      const value = asRawOrDie$1('Creating behaviour: ' + data.name, simpleSchema, data);
+      return create$5(value.fields, value.name, value.active, value.apis, value.extra, value.state);
+    };
+    const modeSchema = objOfOnly([
+      required$1('branchKey'),
+      required$1('branches'),
+      required$1('name'),
+      defaulted('active', {}),
+      defaulted('apis', {}),
+      defaulted('state', NoState),
+      defaulted('extra', {})
+    ]);
+    const createModes = data => {
+      const value = asRawOrDie$1('Creating behaviour: ' + data.name, modeSchema, data);
+      return createModes$1(choose$1(value.branchKey, value.branches), value.name, value.active, value.apis, value.extra, value.state);
+    };
+    const revoke = constant$1(undefined);
+
     const Receiving = create$4({
       fields: ReceivingSchema,
       name: 'receiving',
       active: ActiveReceiving
     });
 
-    const exhibit$6 = (base, posConfig) => nu$8({
+    const exhibit$6 = (base, posConfig) => nu$7({
       classes: [],
       styles: posConfig.useFixed() ? {} : { position: 'relative' }
     });
@@ -4183,6 +3743,24 @@
         }, noop);
       });
       return result;
+    };
+
+    const NuPositionCss = (position, left, top, right, bottom) => {
+      const toPx = num => num + 'px';
+      return {
+        position,
+        left: left.map(toPx),
+        top: top.map(toPx),
+        right: right.map(toPx),
+        bottom: bottom.map(toPx)
+      };
+    };
+    const toOptions = position => ({
+      ...position,
+      position: Optional.some(position.position)
+    });
+    const applyPositionCss = (element, position) => {
+      setOptions(element, toOptions(position));
     };
 
     const adt$9 = Adt.generate([
@@ -4230,7 +3808,7 @@
     const toBox = (origin, element) => {
       const rel = curry(find$2, element);
       const position = origin.fold(rel, rel, () => {
-        const scroll = get$c();
+        const scroll = get$b();
         return find$2(element).translate(-scroll.left, -scroll.top);
       });
       const width = getOuter$1(element);
@@ -4244,7 +3822,7 @@
     const translate$2 = (origin, x, y) => {
       const pos = SugarPosition(x, y);
       const removeScroll = () => {
-        const outerScroll = get$c();
+        const outerScroll = get$b();
         return pos.translate(-outerScroll.left, -outerScroll.top);
       };
       return origin.fold(constant$1(pos), constant$1(pos), removeScroll);
@@ -4265,7 +3843,7 @@
       set$9(element, placementAttribute, placement);
     };
     const getPlacement = element => getOpt(element, placementAttribute);
-    const reset$1 = element => remove$8(element, placementAttribute);
+    const reset$2 = element => remove$7(element, placementAttribute);
 
     const adt$8 = Adt.generate([
       { fit: ['reposition'] },
@@ -4386,6 +3964,37 @@
       return abc.fold(identity, identity);
     };
 
+    const singleton = doRevoke => {
+      const subject = Cell(Optional.none());
+      const revoke = () => subject.get().each(doRevoke);
+      const clear = () => {
+        revoke();
+        subject.set(Optional.none());
+      };
+      const isSet = () => subject.get().isSome();
+      const get = () => subject.get();
+      const set = s => {
+        revoke();
+        subject.set(Optional.some(s));
+      };
+      return {
+        clear,
+        isSet,
+        get,
+        set
+      };
+    };
+    const destroyable = () => singleton(s => s.destroy());
+    const unbindable = () => singleton(s => s.unbind());
+    const value$2 = () => {
+      const subject = singleton(noop);
+      const on = f => subject.get().each(f);
+      return {
+        ...subject,
+        on
+      };
+    };
+
     const filter = always;
     const bind = (element, event, handler) => bind$2(element, event, filter, handler);
     const capture = (element, event, handler) => capture$1(element, event, filter, handler);
@@ -4415,7 +4024,7 @@
     };
     const getTransitionDuration = element => {
       const get = name => {
-        const style = get$f(element, name);
+        const style = get$e(element, name);
         const times = style.split(/\s*,\s*/);
         return filter$2(times, isNotEmpty);
       };
@@ -4450,8 +4059,8 @@
           const type = e === null || e === void 0 ? void 0 : e.raw.type;
           if (isNullable(type) || type === transitionend()) {
             clearTimeout(timer);
-            remove$8(element, timerAttr);
-            remove$2(element, transition.classes);
+            remove$7(element, timerAttr);
+            remove$1(element, transition.classes);
           }
         }
       };
@@ -4472,7 +4081,7 @@
       add$1(element, transition.classes);
       getOpt(element, timerAttr).each(timerId => {
         clearTimeout(parseInt(timerId, 10));
-        remove$8(element, timerAttr);
+        remove$7(element, timerAttr);
       });
       setupTransitionListeners(element, transition);
     };
@@ -4494,7 +4103,7 @@
           reflow(element);
         }
       } else {
-        remove$2(element, transition.classes);
+        remove$1(element, transition.classes);
       }
     };
 
@@ -4503,14 +4112,14 @@
       height: getOuter$2(p)
     });
     const layout = (anchorBox, element, bubbles, options) => {
-      remove$7(element, 'max-height');
-      remove$7(element, 'max-width');
+      remove$6(element, 'max-height');
+      remove$6(element, 'max-width');
       const elementBox = elementSize(element);
       return attempts(element, options.preference, anchorBox, elementBox, bubbles, options.bounds);
     };
     const setClasses = (element, decision) => {
       const classInfo = decision.classes;
-      remove$2(element, classInfo.off);
+      remove$1(element, classInfo.off);
       add$1(element, classInfo.on);
     };
     const setHeight = (element, decision, options) => {
@@ -4590,7 +4199,7 @@
     const nu$5 = (xOffset, yOffset, classes, insetModifier = 1) => {
       const insetXOffset = xOffset * insetModifier;
       const insetYOffset = yOffset * insetModifier;
-      const getClasses = prop => get$h(classes, prop).getOr([]);
+      const getClasses = prop => get$g(classes, prop).getOr([]);
       const make = (xDelta, yDelta, alignmentsOn) => {
         const alignmentsOff = difference(allAlignments, alignmentsOn);
         return {
@@ -4679,7 +4288,7 @@
     const nu$4 = identity;
 
     const onDirection = (isLtr, isRtl) => element => getDirection(element) === 'rtl' ? isRtl : isLtr;
-    const getDirection = element => get$f(element, 'direction') === 'rtl' ? 'rtl' : 'ltr';
+    const getDirection = element => get$e(element, 'direction') === 'rtl' ? 'rtl' : 'ltr';
 
     var AttributeValue;
     (function (AttributeValue) {
@@ -4687,7 +4296,7 @@
       AttributeValue['BottomToTop'] = 'bottomtotop';
     }(AttributeValue || (AttributeValue = {})));
     const Attribute = 'data-alloy-vertical-dir';
-    const isBottomToTopDir = el => closest$2(el, current => isElement$1(current) && get$g(current, 'data-alloy-vertical-dir') === AttributeValue.BottomToTop);
+    const isBottomToTopDir = el => closest$2(el, current => isElement$1(current) && get$f(current, 'data-alloy-vertical-dir') === AttributeValue.BottomToTop);
 
     const schema$y = () => optionObjOf('layouts', [
       required$1('onLtr'),
@@ -4695,7 +4304,7 @@
       option$3('onBottomLtr'),
       option$3('onBottomRtl')
     ]);
-    const get$6 = (elem, info, defaultLtr, defaultRtl, defaultBottomLtr, defaultBottomRtl, dirElement) => {
+    const get$5 = (elem, info, defaultLtr, defaultRtl, defaultBottomLtr, defaultBottomRtl, dirElement) => {
       const isBottomToTop = dirElement.map(isBottomToTopDir).getOr(false);
       const customLtr = info.layouts.map(ls => ls.onLtr(elem));
       const customRtl = info.layouts.map(ls => ls.onRtl(elem));
@@ -4708,7 +4317,7 @@
     const placement$4 = (component, anchorInfo, origin) => {
       const hotspot = anchorInfo.hotspot;
       const anchorBox = toBox(origin, hotspot.element);
-      const layouts = get$6(component.element, anchorInfo, belowOrAbove(), belowOrAboveRtl(), aboveOrBelow(), aboveOrBelowRtl(), Optional.some(anchorInfo.hotspot.element));
+      const layouts = get$5(component.element, anchorInfo, belowOrAbove(), belowOrAboveRtl(), aboveOrBelow(), aboveOrBelowRtl(), Optional.some(anchorInfo.hotspot.element));
       return Optional.some(nu$4({
         anchorBox,
         bubble: anchorInfo.bubble.getOr(fallback()),
@@ -4727,7 +4336,7 @@
     const placement$3 = (component, anchorInfo, origin) => {
       const pos = translate$2(origin, anchorInfo.x, anchorInfo.y);
       const anchorBox = bounds(pos.left, pos.top, anchorInfo.width, anchorInfo.height);
-      const layouts = get$6(component.element, anchorInfo, all$1(), allRtl$1(), all$1(), allRtl$1(), Optional.none());
+      const layouts = get$5(component.element, anchorInfo, all$1(), allRtl$1(), all$1(), allRtl$1(), Optional.none());
       return Optional.some(nu$4({
         anchorBox,
         bubble: anchorInfo.bubble,
@@ -4781,7 +4390,7 @@
     };
     const getRootPoint = (component, origin, anchorInfo) => {
       const doc = owner$4(component.element);
-      const outerScroll = get$c(doc);
+      const outerScroll = get$b(doc);
       const offset = getOffset(component, origin, anchorInfo).getOr(outerScroll);
       return absolute$1(offset, outerScroll.left, outerScroll.top);
     };
@@ -4799,7 +4408,7 @@
       const anchorBox = rect(topLeft.left, topLeft.top, box.width, box.height);
       const layoutsLtr = anchorInfo.showAbove ? aboveOrBelow() : belowOrAbove();
       const layoutsRtl = anchorInfo.showAbove ? aboveOrBelowRtl() : belowOrAboveRtl();
-      const layouts = get$6(elem, anchorInfo, layoutsLtr, layoutsRtl, layoutsLtr, layoutsRtl, Optional.none());
+      const layouts = get$5(elem, anchorInfo, layoutsLtr, layoutsRtl, layoutsLtr, layoutsRtl, Optional.none());
       return nu$4({
         anchorBox,
         bubble: anchorInfo.bubble.getOr(fallback()),
@@ -5089,7 +4698,7 @@
     };
 
     const api = NodeValue(isText, 'text');
-    const get$5 = element => api.get(element);
+    const get$4 = element => api.get(element);
 
     const point = (element, offset) => ({
       element,
@@ -5103,7 +4712,7 @@
         return point(children$1[offset], 0);
       } else {
         const last = children$1[children$1.length - 1];
-        const len = isText(last) ? get$5(last).length : children(last).length;
+        const len = isText(last) ? get$4(last).length : children(last).length;
         return point(last, len);
       }
     };
@@ -5131,7 +4740,7 @@
             const zeroWidth$1 = SugarElement.fromText(zeroWidth);
             before$1(sel.start, zeroWidth$1);
             const rect = getFirstRect(win, SimSelection.exact(zeroWidth$1, 0, zeroWidth$1, 1));
-            remove$6(zeroWidth$1);
+            remove$5(zeroWidth$1);
             return rect;
           });
           return optRect.bind(rawRect => {
@@ -5204,7 +4813,7 @@
 
     const placement = (component, submenuInfo, origin) => {
       const anchorBox = toBox(origin, submenuInfo.item.element);
-      const layouts = get$6(component.element, submenuInfo, all(), allRtl(), all(), allRtl(), Optional.none());
+      const layouts = get$5(component.element, submenuInfo, all(), allRtl(), all(), allRtl(), Optional.none());
       return Optional.some(nu$4({
         anchorBox,
         bubble: fallback(),
@@ -5277,17 +4886,17 @@
           posState.set(placee.uid, newState);
         });
         oldVisibility.fold(() => {
-          remove$7(element, 'visibility');
+          remove$6(element, 'visibility');
         }, vis => {
           set$8(element, 'visibility', vis);
         });
         if (getRaw(element, 'left').isNone() && getRaw(element, 'top').isNone() && getRaw(element, 'right').isNone() && getRaw(element, 'bottom').isNone() && is$1(getRaw(element, 'position'), 'fixed')) {
-          remove$7(element, 'position');
+          remove$6(element, 'position');
         }
       }, element);
     };
     const getMode = (component, pConfig, _pState) => pConfig.useFixed() ? 'fixed' : 'absolute';
-    const reset = (component, pConfig, posState, placee) => {
+    const reset$1 = (component, pConfig, posState, placee) => {
       const element = placee.element;
       each$1([
         'position',
@@ -5295,8 +4904,8 @@
         'right',
         'top',
         'bottom'
-      ], prop => remove$7(element, prop));
-      reset$1(element);
+      ], prop => remove$6(element, prop));
+      reset$2(element);
       posState.clear(placee.uid);
     };
 
@@ -5305,15 +4914,15 @@
         position: position$1,
         positionWithinBounds: positionWithinBounds,
         getMode: getMode,
-        reset: reset
+        reset: reset$1
     });
 
-    const init$f = () => {
+    const init$g = () => {
       let state = {};
       const set = (id, data) => {
         state[id] = data;
       };
-      const get = id => get$h(state, id);
+      const get = id => get$g(state, id);
       const clear = id => {
         if (isNonNullable(id)) {
           delete state[id];
@@ -5321,7 +4930,7 @@
           state = {};
         }
       };
-      return nu$7({
+      return nu$8({
         readState: () => state,
         clear,
         set,
@@ -5331,7 +4940,7 @@
 
     var PositioningState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$f
+        init: init$g
     });
 
     const Positioning = create$4({
@@ -5367,7 +4976,7 @@
       append$2(parent.element, child.element);
     };
     const detachChildren$1 = component => {
-      each$1(component.components(), childComp => remove$6(childComp.element));
+      each$1(component.components(), childComp => remove$5(childComp.element));
       empty(component.element);
       component.syncComponents();
     };
@@ -5429,7 +5038,7 @@
     };
     const doDetach = component => {
       fireDetaching(component);
-      remove$6(component.element);
+      remove$5(component.element);
       component.getSystem().removeFromWorld(component);
     };
     const detach = component => {
@@ -5463,7 +5072,7 @@
       each$1(children$1, child => {
         guiSystem.getByDom(child).each(fireDetaching);
       });
-      remove$6(guiSystem.element);
+      remove$5(guiSystem.element);
     };
 
     const rebuild = (sandbox, sConfig, sState, data) => {
@@ -5502,14 +5111,14 @@
     const getState$2 = (_sandbox, _sConfig, sState) => sState.get();
     const store = (sandbox, cssKey, attr, newValue) => {
       getRaw(sandbox.element, cssKey).fold(() => {
-        remove$8(sandbox.element, attr);
+        remove$7(sandbox.element, attr);
       }, v => {
         set$9(sandbox.element, attr, v);
       });
       set$8(sandbox.element, cssKey, newValue);
     };
     const restore = (sandbox, cssKey, attr) => {
-      getOpt(sandbox.element, attr).fold(() => remove$7(sandbox.element, cssKey), oldValue => set$8(sandbox.element, cssKey, oldValue));
+      getOpt(sandbox.element, attr).fold(() => remove$6(sandbox.element, cssKey), oldValue => set$8(sandbox.element, cssKey, oldValue));
     };
     const cloak = (sandbox, sConfig, _sState) => {
       const sink = sConfig.getAttachPoint(sandbox);
@@ -5524,7 +5133,7 @@
     ], pos => getRaw(element, pos).isSome());
     const decloak = (sandbox, sConfig, _sState) => {
       if (!hasPosition(sandbox.element)) {
-        remove$7(sandbox.element, 'position');
+        remove$6(sandbox.element, 'position');
       }
       restore(sandbox, 'visibility', sConfig.cloakVisibilityAttr);
     };
@@ -5542,13 +5151,13 @@
         setContent: setContent
     });
 
-    const events$f = (sandboxConfig, sandboxState) => derive$2([run$1(sandboxClose(), (sandbox, _simulatedEvent) => {
+    const events$g = (sandboxConfig, sandboxState) => derive$2([run$1(sandboxClose(), (sandbox, _simulatedEvent) => {
         close$1(sandbox, sandboxConfig, sandboxState);
       })]);
 
     var ActiveSandbox = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$f
+        events: events$g
     });
 
     var SandboxSchema = [
@@ -5559,10 +5168,10 @@
       defaulted('cloakVisibilityAttr', 'data-precloak-visibility')
     ];
 
-    const init$e = () => {
-      const contents = value$4();
+    const init$f = () => {
+      const contents = value$2();
       const readState = constant$1('not-implemented');
-      return nu$7({
+      return nu$8({
         readState,
         isOpen: contents.isSet,
         clear: contents.clear,
@@ -5573,7 +5182,7 @@
 
     var SandboxState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$e
+        init: init$f
     });
 
     const Sandboxing = create$4({
@@ -5647,7 +5256,7 @@
         getState: getState$1
     });
 
-    const events$e = (repConfig, repState) => {
+    const events$f = (repConfig, repState) => {
       const es = repConfig.resetOnDom ? [
         runOnAttached((comp, _se) => {
           onLoad$5(comp, repConfig, repState);
@@ -5661,7 +5270,7 @@
 
     var ActiveRepresenting = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$e
+        events: events$f
     });
 
     const memory$1 = () => {
@@ -5674,7 +5283,7 @@
       const clear = () => {
         data.set(null);
       };
-      return nu$7({
+      return nu$8({
         set: data.set,
         get: data.get,
         isNotSet,
@@ -5684,7 +5293,7 @@
     };
     const manual = () => {
       const readState = noop;
-      return nu$7({ readState });
+      return nu$8({ readState });
     };
     const dataset = () => {
       const dataByValue = Cell({});
@@ -5698,7 +5307,7 @@
         dataByValue.set({});
         dataByText.set({});
       };
-      const lookup = itemString => get$h(dataByValue.get(), itemString).orThunk(() => get$h(dataByText.get(), itemString));
+      const lookup = itemString => get$g(dataByValue.get(), itemString).orThunk(() => get$g(dataByText.get(), itemString));
       const update = items => {
         const currentDataByValue = dataByValue.get();
         const currentDataByText = dataByText.get();
@@ -5706,8 +5315,8 @@
         const newDataByText = {};
         each$1(items, item => {
           newDataByValue[item.value] = item;
-          get$h(item, 'meta').each(meta => {
-            get$h(meta, 'text').each(text => {
+          get$g(item, 'meta').each(meta => {
+            get$g(meta, 'text').each(text => {
               newDataByText[text] = item;
             });
           });
@@ -5721,21 +5330,21 @@
           ...newDataByText
         });
       };
-      return nu$7({
+      return nu$8({
         readState,
         lookup,
         update,
         clear
       });
     };
-    const init$d = spec => spec.store.manager.state(spec);
+    const init$e = spec => spec.store.manager.state(spec);
 
     var RepresentState = /*#__PURE__*/Object.freeze({
         __proto__: null,
         memory: memory$1,
         dataset: dataset,
         manual: manual,
-        init: init$d
+        init: init$e
     });
 
     const setValue$2 = (component, repConfig, repState, data) => {
@@ -5846,7 +5455,7 @@
     });
 
     const field = (name, forbidden) => defaultedObjOf(name, {}, map$2(forbidden, f => forbid(f.name(), 'Cannot configure ' + f.name() + ' for ' + name)).concat([customField('dump', identity)]));
-    const get$4 = data => data.dump;
+    const get$3 = data => data.dump;
     const augment = (data, original) => ({
       ...derive$1(original),
       ...data.dump
@@ -5854,7 +5463,7 @@
     const SketchBehaviours = {
       field,
       augment,
-      get: get$4
+      get: get$3
     };
 
     const _placeholder = 'placeholder';
@@ -5877,7 +5486,7 @@
       if (owner.exists(o => o !== compSpec.owner)) {
         return adt$3.single(true, constant$1(compSpec));
       }
-      return get$h(placeholders, compSpec.name).fold(() => {
+      return get$g(placeholders, compSpec.name).fold(() => {
         throw new Error('Unknown placeholder component: ' + compSpec.name + '\nKnown: [' + keys(placeholders) + ']\nNamespace: ' + owner.getOr('none') + '\nSpec: ' + JSON.stringify(compSpec, null, 2));
       }, newSpec => newSpec.replace());
     };
@@ -5892,7 +5501,7 @@
       const base = scan(owner, detail, compSpec, placeholders);
       return base.fold((req, valueThunk) => {
         const value = isSubstituted(compSpec) ? valueThunk(detail, compSpec.config, compSpec.validated) : valueThunk(detail);
-        const childSpecs = get$h(value, 'components').getOr([]);
+        const childSpecs = get$g(value, 'components').getOr([]);
         const substituted = bind$3(childSpecs, c => substitute(owner, detail, c, placeholders));
         return [{
             ...value,
@@ -6216,7 +5825,7 @@
       };
     };
 
-    const inside = target => isTag('input')(target) && get$g(target, 'type') !== 'radio' || isTag('textarea')(target);
+    const inside = target => isTag('input')(target) && get$f(target, 'type') !== 'radio' || isTag('textarea')(target);
 
     const getCurrent = (component, composeConfig, _composeState) => composeConfig.find(component);
 
@@ -6249,9 +5858,9 @@
       set$9(component.element, 'disabled', 'disabled');
     };
     const nativeEnable = component => {
-      remove$8(component.element, 'disabled');
+      remove$7(component.element, 'disabled');
     };
-    const ariaIsDisabled = component => get$g(component.element, 'aria-disabled') === 'true';
+    const ariaIsDisabled = component => get$f(component.element, 'aria-disabled') === 'true';
     const ariaDisable = component => {
       set$9(component.element, 'aria-disabled', 'true');
     };
@@ -6268,7 +5877,7 @@
     };
     const enable = (component, disableConfig, _disableState) => {
       disableConfig.disableClass.each(disableClass => {
-        remove$3(component.element, disableClass);
+        remove$2(component.element, disableClass);
       });
       const f = hasNative(component, disableConfig) ? nativeEnable : ariaEnable;
       f(component);
@@ -6289,8 +5898,8 @@
         set: set$4
     });
 
-    const exhibit$5 = (base, disableConfig) => nu$8({ classes: disableConfig.disabled() ? disableConfig.disableClass.toArray() : [] });
-    const events$d = (disableConfig, disableState) => derive$2([
+    const exhibit$5 = (base, disableConfig) => nu$7({ classes: disableConfig.disabled() ? disableConfig.disableClass.toArray() : [] });
+    const events$e = (disableConfig, disableState) => derive$2([
       abort(execute$5(), (component, _simulatedEvent) => isDisabled(component, disableConfig)),
       loadEvent(disableConfig, disableState, onLoad$1)
     ]);
@@ -6298,7 +5907,7 @@
     var ActiveDisable = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit$5,
-        events: events$d
+        events: events$e
     });
 
     var DisableSchema = [
@@ -6321,7 +5930,7 @@
       each$1(highlighted, h => {
         const shouldSkip = exists(skip, skipComp => eq(skipComp.element, h));
         if (!shouldSkip) {
-          remove$3(h, hConfig.highlightClass);
+          remove$2(h, hConfig.highlightClass);
           component.getSystem().getByDom(h).each(target => {
             hConfig.onDehighlight(component, target);
             emit(target, dehighlight$1());
@@ -6332,7 +5941,7 @@
     const dehighlightAll = (component, hConfig, hState) => dehighlightAllExcept(component, hConfig, hState, []);
     const dehighlight = (component, hConfig, hState, target) => {
       if (isHighlighted(component, hConfig, hState, target)) {
-        remove$3(target.element, hConfig.highlightClass);
+        remove$2(target.element, hConfig.highlightClass);
         hConfig.onDehighlight(component, target);
         emit(target, dehighlight$1());
       }
@@ -6590,7 +6199,7 @@
       ].concat([cyclicField]);
       const isVisible = (tabbingConfig, element) => {
         const target = tabbingConfig.visibilitySelector.bind(sel => closest$1(element, sel)).getOr(element);
-        return get$e(target) > 0;
+        return get$d(target) > 0;
       };
       const findInitial = (component, tabbingConfig) => {
         const tabstops = descendants(component.element, tabbingConfig.selector);
@@ -6681,7 +6290,7 @@
     var ExecutionType = typical(schema$v, NoState.init, getKeydownRules$5, getKeyupRules$5, () => Optional.none());
 
     const flatgrid$1 = () => {
-      const dimensions = value$4();
+      const dimensions = value$2();
       const setGridSize = (numRows, numColumns) => {
         dimensions.set({
           numRows,
@@ -6690,7 +6299,7 @@
       };
       const getNumRows = () => dimensions.get().map(d => d.numRows);
       const getNumColumns = () => dimensions.get().map(d => d.numColumns);
-      return nu$7({
+      return nu$8({
         readState: () => dimensions.get().map(d => ({
           numRows: String(d.numRows),
           numColumns: String(d.numColumns)
@@ -6703,12 +6312,12 @@
         getNumColumns
       });
     };
-    const init$c = spec => spec.state(spec);
+    const init$d = spec => spec.state(spec);
 
     var KeyingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
         flatgrid: flatgrid$1,
-        init: init$c
+        init: init$d
     });
 
     const useH = movement => (component, simulatedEvent, config, state) => {
@@ -6826,7 +6435,7 @@
     var FlatgridType = typical(schema$u, flatgrid$1, getKeydownRules$4, getKeyupRules$4, () => Optional.some(focusIn$3));
 
     const f = (container, selector, current, delta, getNewIndex) => {
-      const isDisabledButton = candidate => name$3(candidate) === 'button' && get$g(candidate, 'disabled') === 'disabled';
+      const isDisabledButton = candidate => name$3(candidate) === 'button' && get$f(candidate, 'disabled') === 'disabled';
       const tryNewIndex = (initial, index, candidates) => getNewIndex(initial, index, delta, 0, candidates.length - 1, candidates[index], newIndex => isDisabledButton(candidates[newIndex]) ? tryNewIndex(initial, newIndex, candidates) : Optional.from(candidates[newIndex]));
       return locateVisible(container, current, selector).bind(identified => {
         const index = identified.index;
@@ -7129,7 +6738,7 @@
     const prepend = (component, replaceConfig, replaceState, prependee) => {
       insert(component, prepend$1, prependee);
     };
-    const remove$1 = (component, replaceConfig, replaceState, removee) => {
+    const remove = (component, replaceConfig, replaceState, removee) => {
       const children = contents(component);
       const foundChild = find$5(children, child => eq(removee.element, child.element));
       foundChild.each(detach);
@@ -7154,7 +6763,7 @@
         __proto__: null,
         append: append,
         prepend: prepend,
-        remove: remove$1,
+        remove: remove,
         replaceAt: replaceAt,
         replaceBy: replaceBy,
         set: set$3,
@@ -7167,7 +6776,7 @@
       apis: ReplaceApis
     });
 
-    const events$c = (name, eventHandlers) => {
+    const events$d = (name, eventHandlers) => {
       const events = derive$2(eventHandlers);
       return create$4({
         fields: [required$1('enabled')],
@@ -7176,7 +6785,7 @@
       });
     };
     const config = (name, eventHandlers) => {
-      const me = events$c(name, eventHandlers);
+      const me = events$d(name, eventHandlers);
       return {
         key: name,
         value: {
@@ -7211,9 +6820,9 @@
 
     const exhibit$4 = (base, focusConfig) => {
       const mod = focusConfig.ignore ? {} : { attributes: { tabindex: '-1' } };
-      return nu$8(mod);
+      return nu$7(mod);
     };
-    const events$b = focusConfig => derive$2([run$1(focus$4(), (component, simulatedEvent) => {
+    const events$c = focusConfig => derive$2([run$1(focus$4(), (component, simulatedEvent) => {
         focus$2(component, focusConfig);
         simulatedEvent.stop();
       })].concat(focusConfig.stopMousedown ? [run$1(mousedown(), (_, simulatedEvent) => {
@@ -7223,7 +6832,7 @@
     var ActiveFocus = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit$4,
-        events: events$b
+        events: events$c
     });
 
     var FocusSchema = [
@@ -7265,7 +6874,7 @@
         if (toggleState.get()) {
           add$2(component.element, toggleClass);
         } else {
-          remove$3(component.element, toggleClass);
+          remove$2(component.element, toggleClass);
         }
       });
     };
@@ -7302,8 +6911,8 @@
         set: set$2
     });
 
-    const exhibit$3 = () => nu$8({});
-    const events$a = (toggleConfig, toggleState) => {
+    const exhibit$3 = () => nu$7({});
+    const events$b = (toggleConfig, toggleState) => {
       const execute = executeEvent(toggleConfig, toggleState, toggle$2);
       const load = loadEvent(toggleConfig, toggleState, onLoad);
       return derive$2(flatten([
@@ -7315,7 +6924,7 @@
     var ActiveToggle = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit$3,
-        events: events$a
+        events: events$b
     });
 
     const updatePressed = (component, ariaInfo, status) => {
@@ -7371,7 +6980,7 @@
         cutter(mousedown())
       ];
     };
-    const events$9 = optAction => {
+    const events$a = optAction => {
       const executeHandler = action => runOnExecute$1((component, simulatedEvent) => {
         action(component);
         simulatedEvent.stop();
@@ -7406,9 +7015,9 @@
     const focus$1 = constant$1(focusEvent);
     const toggled = constant$1(toggledEvent);
 
-    const getItemRole = detail => detail.role.fold(() => detail.toggling.map(toggling => toggling.exclusive ? 'menuitemradio' : 'menuitemcheckbox').getOr('menuitem'), identity);
-    const getTogglingSpec = (tConfig, isOption) => ({
-      aria: { mode: isOption ? 'selected' : 'checked' },
+    const getItemRole = detail => detail.toggling.map(toggling => toggling.exclusive ? 'menuitemradio' : 'menuitemcheckbox').getOr('menuitem');
+    const getTogglingSpec = tConfig => ({
+      aria: { mode: 'checked' },
       ...filter$1(tConfig, (_value, name) => name !== 'exclusive'),
       onToggled: (component, state) => {
         if (isFunction(tConfig.onToggled)) {
@@ -7429,7 +7038,7 @@
         }
       },
       behaviours: SketchBehaviours.augment(detail.itemBehaviours, [
-        detail.toggling.fold(Toggling.revoke, tConfig => Toggling.config(getTogglingSpec(tConfig, detail.role.exists(role => role === 'option')))),
+        detail.toggling.fold(Toggling.revoke, tConfig => Toggling.config(getTogglingSpec(tConfig))),
         Focusing.config({
           ignore: detail.ignoreFocus,
           stopMousedown: detail.ignoreFocus,
@@ -7459,7 +7068,6 @@
       required$1('dom'),
       defaulted('hasSubmenu', false),
       option$3('toggling'),
-      option$3('role'),
       SketchBehaviours.field('itemBehaviours', [
         Toggling,
         Focusing,
@@ -7640,7 +7248,6 @@
         }
       })]);
     const schema$m = constant$1([
-      optionString('role'),
       required$1('value'),
       required$1('items'),
       required$1('dom'),
@@ -7674,8 +7281,7 @@
       defaulted('fakeFocus', false),
       defaulted('focusManager', dom$2()),
       onHandler('onHighlight'),
-      onHandler('onDehighlight'),
-      defaulted('showMenuRole', true)
+      onHandler('onDehighlight')
     ]);
 
     const focus = constant$1('alloy.menu-focus');
@@ -7728,14 +7334,14 @@
         }),
         run$1(toggled(), (menu, simulatedEvent) => {
           const {item, state} = simulatedEvent.event;
-          if (state && get$g(item.element, 'role') === 'menuitemradio') {
+          if (state && get$f(item.element, 'role') === 'menuitemradio') {
             deselectOtherRadioItems(menu, item);
           }
         })
       ]),
       components,
       eventOrder: detail.eventOrder,
-      ...detail.showMenuRole ? { domModification: { attributes: { role: detail.role.getOr('menu') } } } : {}
+      domModification: { attributes: { role: 'menu' } }
     });
 
     const Menu = composite({
@@ -7749,7 +7355,7 @@
       k: v,
       v: k
     }));
-    const trace = (items, byItem, byMenu, finish) => get$h(byMenu, finish).bind(triggerItem => get$h(items, triggerItem).bind(triggerMenu => {
+    const trace = (items, byItem, byMenu, finish) => get$g(byMenu, finish).bind(triggerItem => get$g(items, triggerItem).bind(triggerMenu => {
       const rest = trace(items, byItem, byMenu, triggerMenu);
       return Optional.some([triggerMenu].concat(rest));
     })).getOr([]);
@@ -7763,14 +7369,14 @@
       const byItem = expansions;
       const byMenu = transpose$1(expansions);
       const menuPaths = map$1(byMenu, (_triggerItem, submenu) => [submenu].concat(trace(items, byItem, byMenu, submenu)));
-      return map$1(items, menu => get$h(menuPaths, menu).getOr([menu]));
+      return map$1(items, menu => get$g(menuPaths, menu).getOr([menu]));
     };
 
-    const init$b = () => {
+    const init$c = () => {
       const expansions = Cell({});
       const menus = Cell({});
       const paths = Cell({});
-      const primary = value$4();
+      const primary = value$2();
       const directory = Cell({});
       const clear = () => {
         expansions.set({});
@@ -7804,21 +7410,21 @@
       }))));
       const getTriggeringPath = (itemValue, getItemByValue) => {
         const extraPath = filter$2(lookupItem(itemValue).toArray(), menuValue => getPreparedMenu(menuValue).isSome());
-        return get$h(paths.get(), itemValue).bind(path => {
+        return get$g(paths.get(), itemValue).bind(path => {
           const revPath = reverse(extraPath.concat(path));
           const triggers = bind$3(revPath, (menuValue, menuIndex) => getTriggerData(menuValue, getItemByValue, revPath.slice(0, menuIndex + 1)).fold(() => is$1(primary.get(), menuValue) ? [] : [Optional.none()], data => [Optional.some(data)]));
           return sequence(triggers);
         });
       };
-      const expand = itemValue => get$h(expansions.get(), itemValue).map(menu => {
-        const current = get$h(paths.get(), itemValue).getOr([]);
+      const expand = itemValue => get$g(expansions.get(), itemValue).map(menu => {
+        const current = get$g(paths.get(), itemValue).getOr([]);
         return [menu].concat(current);
       });
-      const collapse = itemValue => get$h(paths.get(), itemValue).bind(path => path.length > 1 ? Optional.some(path.slice(1)) : Optional.none());
-      const refresh = itemValue => get$h(paths.get(), itemValue);
+      const collapse = itemValue => get$g(paths.get(), itemValue).bind(path => path.length > 1 ? Optional.some(path.slice(1)) : Optional.none());
+      const refresh = itemValue => get$g(paths.get(), itemValue);
       const getPreparedMenu = menuValue => lookupMenu(menuValue).bind(extractPreparedMenu);
-      const lookupMenu = menuValue => get$h(menus.get(), menuValue);
-      const lookupItem = itemValue => get$h(expansions.get(), itemValue);
+      const lookupMenu = menuValue => get$g(menus.get(), menuValue);
+      const lookupItem = itemValue => get$g(expansions.get(), itemValue);
       const otherMenus = path => {
         const menuValues = directory.get();
         return difference(keys(menuValues), path);
@@ -7843,7 +7449,7 @@
     };
     const extractPreparedMenu = prep => prep.type === 'prepared' ? Optional.some(prep.menu) : Optional.none();
     const LayeredState = {
-      init: init$b,
+      init: init$c,
       extractPreparedMenu
     };
 
@@ -7858,7 +7464,7 @@
     }(HighlightOnOpen || (HighlightOnOpen = {})));
 
     const make$6 = (detail, _rawUiSpec) => {
-      const submenuParentItems = value$4();
+      const submenuParentItems = value$2();
       const buildMenus = (container, primaryName, menus) => map$1(menus, (spec, name) => {
         const makeSketch = () => Menu.sketch({
           ...spec,
@@ -7920,7 +7526,7 @@
       const closeOthers = (container, state, path) => {
         const others = getMenus(state, state.otherMenus(path));
         each$1(others, o => {
-          remove$2(o.element, [detail.markers.backgroundMenu]);
+          remove$1(o.element, [detail.markers.backgroundMenu]);
           if (!detail.stayInDom) {
             Replacing.remove(container, o);
           }
@@ -7929,7 +7535,7 @@
       const getSubmenuParents = container => submenuParentItems.get().getOrThunk(() => {
         const r = {};
         const items = descendants(container.element, `.${ detail.markers.item }`);
-        const parentItems = filter$2(items, i => get$g(i, 'aria-haspopup') === 'true');
+        const parentItems = filter$2(items, i => get$f(i, 'aria-haspopup') === 'true');
         each$1(parentItems, i => {
           container.getSystem().getByDom(i).each(itemComp => {
             const key = getItemValue(itemComp);
@@ -7958,7 +7564,7 @@
           if (!inBody(activeMenu.element)) {
             Replacing.append(container, premade(activeMenu));
           }
-          remove$2(activeMenu.element, [detail.markers.backgroundMenu]);
+          remove$1(activeMenu.element, [detail.markers.backgroundMenu]);
           setActiveMenuAndItem(container, activeMenu);
           closeOthers(container, state, path);
           return Optional.some(activeMenu);
@@ -8082,7 +7688,7 @@
           setActiveMenuAndItem(container, primary);
         });
       };
-      const extractMenuFromContainer = container => Optional.from(container.components()[0]).filter(comp => get$g(comp.element, 'role') === 'menu');
+      const extractMenuFromContainer = container => Optional.from(container.components()[0]).filter(comp => get$f(comp.element, 'role') === 'menu');
       const repositionMenus = container => {
         const maybeActivePrimary = layeredState.getPrimary().bind(primary => getActiveItem(container).bind(currentItem => {
           const itemValue = getItemValue(currentItem);
@@ -8411,395 +8017,10 @@
 
     var global$9 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
-    var global$8 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
-
-    var global$7 = tinymce.util.Tools.resolve('tinymce.EditorManager');
-
-    var global$6 = tinymce.util.Tools.resolve('tinymce.Env');
-
-    var ToolbarMode$1;
-    (function (ToolbarMode) {
-      ToolbarMode['default'] = 'wrap';
-      ToolbarMode['floating'] = 'floating';
-      ToolbarMode['sliding'] = 'sliding';
-      ToolbarMode['scrolling'] = 'scrolling';
-    }(ToolbarMode$1 || (ToolbarMode$1 = {})));
-    var ToolbarLocation$1;
-    (function (ToolbarLocation) {
-      ToolbarLocation['auto'] = 'auto';
-      ToolbarLocation['top'] = 'top';
-      ToolbarLocation['bottom'] = 'bottom';
-    }(ToolbarLocation$1 || (ToolbarLocation$1 = {})));
-    const option$2 = name => editor => editor.options.get(name);
-    const wrapOptional = fn => editor => Optional.from(fn(editor));
-    const register$e = editor => {
-      const isPhone = global$6.deviceType.isPhone();
-      const isMobile = global$6.deviceType.isTablet() || isPhone;
-      const registerOption = editor.options.register;
-      const stringOrFalseProcessor = value => isString(value) || value === false;
-      const stringOrNumberProcessor = value => isString(value) || isNumber(value);
-      registerOption('skin', {
-        processor: value => isString(value) || value === false,
-        default: 'oxide'
-      });
-      registerOption('skin_url', { processor: 'string' });
-      registerOption('height', {
-        processor: stringOrNumberProcessor,
-        default: Math.max(editor.getElement().offsetHeight, 400)
-      });
-      registerOption('width', {
-        processor: stringOrNumberProcessor,
-        default: global$8.DOM.getStyle(editor.getElement(), 'width')
-      });
-      registerOption('min_height', {
-        processor: 'number',
-        default: 100
-      });
-      registerOption('min_width', { processor: 'number' });
-      registerOption('max_height', { processor: 'number' });
-      registerOption('max_width', { processor: 'number' });
-      registerOption('style_formats', { processor: 'object[]' });
-      registerOption('style_formats_merge', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('style_formats_autohide', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('line_height_formats', {
-        processor: 'string',
-        default: '1 1.1 1.2 1.3 1.4 1.5 2'
-      });
-      registerOption('font_family_formats', {
-        processor: 'string',
-        default: 'Andale Mono=andale mono,monospace;' + 'Arial=arial,helvetica,sans-serif;' + 'Arial Black=arial black,sans-serif;' + 'Book Antiqua=book antiqua,palatino,serif;' + 'Comic Sans MS=comic sans ms,sans-serif;' + 'Courier New=courier new,courier,monospace;' + 'Georgia=georgia,palatino,serif;' + 'Helvetica=helvetica,arial,sans-serif;' + 'Impact=impact,sans-serif;' + 'Symbol=symbol;' + 'Tahoma=tahoma,arial,helvetica,sans-serif;' + 'Terminal=terminal,monaco,monospace;' + 'Times New Roman=times new roman,times,serif;' + 'Trebuchet MS=trebuchet ms,geneva,sans-serif;' + 'Verdana=verdana,geneva,sans-serif;' + 'Webdings=webdings;' + 'Wingdings=wingdings,zapf dingbats'
-      });
-      registerOption('font_size_formats', {
-        processor: 'string',
-        default: '8pt 10pt 12pt 14pt 18pt 24pt 36pt'
-      });
-      registerOption('font_size_input_default_unit', {
-        processor: 'string',
-        default: 'pt'
-      });
-      registerOption('block_formats', {
-        processor: 'string',
-        default: 'Paragraph=p;' + 'Heading 1=h1;' + 'Heading 2=h2;' + 'Heading 3=h3;' + 'Heading 4=h4;' + 'Heading 5=h5;' + 'Heading 6=h6;' + 'Preformatted=pre'
-      });
-      registerOption('content_langs', { processor: 'object[]' });
-      registerOption('removed_menuitems', {
-        processor: 'string',
-        default: ''
-      });
-      registerOption('menubar', {
-        processor: value => isString(value) || isBoolean(value),
-        default: !isPhone
-      });
-      registerOption('menu', {
-        processor: 'object',
-        default: {}
-      });
-      registerOption('toolbar', {
-        processor: value => {
-          if (isBoolean(value) || isString(value) || isArray(value)) {
-            return {
-              value,
-              valid: true
-            };
-          } else {
-            return {
-              valid: false,
-              message: 'Must be a boolean, string or array.'
-            };
-          }
-        },
-        default: true
-      });
-      range$2(9, num => {
-        registerOption('toolbar' + (num + 1), { processor: 'string' });
-      });
-      registerOption('toolbar_mode', {
-        processor: 'string',
-        default: isMobile ? 'scrolling' : 'floating'
-      });
-      registerOption('toolbar_groups', {
-        processor: 'object',
-        default: {}
-      });
-      registerOption('toolbar_location', {
-        processor: 'string',
-        default: ToolbarLocation$1.auto
-      });
-      registerOption('toolbar_persist', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('toolbar_sticky', {
-        processor: 'boolean',
-        default: editor.inline
-      });
-      registerOption('toolbar_sticky_offset', {
-        processor: 'number',
-        default: 0
-      });
-      registerOption('fixed_toolbar_container', {
-        processor: 'string',
-        default: ''
-      });
-      registerOption('fixed_toolbar_container_target', { processor: 'object' });
-      registerOption('ui_mode', {
-        processor: 'string',
-        default: 'combined'
-      });
-      registerOption('file_picker_callback', { processor: 'function' });
-      registerOption('file_picker_validator_handler', { processor: 'function' });
-      registerOption('file_picker_types', { processor: 'string' });
-      registerOption('typeahead_urls', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('anchor_top', {
-        processor: stringOrFalseProcessor,
-        default: '#top'
-      });
-      registerOption('anchor_bottom', {
-        processor: stringOrFalseProcessor,
-        default: '#bottom'
-      });
-      registerOption('draggable_modal', {
-        processor: 'boolean',
-        default: false
-      });
-      registerOption('statusbar', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('elementpath', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('branding', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('promotion', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('resize', {
-        processor: value => value === 'both' || isBoolean(value),
-        default: !global$6.deviceType.isTouch()
-      });
-      registerOption('sidebar_show', { processor: 'string' });
-      registerOption('help_accessibility', {
-        processor: 'boolean',
-        default: editor.hasPlugin('help')
-      });
-      registerOption('default_font_stack', {
-        processor: 'string[]',
-        default: []
-      });
-    };
-    const isReadOnly = option$2('readonly');
-    const getHeightOption = option$2('height');
-    const getWidthOption = option$2('width');
-    const getMinWidthOption = wrapOptional(option$2('min_width'));
-    const getMinHeightOption = wrapOptional(option$2('min_height'));
-    const getMaxWidthOption = wrapOptional(option$2('max_width'));
-    const getMaxHeightOption = wrapOptional(option$2('max_height'));
-    const getUserStyleFormats = wrapOptional(option$2('style_formats'));
-    const shouldMergeStyleFormats = option$2('style_formats_merge');
-    const shouldAutoHideStyleFormats = option$2('style_formats_autohide');
-    const getContentLanguages = option$2('content_langs');
-    const getRemovedMenuItems = option$2('removed_menuitems');
-    const getToolbarMode = option$2('toolbar_mode');
-    const getToolbarGroups = option$2('toolbar_groups');
-    const getToolbarLocation = option$2('toolbar_location');
-    const fixedContainerSelector = option$2('fixed_toolbar_container');
-    const fixedToolbarContainerTarget = option$2('fixed_toolbar_container_target');
-    const isToolbarPersist = option$2('toolbar_persist');
-    const getStickyToolbarOffset = option$2('toolbar_sticky_offset');
-    const getMenubar = option$2('menubar');
-    const getToolbar = option$2('toolbar');
-    const getFilePickerCallback = option$2('file_picker_callback');
-    const getFilePickerValidatorHandler = option$2('file_picker_validator_handler');
-    const getFontSizeInputDefaultUnit = option$2('font_size_input_default_unit');
-    const getFilePickerTypes = option$2('file_picker_types');
-    const useTypeaheadUrls = option$2('typeahead_urls');
-    const getAnchorTop = option$2('anchor_top');
-    const getAnchorBottom = option$2('anchor_bottom');
-    const isDraggableModal$1 = option$2('draggable_modal');
-    const useStatusBar = option$2('statusbar');
-    const useElementPath = option$2('elementpath');
-    const useBranding = option$2('branding');
-    const getResize = option$2('resize');
-    const getPasteAsText = option$2('paste_as_text');
-    const getSidebarShow = option$2('sidebar_show');
-    const promotionEnabled = option$2('promotion');
-    const useHelpAccessibility = option$2('help_accessibility');
-    const getDefaultFontStack = option$2('default_font_stack');
-    const isSkinDisabled = editor => editor.options.get('skin') === false;
-    const isMenubarEnabled = editor => editor.options.get('menubar') !== false;
-    const getSkinUrl = editor => {
-      const skinUrl = editor.options.get('skin_url');
-      if (isSkinDisabled(editor)) {
-        return skinUrl;
-      } else {
-        if (skinUrl) {
-          return editor.documentBaseURI.toAbsolute(skinUrl);
-        } else {
-          const skin = editor.options.get('skin');
-          return global$7.baseURL + '/skins/ui/' + skin;
-        }
-      }
-    };
-    const getSkinUrlOption = editor => Optional.from(editor.options.get('skin_url'));
-    const getLineHeightFormats = editor => editor.options.get('line_height_formats').split(' ');
-    const isToolbarEnabled = editor => {
-      const toolbar = getToolbar(editor);
-      const isToolbarString = isString(toolbar);
-      const isToolbarObjectArray = isArray(toolbar) && toolbar.length > 0;
-      return !isMultipleToolbars(editor) && (isToolbarObjectArray || isToolbarString || toolbar === true);
-    };
-    const getMultipleToolbarsOption = editor => {
-      const toolbars = range$2(9, num => editor.options.get('toolbar' + (num + 1)));
-      const toolbarArray = filter$2(toolbars, isString);
-      return someIf(toolbarArray.length > 0, toolbarArray);
-    };
-    const isMultipleToolbars = editor => getMultipleToolbarsOption(editor).fold(() => {
-      const toolbar = getToolbar(editor);
-      return isArrayOf(toolbar, isString) && toolbar.length > 0;
-    }, always);
-    const isToolbarLocationBottom = editor => getToolbarLocation(editor) === ToolbarLocation$1.bottom;
-    const fixedContainerTarget = editor => {
-      var _a;
-      if (!editor.inline) {
-        return Optional.none();
-      }
-      const selector = (_a = fixedContainerSelector(editor)) !== null && _a !== void 0 ? _a : '';
-      if (selector.length > 0) {
-        return descendant(body(), selector);
-      }
-      const element = fixedToolbarContainerTarget(editor);
-      if (isNonNullable(element)) {
-        return Optional.some(SugarElement.fromDom(element));
-      }
-      return Optional.none();
-    };
-    const useFixedContainer = editor => editor.inline && fixedContainerTarget(editor).isSome();
-    const getUiContainer = editor => {
-      const fixedContainer = fixedContainerTarget(editor);
-      return fixedContainer.getOrThunk(() => getContentContainer(getRootNode(SugarElement.fromDom(editor.getElement()))));
-    };
-    const isDistractionFree = editor => editor.inline && !isMenubarEnabled(editor) && !isToolbarEnabled(editor) && !isMultipleToolbars(editor);
-    const isStickyToolbar = editor => {
-      const isStickyToolbar = editor.options.get('toolbar_sticky');
-      return (isStickyToolbar || editor.inline) && !useFixedContainer(editor) && !isDistractionFree(editor);
-    };
-    const isSplitUiMode = editor => !useFixedContainer(editor) && editor.options.get('ui_mode') === 'split';
-    const getMenus = editor => {
-      const menu = editor.options.get('menu');
-      return map$1(menu, menu => ({
-        ...menu,
-        items: menu.items
-      }));
-    };
-
-    var Options = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        get ToolbarMode () { return ToolbarMode$1; },
-        get ToolbarLocation () { return ToolbarLocation$1; },
-        register: register$e,
-        getSkinUrl: getSkinUrl,
-        getSkinUrlOption: getSkinUrlOption,
-        isReadOnly: isReadOnly,
-        isSkinDisabled: isSkinDisabled,
-        getHeightOption: getHeightOption,
-        getWidthOption: getWidthOption,
-        getMinWidthOption: getMinWidthOption,
-        getMinHeightOption: getMinHeightOption,
-        getMaxWidthOption: getMaxWidthOption,
-        getMaxHeightOption: getMaxHeightOption,
-        getUserStyleFormats: getUserStyleFormats,
-        shouldMergeStyleFormats: shouldMergeStyleFormats,
-        shouldAutoHideStyleFormats: shouldAutoHideStyleFormats,
-        getLineHeightFormats: getLineHeightFormats,
-        getContentLanguages: getContentLanguages,
-        getRemovedMenuItems: getRemovedMenuItems,
-        isMenubarEnabled: isMenubarEnabled,
-        isMultipleToolbars: isMultipleToolbars,
-        isToolbarEnabled: isToolbarEnabled,
-        isToolbarPersist: isToolbarPersist,
-        getMultipleToolbarsOption: getMultipleToolbarsOption,
-        getUiContainer: getUiContainer,
-        useFixedContainer: useFixedContainer,
-        isSplitUiMode: isSplitUiMode,
-        getToolbarMode: getToolbarMode,
-        isDraggableModal: isDraggableModal$1,
-        isDistractionFree: isDistractionFree,
-        isStickyToolbar: isStickyToolbar,
-        getStickyToolbarOffset: getStickyToolbarOffset,
-        getToolbarLocation: getToolbarLocation,
-        isToolbarLocationBottom: isToolbarLocationBottom,
-        getToolbarGroups: getToolbarGroups,
-        getMenus: getMenus,
-        getMenubar: getMenubar,
-        getToolbar: getToolbar,
-        getFilePickerCallback: getFilePickerCallback,
-        getFilePickerTypes: getFilePickerTypes,
-        useTypeaheadUrls: useTypeaheadUrls,
-        getAnchorTop: getAnchorTop,
-        getAnchorBottom: getAnchorBottom,
-        getFilePickerValidatorHandler: getFilePickerValidatorHandler,
-        getFontSizeInputDefaultUnit: getFontSizeInputDefaultUnit,
-        useStatusBar: useStatusBar,
-        useElementPath: useElementPath,
-        promotionEnabled: promotionEnabled,
-        useBranding: useBranding,
-        getResize: getResize,
-        getPasteAsText: getPasteAsText,
-        getSidebarShow: getSidebarShow,
-        useHelpAccessibility: useHelpAccessibility,
-        getDefaultFontStack: getDefaultFontStack
-    });
-
-    const nonScrollingOverflows = [
-      'visible',
-      'hidden',
-      'clip'
-    ];
-    const isScrollingOverflowValue = value => trim$1(value).length > 0 && !contains$2(nonScrollingOverflows, value);
-    const isScroller = elem => {
-      if (isHTMLElement(elem)) {
-        const overflowX = get$f(elem, 'overflow-x');
-        const overflowY = get$f(elem, 'overflow-y');
-        return isScrollingOverflowValue(overflowX) || isScrollingOverflowValue(overflowY);
-      } else {
-        return false;
-      }
-    };
-    const detect = popupSinkElem => {
-      const ancestorsScrollers = ancestors(popupSinkElem, isScroller);
-      const scrollers = ancestorsScrollers.length === 0 ? getShadowRoot(popupSinkElem).map(getShadowHost).map(x => ancestors(x, isScroller)).getOr([]) : ancestorsScrollers;
-      return head(scrollers).map(element => ({
-        element,
-        others: scrollers.slice(1)
-      }));
-    };
-    const detectWhenSplitUiMode = (editor, popupSinkElem) => isSplitUiMode(editor) ? detect(popupSinkElem) : Optional.none();
-    const getBoundsFrom = sc => {
-      const scrollableBoxes = [
-        ...map$2(sc.others, box$1),
-        win()
-      ];
-      return constrainByMany(box$1(sc.element), scrollableBoxes);
-    };
-
     const factory$n = detail => {
-      const events = events$9(detail.action);
+      const events = events$a(detail.action);
       const tag = detail.dom.tag;
-      const lookupAttr = attr => get$h(detail.dom, 'attributes').bind(attrs => get$h(attrs, attr));
+      const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
       const getModAttributes = () => {
         if (tag === 'button') {
           const type = lookupAttr('type').getOr('button');
@@ -8866,7 +8087,7 @@
       const children$1 = children(elem);
       const attrs = getAttrs(elem);
       const classes = getClasses(elem);
-      const contents = children$1.length === 0 ? {} : { innerHtml: get$8(elem) };
+      const contents = children$1.length === 0 ? {} : { innerHtml: get$9(elem) };
       return {
         tag: name$3(elem),
         classes,
@@ -8889,296 +8110,6 @@
         asSpec
       };
     };
-
-    const exhibit$2 = (base, tabConfig) => nu$8({
-      attributes: wrapAll([{
-          key: tabConfig.tabAttr,
-          value: 'true'
-        }])
-    });
-
-    var ActiveTabstopping = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        exhibit: exhibit$2
-    });
-
-    var TabstopSchema = [defaulted('tabAttr', 'data-alloy-tabstop')];
-
-    const Tabstopping = create$4({
-      fields: TabstopSchema,
-      name: 'tabstopping',
-      active: ActiveTabstopping
-    });
-
-    const ExclusivityChannel = generate$6('tooltip.exclusive');
-    const ShowTooltipEvent = generate$6('tooltip.show');
-    const HideTooltipEvent = generate$6('tooltip.hide');
-    const ImmediateHideTooltipEvent = generate$6('tooltip.immediateHide');
-    const ImmediateShowTooltipEvent = generate$6('tooltip.immediateShow');
-
-    const hideAllExclusive = (component, _tConfig, _tState) => {
-      component.getSystem().broadcastOn([ExclusivityChannel], {});
-    };
-    const setComponents = (component, tConfig, tState, specs) => {
-      tState.getTooltip().each(tooltip => {
-        if (tooltip.getSystem().isConnected()) {
-          Replacing.set(tooltip, specs);
-        }
-      });
-    };
-
-    var TooltippingApis = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        hideAllExclusive: hideAllExclusive,
-        setComponents: setComponents
-    });
-
-    const events$8 = (tooltipConfig, state) => {
-      const hide = comp => {
-        state.getTooltip().each(p => {
-          if (p.getSystem().isConnected()) {
-            detach(p);
-            tooltipConfig.onHide(comp, p);
-            state.clearTooltip();
-          }
-        });
-        state.clearTimer();
-      };
-      const show = comp => {
-        if (!state.isShowing()) {
-          hideAllExclusive(comp);
-          const sink = tooltipConfig.lazySink(comp).getOrDie();
-          const popup = comp.getSystem().build({
-            dom: tooltipConfig.tooltipDom,
-            components: tooltipConfig.tooltipComponents,
-            events: derive$2(tooltipConfig.mode === 'normal' ? [
-              run$1(mouseover(), _ => {
-                emit(comp, ShowTooltipEvent);
-              }),
-              run$1(mouseout(), _ => {
-                emit(comp, HideTooltipEvent);
-              })
-            ] : []),
-            behaviours: derive$1([Replacing.config({})])
-          });
-          state.setTooltip(popup);
-          attach(sink, popup);
-          tooltipConfig.onShow(comp, popup);
-          Positioning.position(sink, popup, { anchor: tooltipConfig.anchor(comp) });
-        }
-      };
-      const reposition = comp => {
-        state.getTooltip().each(tooltip => {
-          const sink = tooltipConfig.lazySink(comp).getOrDie();
-          Positioning.position(sink, tooltip, { anchor: tooltipConfig.anchor(comp) });
-        });
-      };
-      const getEvents = () => {
-        switch (tooltipConfig.mode) {
-        case 'normal':
-          return [
-            run$1(focusin(), comp => {
-              emit(comp, ImmediateShowTooltipEvent);
-            }),
-            run$1(postBlur(), comp => {
-              emit(comp, ImmediateHideTooltipEvent);
-            }),
-            run$1(mouseover(), comp => {
-              emit(comp, ShowTooltipEvent);
-            }),
-            run$1(mouseout(), comp => {
-              emit(comp, HideTooltipEvent);
-            })
-          ];
-        case 'follow-highlight':
-          return [
-            run$1(highlight$1(), (comp, _se) => {
-              emit(comp, ShowTooltipEvent);
-            }),
-            run$1(dehighlight$1(), comp => {
-              emit(comp, HideTooltipEvent);
-            })
-          ];
-        case 'children-normal':
-          return [
-            run$1(focusin(), (comp, se) => {
-              search(comp.element).each(_ => {
-                if (is(se.event.target, '[data-mce-tooltip]')) {
-                  state.getTooltip().fold(() => {
-                    emit(comp, ImmediateShowTooltipEvent);
-                  }, tooltip => {
-                    if (state.isShowing()) {
-                      tooltipConfig.onShow(comp, tooltip);
-                      reposition(comp);
-                    }
-                  });
-                }
-              });
-            }),
-            run$1(postBlur(), comp => {
-              search(comp.element).fold(() => {
-                emit(comp, ImmediateHideTooltipEvent);
-              }, noop);
-            }),
-            run$1(mouseover(), comp => {
-              descendant(comp.element, '[data-mce-tooltip]:hover').each(_ => {
-                state.getTooltip().fold(() => {
-                  emit(comp, ShowTooltipEvent);
-                }, tooltip => {
-                  if (state.isShowing()) {
-                    tooltipConfig.onShow(comp, tooltip);
-                    reposition(comp);
-                  }
-                });
-              });
-            }),
-            run$1(mouseout(), comp => {
-              descendant(comp.element, '[data-mce-tooltip]:hover').fold(() => {
-                emit(comp, HideTooltipEvent);
-              }, noop);
-            })
-          ];
-        default:
-          return [
-            run$1(focusin(), (comp, se) => {
-              search(comp.element).each(_ => {
-                if (is(se.event.target, '[data-mce-tooltip]')) {
-                  state.getTooltip().fold(() => {
-                    emit(comp, ImmediateShowTooltipEvent);
-                  }, tooltip => {
-                    if (state.isShowing()) {
-                      tooltipConfig.onShow(comp, tooltip);
-                      reposition(comp);
-                    }
-                  });
-                }
-              });
-            }),
-            run$1(postBlur(), comp => {
-              search(comp.element).fold(() => {
-                emit(comp, ImmediateHideTooltipEvent);
-              }, noop);
-            })
-          ];
-        }
-      };
-      return derive$2(flatten([
-        [
-          run$1(ShowTooltipEvent, comp => {
-            state.resetTimer(() => {
-              show(comp);
-            }, tooltipConfig.delayForShow());
-          }),
-          run$1(HideTooltipEvent, comp => {
-            state.resetTimer(() => {
-              hide(comp);
-            }, tooltipConfig.delayForHide());
-          }),
-          run$1(ImmediateShowTooltipEvent, comp => {
-            state.resetTimer(() => {
-              show(comp);
-            }, 0);
-          }),
-          run$1(ImmediateHideTooltipEvent, comp => {
-            state.resetTimer(() => {
-              hide(comp);
-            }, 0);
-          }),
-          run$1(receive(), (comp, message) => {
-            const receivingData = message;
-            if (!receivingData.universal) {
-              if (contains$2(receivingData.channels, ExclusivityChannel)) {
-                hide(comp);
-              }
-            }
-          }),
-          runOnDetached(comp => {
-            hide(comp);
-          })
-        ],
-        getEvents()
-      ]));
-    };
-
-    var ActiveTooltipping = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        events: events$8
-    });
-
-    var TooltippingSchema = [
-      required$1('lazySink'),
-      required$1('tooltipDom'),
-      defaulted('exclusive', true),
-      defaulted('tooltipComponents', []),
-      defaultedFunction('delayForShow', constant$1(300)),
-      defaultedFunction('delayForHide', constant$1(300)),
-      defaultedStringEnum('mode', 'normal', [
-        'normal',
-        'follow-highlight',
-        'children-keyboard-focus',
-        'children-normal'
-      ]),
-      defaulted('anchor', comp => ({
-        type: 'hotspot',
-        hotspot: comp,
-        layouts: {
-          onLtr: constant$1([
-            south$2,
-            north$2,
-            southeast$2,
-            northeast$2,
-            southwest$2,
-            northwest$2
-          ]),
-          onRtl: constant$1([
-            south$2,
-            north$2,
-            southeast$2,
-            northeast$2,
-            southwest$2,
-            northwest$2
-          ])
-        },
-        bubble: nu$5(0, -2, {})
-      })),
-      onHandler('onHide'),
-      onHandler('onShow')
-    ];
-
-    const init$a = () => {
-      const timer = value$4();
-      const popup = value$4();
-      const clearTimer = () => {
-        timer.on(clearTimeout);
-      };
-      const resetTimer = (f, delay) => {
-        clearTimer();
-        timer.set(setTimeout(f, delay));
-      };
-      const readState = constant$1('not-implemented');
-      return nu$7({
-        getTooltip: popup.get,
-        isShowing: popup.isSet,
-        setTooltip: popup.set,
-        clearTooltip: popup.clear,
-        clearTimer,
-        resetTimer,
-        readState
-      });
-    };
-
-    var TooltippingState = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        init: init$a
-    });
-
-    const Tooltipping = create$4({
-      fields: TooltippingSchema,
-      name: 'tooltipping',
-      active: ActiveTooltipping,
-      state: TooltippingState,
-      apis: TooltippingApis
-    });
 
     const {entries, setPrototypeOf, isFrozen, getPrototypeOf, getOwnPropertyDescriptor} = Object;
     let {freeze, seal, create: create$1} = Object;
@@ -10715,7 +9646,7 @@
 
     const sanitizeHtmlString = html => purify().sanitize(html);
 
-    var global$5 = tinymce.util.Tools.resolve('tinymce.util.I18n');
+    var global$8 = tinymce.util.Tools.resolve('tinymce.util.I18n');
 
     const rtlTransform = {
       'indent': true,
@@ -10730,18 +9661,18 @@
       'list-bull-square': true
     };
     const defaultIconName = 'temporary-placeholder';
-    const defaultIcon = icons => () => get$h(icons, defaultIconName).getOr('!not found!');
+    const defaultIcon = icons => () => get$g(icons, defaultIconName).getOr('!not found!');
     const getIconName = (name, icons) => {
       const lcName = name.toLowerCase();
-      if (global$5.isRtl()) {
+      if (global$8.isRtl()) {
         const rtlName = ensureTrailing(lcName, '-rtl');
         return has$2(icons, rtlName) ? rtlName : lcName;
       } else {
         return lcName;
       }
     };
-    const lookupIcon = (name, icons) => get$h(icons, getIconName(name, icons));
-    const get$3 = (name, iconProvider) => {
+    const lookupIcon = (name, icons) => get$g(icons, getIconName(name, icons));
+    const get$2 = (name, iconProvider) => {
       const icons = iconProvider();
       return lookupIcon(name, icons).getOrThunk(defaultIcon(icons));
     };
@@ -10749,14 +9680,14 @@
       const icons = iconProvider();
       return lookupIcon(name, icons).or(fallbackIcon).getOrThunk(defaultIcon(icons));
     };
-    const needsRtlTransform = iconName => global$5.isRtl() ? has$2(rtlTransform, iconName) : false;
+    const needsRtlTransform = iconName => global$8.isRtl() ? has$2(rtlTransform, iconName) : false;
     const addFocusableBehaviour = () => config('add-focusable', [runOnAttached(comp => {
         child(comp.element, 'svg').each(svg => set$9(svg, 'focusable', 'false'));
       })]);
     const renderIcon$3 = (spec, iconName, icons, fallbackIcon) => {
       var _a, _b;
       const rtlIconClasses = needsRtlTransform(iconName) ? ['tox-icon--flip'] : [];
-      const iconHtml = get$h(icons, getIconName(iconName, icons)).or(fallbackIcon).getOrThunk(defaultIcon(icons));
+      const iconHtml = get$g(icons, getIconName(iconName, icons)).or(fallbackIcon).getOrThunk(defaultIcon(icons));
       return {
         dom: {
           tag: spec.tag,
@@ -10786,9 +9717,8 @@
       info: 'info'
     };
     const factory$m = detail => {
-      const notificationTextId = generate$6('notification-text');
       const memBannerText = record({
-        dom: fromHtml(`<p id=${ notificationTextId }>${ sanitizeHtmlString(detail.backstageProvider.translate(detail.text)) }</p>`),
+        dom: fromHtml(`<p>${ sanitizeHtmlString(detail.translationProvider(detail.text)) }</p>`),
         behaviours: derive$1([Replacing.config({})])
       });
       const renderPercentBar = percent => ({
@@ -10864,17 +9794,13 @@
             'tox-button',
             'tox-button--naked',
             'tox-button--icon'
-          ],
-          attributes: { 'aria-label': detail.backstageProvider.translate('Close') }
+          ]
         },
         components: [render$3('close', {
             tag: 'span',
-            classes: ['tox-icon']
+            classes: ['tox-icon'],
+            attributes: { 'aria-label': detail.translationProvider('Close') }
           }, detail.iconProvider)],
-        buttonBehaviours: derive$1([
-          Tabstopping.config({}),
-          Tooltipping.config({ ...detail.backstageProvider.tooltips.getConfig({ tooltipText: detail.backstageProvider.translate('Close') }) })
-        ]),
         action: comp => {
           detail.onAction(comp);
         }
@@ -10899,10 +9825,7 @@
         uid: detail.uid,
         dom: {
           tag: 'div',
-          attributes: {
-            'role': 'alert',
-            'aria-labelledby': notificationTextId
-          },
+          attributes: { role: 'alert' },
           classes: detail.level.map(level => [
             'tox-notification',
             'tox-notification--in',
@@ -10913,15 +9836,10 @@
           ])
         },
         behaviours: derive$1([
-          Tabstopping.config({}),
           Focusing.config({}),
-          Keying.config({
-            mode: 'special',
-            onEscape: comp => {
-              detail.onAction(comp);
-              return Optional.some(true);
-            }
-          })
+          config('notification-events', [run$1(focusin(), comp => {
+              memButton.getOpt(comp).each(Focusing.focus);
+            })])
         ]),
         components: components.concat(detail.progress ? [memBannerProgress.asSpec()] : []).concat([memButton.asSpec()]),
         apis
@@ -10937,7 +9855,7 @@
         required$1('onAction'),
         required$1('text'),
         required$1('iconProvider'),
-        required$1('backstageProvider')
+        required$1('translationProvider')
       ],
       apis: {
         updateProgress: (apis, comp, percent) => {
@@ -10949,52 +9867,21 @@
       }
     });
 
-    var NotificationManagerImpl = (editor, extras, uiMothership, notificationRegion) => {
+    var NotificationManagerImpl = (editor, extras, uiMothership) => {
       const sharedBackstage = extras.backstage.shared;
       const getBounds = () => {
         const contentArea = box$1(SugarElement.fromDom(editor.getContentAreaContainer()));
-        return Optional.some(contentArea);
+        const win$1 = win();
+        const x = clamp(win$1.x, contentArea.x, contentArea.right);
+        const y = clamp(win$1.y, contentArea.y, contentArea.bottom);
+        const right = Math.max(contentArea.right, win$1.right);
+        const bottom = Math.max(contentArea.bottom, win$1.bottom);
+        return Optional.some(bounds(x, y, right - x, bottom - y));
       };
-      const clampComponentsToBounds = components => {
-        getBounds().each(bounds => {
-          each$1(components, comp => {
-            if (get$d(comp.element) > bounds.width) {
-              set$8(comp.element, 'width', bounds.width + 'px');
-            }
-          });
-        });
-      };
-      const open = (settings, closeCallback, isEditorOrUIFocused) => {
+      const open = (settings, closeCallback) => {
         const close = () => {
-          const removeNotificationAndReposition = region => {
-            Replacing.remove(region, notification);
-            reposition();
-          };
-          const manageRegionVisibility = (region, editorOrUiFocused) => {
-            if (children(region.element).length === 0) {
-              handleEmptyRegion(region, editorOrUiFocused);
-            } else {
-              handleRegionWithChildren(region, editorOrUiFocused);
-            }
-          };
-          const handleEmptyRegion = (region, editorOrUIFocused) => {
-            InlineView.hide(region);
-            notificationRegion.clear();
-            if (editorOrUIFocused) {
-              editor.focus();
-            }
-          };
-          const handleRegionWithChildren = (region, editorOrUIFocused) => {
-            if (editorOrUIFocused) {
-              Keying.focusIn(region);
-            }
-          };
-          notificationRegion.on(region => {
-            closeCallback();
-            const editorOrUIFocused = isEditorOrUIFocused();
-            removeNotificationAndReposition(region);
-            manageRegionVisibility(region, editorOrUIFocused);
-          });
+          closeCallback();
+          InlineView.hide(notificationWrapper);
         };
         const notification = build$1(Notification.sketch({
           text: settings.text,
@@ -11009,83 +9896,49 @@
           icon: settings.icon,
           onAction: close,
           iconProvider: sharedBackstage.providers.icons,
-          backstageProvider: sharedBackstage.providers
+          translationProvider: sharedBackstage.providers.translate
         }));
-        if (!notificationRegion.isSet()) {
-          const notificationWrapper = build$1(InlineView.sketch({
-            dom: {
-              tag: 'div',
-              classes: ['tox-notifications-container'],
-              attributes: {
-                'aria-label': 'Notifications',
-                'role': 'region'
-              }
-            },
-            lazySink: sharedBackstage.getSink,
-            fireDismissalEventInstead: {},
-            ...sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} },
-            inlineBehaviours: derive$1([
-              Keying.config({
-                mode: 'cyclic',
-                selector: '.tox-notification, .tox-notification a, .tox-notification button'
-              }),
-              Replacing.config({}),
-              ...isStickyToolbar(editor) && !sharedBackstage.header.isPositionedAtTop() ? [] : [Docking.config({
-                  contextual: {
-                    lazyContext: () => Optional.some(box$1(SugarElement.fromDom(editor.getContentAreaContainer()))),
-                    fadeInClass: 'tox-notification-container-dock-fadein',
-                    fadeOutClass: 'tox-notification-container-dock-fadeout',
-                    transitionClass: 'tox-notification-container-dock-transition'
-                  },
-                  modes: ['top'],
-                  lazyViewport: comp => {
-                    const optScrollingContext = detectWhenSplitUiMode(editor, comp.element);
-                    return optScrollingContext.map(sc => {
-                      const combinedBounds = getBoundsFrom(sc);
-                      return {
-                        bounds: combinedBounds,
-                        optScrollEnv: Optional.some({
-                          currentScrollTop: sc.element.dom.scrollTop,
-                          scrollElmTop: absolute$3(sc.element).top
-                        })
-                      };
-                    }).getOrThunk(() => ({
-                      bounds: win(),
-                      optScrollEnv: Optional.none()
-                    }));
-                  }
-                })]
-            ])
-          }));
-          const notificationSpec = premade(notification);
-          const anchorOverrides = { maxHeightFunction: expandable$1() };
-          const anchor = {
-            ...sharedBackstage.anchors.banner(),
-            overrides: anchorOverrides
-          };
-          notificationRegion.set(notificationWrapper);
-          uiMothership.add(notificationWrapper);
-          InlineView.showWithinBounds(notificationWrapper, notificationSpec, { anchor }, getBounds);
-        } else {
-          const notificationSpec = premade(notification);
-          notificationRegion.on(notificationWrapper => {
-            Replacing.append(notificationWrapper, notificationSpec);
-            InlineView.reposition(notificationWrapper);
-            Docking.refresh(notificationWrapper);
-            clampComponentsToBounds(notificationWrapper.components());
-          });
-        }
+        const notificationWrapper = build$1(InlineView.sketch({
+          dom: {
+            tag: 'div',
+            classes: ['tox-notifications-container']
+          },
+          lazySink: sharedBackstage.getSink,
+          fireDismissalEventInstead: {},
+          ...sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} }
+        }));
+        uiMothership.add(notificationWrapper);
         if (isNumber(settings.timeout) && settings.timeout > 0) {
           global$9.setEditorTimeout(editor, () => {
             close();
           }, settings.timeout);
         }
         const reposition = () => {
-          notificationRegion.on(region => {
-            InlineView.reposition(region);
-            Docking.refresh(region);
-            clampComponentsToBounds(region.components());
-          });
+          const notificationSpec = premade(notification);
+          const anchorOverrides = { maxHeightFunction: expandable$1() };
+          const allNotifications = editor.notificationManager.getNotifications();
+          if (allNotifications[0] === thisNotification) {
+            const anchor = {
+              ...sharedBackstage.anchors.banner(),
+              overrides: anchorOverrides
+            };
+            InlineView.showWithinBounds(notificationWrapper, notificationSpec, { anchor }, getBounds);
+          } else {
+            indexOf(allNotifications, thisNotification).each(idx => {
+              const previousNotification = allNotifications[idx - 1].getEl();
+              const nodeAnchor = {
+                type: 'node',
+                root: body(),
+                node: Optional.some(SugarElement.fromDom(previousNotification)),
+                overrides: anchorOverrides,
+                layouts: {
+                  onRtl: () => [south$2],
+                  onLtr: () => [south$2]
+                }
+              };
+              InlineView.showWithinBounds(notificationWrapper, notificationSpec, { anchor: nodeAnchor }, getBounds);
+            });
+          }
         };
         const thisNotification = {
           close,
@@ -11115,6 +9968,359 @@
         getArgs
       };
     };
+
+    var global$7 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+
+    var global$6 = tinymce.util.Tools.resolve('tinymce.EditorManager');
+
+    var global$5 = tinymce.util.Tools.resolve('tinymce.Env');
+
+    var ToolbarMode$1;
+    (function (ToolbarMode) {
+      ToolbarMode['default'] = 'wrap';
+      ToolbarMode['floating'] = 'floating';
+      ToolbarMode['sliding'] = 'sliding';
+      ToolbarMode['scrolling'] = 'scrolling';
+    }(ToolbarMode$1 || (ToolbarMode$1 = {})));
+    var ToolbarLocation$1;
+    (function (ToolbarLocation) {
+      ToolbarLocation['auto'] = 'auto';
+      ToolbarLocation['top'] = 'top';
+      ToolbarLocation['bottom'] = 'bottom';
+    }(ToolbarLocation$1 || (ToolbarLocation$1 = {})));
+    const option$2 = name => editor => editor.options.get(name);
+    const wrapOptional = fn => editor => Optional.from(fn(editor));
+    const register$e = editor => {
+      const isPhone = global$5.deviceType.isPhone();
+      const isMobile = global$5.deviceType.isTablet() || isPhone;
+      const registerOption = editor.options.register;
+      const stringOrFalseProcessor = value => isString(value) || value === false;
+      const stringOrNumberProcessor = value => isString(value) || isNumber(value);
+      registerOption('skin', {
+        processor: value => isString(value) || value === false,
+        default: 'oxide'
+      });
+      registerOption('skin_url', { processor: 'string' });
+      registerOption('height', {
+        processor: stringOrNumberProcessor,
+        default: Math.max(editor.getElement().offsetHeight, 400)
+      });
+      registerOption('width', {
+        processor: stringOrNumberProcessor,
+        default: global$7.DOM.getStyle(editor.getElement(), 'width')
+      });
+      registerOption('min_height', {
+        processor: 'number',
+        default: 100
+      });
+      registerOption('min_width', { processor: 'number' });
+      registerOption('max_height', { processor: 'number' });
+      registerOption('max_width', { processor: 'number' });
+      registerOption('style_formats', { processor: 'object[]' });
+      registerOption('style_formats_merge', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('style_formats_autohide', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('line_height_formats', {
+        processor: 'string',
+        default: '1 1.1 1.2 1.3 1.4 1.5 2'
+      });
+      registerOption('font_family_formats', {
+        processor: 'string',
+        default: 'Andale Mono=andale mono,monospace;' + 'Arial=arial,helvetica,sans-serif;' + 'Arial Black=arial black,sans-serif;' + 'Book Antiqua=book antiqua,palatino,serif;' + 'Comic Sans MS=comic sans ms,sans-serif;' + 'Courier New=courier new,courier,monospace;' + 'Georgia=georgia,palatino,serif;' + 'Helvetica=helvetica,arial,sans-serif;' + 'Impact=impact,sans-serif;' + 'Symbol=symbol;' + 'Tahoma=tahoma,arial,helvetica,sans-serif;' + 'Terminal=terminal,monaco,monospace;' + 'Times New Roman=times new roman,times,serif;' + 'Trebuchet MS=trebuchet ms,geneva,sans-serif;' + 'Verdana=verdana,geneva,sans-serif;' + 'Webdings=webdings;' + 'Wingdings=wingdings,zapf dingbats'
+      });
+      registerOption('font_size_formats', {
+        processor: 'string',
+        default: '8pt 10pt 12pt 14pt 18pt 24pt 36pt'
+      });
+      registerOption('font_size_input_default_unit', {
+        processor: 'string',
+        default: 'pt'
+      });
+      registerOption('block_formats', {
+        processor: 'string',
+        default: 'Paragraph=p;' + 'Heading 1=h1;' + 'Heading 2=h2;' + 'Heading 3=h3;' + 'Heading 4=h4;' + 'Heading 5=h5;' + 'Heading 6=h6;' + 'Preformatted=pre'
+      });
+      registerOption('content_langs', { processor: 'object[]' });
+      registerOption('removed_menuitems', {
+        processor: 'string',
+        default: ''
+      });
+      registerOption('menubar', {
+        processor: value => isString(value) || isBoolean(value),
+        default: !isPhone
+      });
+      registerOption('menu', {
+        processor: 'object',
+        default: {}
+      });
+      registerOption('toolbar', {
+        processor: value => {
+          if (isBoolean(value) || isString(value) || isArray(value)) {
+            return {
+              value,
+              valid: true
+            };
+          } else {
+            return {
+              valid: false,
+              message: 'Must be a boolean, string or array.'
+            };
+          }
+        },
+        default: true
+      });
+      range$2(9, num => {
+        registerOption('toolbar' + (num + 1), { processor: 'string' });
+      });
+      registerOption('toolbar_mode', {
+        processor: 'string',
+        default: isMobile ? 'scrolling' : 'floating'
+      });
+      registerOption('toolbar_groups', {
+        processor: 'object',
+        default: {}
+      });
+      registerOption('toolbar_location', {
+        processor: 'string',
+        default: ToolbarLocation$1.auto
+      });
+      registerOption('toolbar_persist', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('toolbar_sticky', {
+        processor: 'boolean',
+        default: editor.inline
+      });
+      registerOption('toolbar_sticky_offset', {
+        processor: 'number',
+        default: 0
+      });
+      registerOption('fixed_toolbar_container', {
+        processor: 'string',
+        default: ''
+      });
+      registerOption('fixed_toolbar_container_target', { processor: 'object' });
+      registerOption('ui_mode', {
+        processor: 'string',
+        default: 'combined'
+      });
+      registerOption('file_picker_callback', { processor: 'function' });
+      registerOption('file_picker_validator_handler', { processor: 'function' });
+      registerOption('file_picker_types', { processor: 'string' });
+      registerOption('typeahead_urls', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('anchor_top', {
+        processor: stringOrFalseProcessor,
+        default: '#top'
+      });
+      registerOption('anchor_bottom', {
+        processor: stringOrFalseProcessor,
+        default: '#bottom'
+      });
+      registerOption('draggable_modal', {
+        processor: 'boolean',
+        default: false
+      });
+      registerOption('statusbar', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('elementpath', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('branding', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('promotion', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('resize', {
+        processor: value => value === 'both' || isBoolean(value),
+        default: !global$5.deviceType.isTouch()
+      });
+      registerOption('sidebar_show', { processor: 'string' });
+      registerOption('help_accessibility', {
+        processor: 'boolean',
+        default: editor.hasPlugin('help')
+      });
+      registerOption('default_font_stack', {
+        processor: 'string[]',
+        default: []
+      });
+    };
+    const isReadOnly = option$2('readonly');
+    const getHeightOption = option$2('height');
+    const getWidthOption = option$2('width');
+    const getMinWidthOption = wrapOptional(option$2('min_width'));
+    const getMinHeightOption = wrapOptional(option$2('min_height'));
+    const getMaxWidthOption = wrapOptional(option$2('max_width'));
+    const getMaxHeightOption = wrapOptional(option$2('max_height'));
+    const getUserStyleFormats = wrapOptional(option$2('style_formats'));
+    const shouldMergeStyleFormats = option$2('style_formats_merge');
+    const shouldAutoHideStyleFormats = option$2('style_formats_autohide');
+    const getContentLanguages = option$2('content_langs');
+    const getRemovedMenuItems = option$2('removed_menuitems');
+    const getToolbarMode = option$2('toolbar_mode');
+    const getToolbarGroups = option$2('toolbar_groups');
+    const getToolbarLocation = option$2('toolbar_location');
+    const fixedContainerSelector = option$2('fixed_toolbar_container');
+    const fixedToolbarContainerTarget = option$2('fixed_toolbar_container_target');
+    const isToolbarPersist = option$2('toolbar_persist');
+    const getStickyToolbarOffset = option$2('toolbar_sticky_offset');
+    const getMenubar = option$2('menubar');
+    const getToolbar = option$2('toolbar');
+    const getFilePickerCallback = option$2('file_picker_callback');
+    const getFilePickerValidatorHandler = option$2('file_picker_validator_handler');
+    const getFontSizeInputDefaultUnit = option$2('font_size_input_default_unit');
+    const getFilePickerTypes = option$2('file_picker_types');
+    const useTypeaheadUrls = option$2('typeahead_urls');
+    const getAnchorTop = option$2('anchor_top');
+    const getAnchorBottom = option$2('anchor_bottom');
+    const isDraggableModal$1 = option$2('draggable_modal');
+    const useStatusBar = option$2('statusbar');
+    const useElementPath = option$2('elementpath');
+    const useBranding = option$2('branding');
+    const getResize = option$2('resize');
+    const getPasteAsText = option$2('paste_as_text');
+    const getSidebarShow = option$2('sidebar_show');
+    const promotionEnabled = option$2('promotion');
+    const useHelpAccessibility = option$2('help_accessibility');
+    const getDefaultFontStack = option$2('default_font_stack');
+    const isSkinDisabled = editor => editor.options.get('skin') === false;
+    const isMenubarEnabled = editor => editor.options.get('menubar') !== false;
+    const getSkinUrl = editor => {
+      const skinUrl = editor.options.get('skin_url');
+      if (isSkinDisabled(editor)) {
+        return skinUrl;
+      } else {
+        if (skinUrl) {
+          return editor.documentBaseURI.toAbsolute(skinUrl);
+        } else {
+          const skin = editor.options.get('skin');
+          return global$6.baseURL + '/skins/ui/' + skin;
+        }
+      }
+    };
+    const getSkinUrlOption = editor => Optional.from(editor.options.get('skin_url'));
+    const getLineHeightFormats = editor => editor.options.get('line_height_formats').split(' ');
+    const isToolbarEnabled = editor => {
+      const toolbar = getToolbar(editor);
+      const isToolbarString = isString(toolbar);
+      const isToolbarObjectArray = isArray(toolbar) && toolbar.length > 0;
+      return !isMultipleToolbars(editor) && (isToolbarObjectArray || isToolbarString || toolbar === true);
+    };
+    const getMultipleToolbarsOption = editor => {
+      const toolbars = range$2(9, num => editor.options.get('toolbar' + (num + 1)));
+      const toolbarArray = filter$2(toolbars, isString);
+      return someIf(toolbarArray.length > 0, toolbarArray);
+    };
+    const isMultipleToolbars = editor => getMultipleToolbarsOption(editor).fold(() => {
+      const toolbar = getToolbar(editor);
+      return isArrayOf(toolbar, isString) && toolbar.length > 0;
+    }, always);
+    const isToolbarLocationBottom = editor => getToolbarLocation(editor) === ToolbarLocation$1.bottom;
+    const fixedContainerTarget = editor => {
+      var _a;
+      if (!editor.inline) {
+        return Optional.none();
+      }
+      const selector = (_a = fixedContainerSelector(editor)) !== null && _a !== void 0 ? _a : '';
+      if (selector.length > 0) {
+        return descendant(body(), selector);
+      }
+      const element = fixedToolbarContainerTarget(editor);
+      if (isNonNullable(element)) {
+        return Optional.some(SugarElement.fromDom(element));
+      }
+      return Optional.none();
+    };
+    const useFixedContainer = editor => editor.inline && fixedContainerTarget(editor).isSome();
+    const getUiContainer = editor => {
+      const fixedContainer = fixedContainerTarget(editor);
+      return fixedContainer.getOrThunk(() => getContentContainer(getRootNode(SugarElement.fromDom(editor.getElement()))));
+    };
+    const isDistractionFree = editor => editor.inline && !isMenubarEnabled(editor) && !isToolbarEnabled(editor) && !isMultipleToolbars(editor);
+    const isStickyToolbar = editor => {
+      const isStickyToolbar = editor.options.get('toolbar_sticky');
+      return (isStickyToolbar || editor.inline) && !useFixedContainer(editor) && !isDistractionFree(editor);
+    };
+    const isSplitUiMode = editor => !useFixedContainer(editor) && editor.options.get('ui_mode') === 'split';
+    const getMenus = editor => {
+      const menu = editor.options.get('menu');
+      return map$1(menu, menu => ({
+        ...menu,
+        items: menu.items
+      }));
+    };
+
+    var Options = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        get ToolbarMode () { return ToolbarMode$1; },
+        get ToolbarLocation () { return ToolbarLocation$1; },
+        register: register$e,
+        getSkinUrl: getSkinUrl,
+        getSkinUrlOption: getSkinUrlOption,
+        isReadOnly: isReadOnly,
+        isSkinDisabled: isSkinDisabled,
+        getHeightOption: getHeightOption,
+        getWidthOption: getWidthOption,
+        getMinWidthOption: getMinWidthOption,
+        getMinHeightOption: getMinHeightOption,
+        getMaxWidthOption: getMaxWidthOption,
+        getMaxHeightOption: getMaxHeightOption,
+        getUserStyleFormats: getUserStyleFormats,
+        shouldMergeStyleFormats: shouldMergeStyleFormats,
+        shouldAutoHideStyleFormats: shouldAutoHideStyleFormats,
+        getLineHeightFormats: getLineHeightFormats,
+        getContentLanguages: getContentLanguages,
+        getRemovedMenuItems: getRemovedMenuItems,
+        isMenubarEnabled: isMenubarEnabled,
+        isMultipleToolbars: isMultipleToolbars,
+        isToolbarEnabled: isToolbarEnabled,
+        isToolbarPersist: isToolbarPersist,
+        getMultipleToolbarsOption: getMultipleToolbarsOption,
+        getUiContainer: getUiContainer,
+        useFixedContainer: useFixedContainer,
+        isSplitUiMode: isSplitUiMode,
+        getToolbarMode: getToolbarMode,
+        isDraggableModal: isDraggableModal$1,
+        isDistractionFree: isDistractionFree,
+        isStickyToolbar: isStickyToolbar,
+        getStickyToolbarOffset: getStickyToolbarOffset,
+        getToolbarLocation: getToolbarLocation,
+        isToolbarLocationBottom: isToolbarLocationBottom,
+        getToolbarGroups: getToolbarGroups,
+        getMenus: getMenus,
+        getMenubar: getMenubar,
+        getToolbar: getToolbar,
+        getFilePickerCallback: getFilePickerCallback,
+        getFilePickerTypes: getFilePickerTypes,
+        useTypeaheadUrls: useTypeaheadUrls,
+        getAnchorTop: getAnchorTop,
+        getAnchorBottom: getAnchorBottom,
+        getFilePickerValidatorHandler: getFilePickerValidatorHandler,
+        getFontSizeInputDefaultUnit: getFontSizeInputDefaultUnit,
+        useStatusBar: useStatusBar,
+        useElementPath: useElementPath,
+        promotionEnabled: promotionEnabled,
+        useBranding: useBranding,
+        getResize: getResize,
+        getPasteAsText: getPasteAsText,
+        getSidebarShow: getSidebarShow,
+        useHelpAccessibility: useHelpAccessibility,
+        getDefaultFontStack: getDefaultFontStack
+    });
 
     const setup$e = (api, editor) => {
       const redirectKeyToItem = (item, e) => {
@@ -11189,7 +10395,7 @@
     const containerValignTopClass = 'tox-collection__item-container--valign-top';
     const containerValignMiddleClass = 'tox-collection__item-container--valign-middle';
     const containerValignBottomClass = 'tox-collection__item-container--valign-bottom';
-    const classForPreset = presets => get$h(presetClasses, presets).getOr(navClass);
+    const classForPreset = presets => get$g(presetClasses, presets).getOr(navClass);
 
     const forMenu = presets => {
       if (presets === 'color') {
@@ -11261,7 +10467,7 @@
     const focusBehaviours = detail => derive$1([Focusing.config({
         onFocus: !detail.selectOnFocus ? noop : component => {
           const input = component.element;
-          const value = get$7(input);
+          const value = get$6(input);
           input.dom.setSelectionRange(0, value.length);
         }
       })]);
@@ -11272,10 +10478,10 @@
             mode: 'manual',
             ...detail.data.map(data => ({ initialValue: data })).getOr({}),
             getValue: input => {
-              return get$7(input.element);
+              return get$6(input.element);
             },
             setValue: (input, data) => {
-              const current = get$7(input.element);
+              const current = get$6(input.element);
               if (current !== data) {
                 set$5(input.element, data);
               }
@@ -11538,7 +10744,7 @@
         },
         components: [
           renderMenuSearcher({
-            i18n: global$5.translate,
+            i18n: global$8.translate,
             placeholder: searchField.placeholder
           }),
           {
@@ -11645,7 +10851,6 @@
     const onSetup = defaultedFunction('onSetup', () => noop);
     const optionalName = optionString('name');
     const optionalText = optionString('text');
-    const optionalRole = optionString('role');
     const optionalIcon = optionString('icon');
     const optionalTooltip = optionString('tooltip');
     const optionalLabel = optionString('label');
@@ -11783,7 +10988,6 @@
     const commonMenuItemFields = [
       enabled,
       optionalText,
-      optionalRole,
       optionalShortcut,
       generatedValue('menuitem'),
       defaultedMeta
@@ -11873,6 +11077,276 @@
       namedEvents,
       unnamedEvents
     };
+
+    const ExclusivityChannel = generate$6('tooltip.exclusive');
+    const ShowTooltipEvent = generate$6('tooltip.show');
+    const HideTooltipEvent = generate$6('tooltip.hide');
+    const ImmediateHideTooltipEvent = generate$6('tooltip.immediateHide');
+    const ImmediateShowTooltipEvent = generate$6('tooltip.immediateShow');
+
+    const hideAllExclusive = (component, _tConfig, _tState) => {
+      component.getSystem().broadcastOn([ExclusivityChannel], {});
+    };
+    const setComponents = (component, tConfig, tState, specs) => {
+      tState.getTooltip().each(tooltip => {
+        if (tooltip.getSystem().isConnected()) {
+          Replacing.set(tooltip, specs);
+        }
+      });
+    };
+
+    var TooltippingApis = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        hideAllExclusive: hideAllExclusive,
+        setComponents: setComponents
+    });
+
+    const events$9 = (tooltipConfig, state) => {
+      const hide = comp => {
+        state.getTooltip().each(p => {
+          if (p.getSystem().isConnected()) {
+            detach(p);
+            tooltipConfig.onHide(comp, p);
+            state.clearTooltip();
+          }
+        });
+        state.clearTimer();
+      };
+      const show = comp => {
+        if (!state.isShowing()) {
+          hideAllExclusive(comp);
+          const sink = tooltipConfig.lazySink(comp).getOrDie();
+          const popup = comp.getSystem().build({
+            dom: tooltipConfig.tooltipDom,
+            components: tooltipConfig.tooltipComponents,
+            events: derive$2(tooltipConfig.mode === 'normal' ? [
+              run$1(mouseover(), _ => {
+                emit(comp, ShowTooltipEvent);
+              }),
+              run$1(mouseout(), _ => {
+                emit(comp, HideTooltipEvent);
+              })
+            ] : []),
+            behaviours: derive$1([Replacing.config({})])
+          });
+          state.setTooltip(popup);
+          attach(sink, popup);
+          tooltipConfig.onShow(comp, popup);
+          Positioning.position(sink, popup, { anchor: tooltipConfig.anchor(comp) });
+        }
+      };
+      const reposition = comp => {
+        state.getTooltip().each(tooltip => {
+          const sink = tooltipConfig.lazySink(comp).getOrDie();
+          Positioning.position(sink, tooltip, { anchor: tooltipConfig.anchor(comp) });
+        });
+      };
+      const getEvents = () => {
+        switch (tooltipConfig.mode) {
+        case 'normal':
+          return [
+            run$1(focusin(), comp => {
+              emit(comp, ImmediateShowTooltipEvent);
+            }),
+            run$1(postBlur(), comp => {
+              emit(comp, ImmediateHideTooltipEvent);
+            }),
+            run$1(mouseover(), comp => {
+              emit(comp, ShowTooltipEvent);
+            }),
+            run$1(mouseout(), comp => {
+              emit(comp, HideTooltipEvent);
+            })
+          ];
+        case 'follow-highlight':
+          return [
+            run$1(highlight$1(), (comp, _se) => {
+              emit(comp, ShowTooltipEvent);
+            }),
+            run$1(dehighlight$1(), comp => {
+              emit(comp, HideTooltipEvent);
+            })
+          ];
+        case 'children-normal':
+          return [
+            run$1(focusin(), (comp, se) => {
+              search(comp.element).each(_ => {
+                if (is(se.event.target, '[data-mce-tooltip]')) {
+                  state.getTooltip().fold(() => {
+                    emit(comp, ImmediateShowTooltipEvent);
+                  }, tooltip => {
+                    if (state.isShowing()) {
+                      tooltipConfig.onShow(comp, tooltip);
+                      reposition(comp);
+                    }
+                  });
+                }
+              });
+            }),
+            run$1(postBlur(), comp => {
+              search(comp.element).fold(() => {
+                emit(comp, ImmediateHideTooltipEvent);
+              }, noop);
+            }),
+            run$1(mouseover(), comp => {
+              descendant(comp.element, '[data-mce-tooltip]:hover').each(_ => {
+                state.getTooltip().fold(() => {
+                  emit(comp, ShowTooltipEvent);
+                }, tooltip => {
+                  if (state.isShowing()) {
+                    tooltipConfig.onShow(comp, tooltip);
+                    reposition(comp);
+                  }
+                });
+              });
+            }),
+            run$1(mouseout(), comp => {
+              descendant(comp.element, '[data-mce-tooltip]:hover').fold(() => {
+                emit(comp, HideTooltipEvent);
+              }, noop);
+            })
+          ];
+        default:
+          return [
+            run$1(focusin(), (comp, se) => {
+              search(comp.element).each(_ => {
+                if (is(se.event.target, '[data-mce-tooltip]')) {
+                  state.getTooltip().fold(() => {
+                    emit(comp, ImmediateShowTooltipEvent);
+                  }, tooltip => {
+                    if (state.isShowing()) {
+                      tooltipConfig.onShow(comp, tooltip);
+                      reposition(comp);
+                    }
+                  });
+                }
+              });
+            }),
+            run$1(postBlur(), comp => {
+              search(comp.element).fold(() => {
+                emit(comp, ImmediateHideTooltipEvent);
+              }, noop);
+            })
+          ];
+        }
+      };
+      return derive$2(flatten([
+        [
+          run$1(ShowTooltipEvent, comp => {
+            state.resetTimer(() => {
+              show(comp);
+            }, tooltipConfig.delayForShow());
+          }),
+          run$1(HideTooltipEvent, comp => {
+            state.resetTimer(() => {
+              hide(comp);
+            }, tooltipConfig.delayForHide());
+          }),
+          run$1(ImmediateShowTooltipEvent, comp => {
+            state.resetTimer(() => {
+              show(comp);
+            }, 0);
+          }),
+          run$1(ImmediateHideTooltipEvent, comp => {
+            state.resetTimer(() => {
+              hide(comp);
+            }, 0);
+          }),
+          run$1(receive(), (comp, message) => {
+            const receivingData = message;
+            if (!receivingData.universal) {
+              if (contains$2(receivingData.channels, ExclusivityChannel)) {
+                hide(comp);
+              }
+            }
+          }),
+          runOnDetached(comp => {
+            hide(comp);
+          })
+        ],
+        getEvents()
+      ]));
+    };
+
+    var ActiveTooltipping = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        events: events$9
+    });
+
+    var TooltippingSchema = [
+      required$1('lazySink'),
+      required$1('tooltipDom'),
+      defaulted('exclusive', true),
+      defaulted('tooltipComponents', []),
+      defaultedFunction('delayForShow', constant$1(300)),
+      defaultedFunction('delayForHide', constant$1(300)),
+      defaultedStringEnum('mode', 'normal', [
+        'normal',
+        'follow-highlight',
+        'children-keyboard-focus',
+        'children-normal'
+      ]),
+      defaulted('anchor', comp => ({
+        type: 'hotspot',
+        hotspot: comp,
+        layouts: {
+          onLtr: constant$1([
+            south$2,
+            north$2,
+            southeast$2,
+            northeast$2,
+            southwest$2,
+            northwest$2
+          ]),
+          onRtl: constant$1([
+            south$2,
+            north$2,
+            southeast$2,
+            northeast$2,
+            southwest$2,
+            northwest$2
+          ])
+        },
+        bubble: nu$5(0, -2, {})
+      })),
+      onHandler('onHide'),
+      onHandler('onShow')
+    ];
+
+    const init$b = () => {
+      const timer = value$2();
+      const popup = value$2();
+      const clearTimer = () => {
+        timer.on(clearTimeout);
+      };
+      const resetTimer = (f, delay) => {
+        clearTimer();
+        timer.set(setTimeout(f, delay));
+      };
+      const readState = constant$1('not-implemented');
+      return nu$8({
+        getTooltip: popup.get,
+        isShowing: popup.isSet,
+        setTooltip: popup.set,
+        clearTooltip: popup.clear,
+        clearTimer,
+        resetTimer,
+        readState
+      });
+    };
+
+    var TooltippingState = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        init: init$b
+    });
+
+    const Tooltipping = create$4({
+      fields: TooltippingSchema,
+      name: 'tooltipping',
+      active: ActiveTooltipping,
+      state: TooltippingState,
+      apis: TooltippingApis
+    });
 
     const escape = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -12003,7 +11477,7 @@
     });
 
     const convertText = source => {
-      const isMac = global$6.os.isMacOS() || global$6.os.isiOS();
+      const isMac = global$5.os.isMacOS() || global$5.os.isiOS();
       const mac = {
         alt: '\u2325',
         ctrl: '\u2303',
@@ -12033,7 +11507,7 @@
         tag: 'div',
         classes: [textClass]
       },
-      components: [text$2(global$5.translate(text))]
+      components: [text$2(global$8.translate(text))]
     });
     const renderHtml = (html, classes) => ({
       dom: {
@@ -12052,7 +11526,7 @@
             tag: style.tag,
             styles: style.styles
           },
-          components: [text$2(global$5.translate(text))]
+          components: [text$2(global$8.translate(text))]
         }]
     });
     const renderShortcut = shortcut => ({
@@ -12161,7 +11635,7 @@
       const domTitle = ariaLabel.map(label => ({
         attributes: {
           'id': generate$6('menu-item'),
-          'aria-label': global$5.translate(label)
+          'aria-label': global$8.translate(label)
         }
       })).getOr({});
       return {
@@ -12204,7 +11678,7 @@
       }
     };
 
-    const tooltipBehaviour = (meta, sharedBackstage, tooltipText) => get$h(meta, 'tooltipWorker').map(tooltipWorker => [Tooltipping.config({
+    const tooltipBehaviour = (meta, sharedBackstage, tooltipText) => get$g(meta, 'tooltipWorker').map(tooltipWorker => [Tooltipping.config({
         lazySink: sharedBackstage.getSink,
         tooltipDom: {
           tag: 'div',
@@ -12228,9 +11702,9 @@
           mode: 'follow-highlight'
         })]).getOr([]);
     });
-    const encodeText = text => global$8.DOM.encode(text);
+    const encodeText = text => global$7.DOM.encode(text);
     const replaceText = (text, matchText) => {
-      const translated = global$5.translate(text);
+      const translated = global$8.translate(text);
       const encoded = encodeText(translated);
       if (matchText.length > 0) {
         const escapedMatchRegex = new RegExp(escape(matchText), 'gi');
@@ -12392,8 +11866,8 @@
     const min = Math.min;
     const max = Math.max;
     const round$1 = Math.round;
-    const rgbRegex = /^\s*rgb\s*\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)\s*\)\s*$/i;
-    const rgbaRegex = /^\s*rgba\s*\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*((?:\d?\.\d+|\d+)%?)\s*\)\s*$/i;
+    const rgbRegex = /^\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i;
+    const rgbaRegex = /^\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?(?:\.\d+)?)\s*\)\s*$/i;
     const rgbaColour = (red, green, blue, alpha) => ({
       red,
       green,
@@ -12475,6 +11949,9 @@
       return rgbaColour(r, g, b, a);
     };
     const fromString = rgbaString => {
+      if (rgbaString === 'transparent') {
+        return Optional.some(rgbaColour(0, 0, 0, 0));
+      }
       const rgbMatch = rgbRegex.exec(rgbaString);
       if (rgbMatch !== null) {
         return Optional.some(fromStringValues(rgbMatch[1], rgbMatch[2], rgbMatch[3], '1'));
@@ -12611,7 +12088,7 @@
         state
       };
     };
-    const getCacheForId = id => get$h(cacheStorage, id).getOrThunk(() => {
+    const getCacheForId = id => get$g(cacheStorage, id).getOrThunk(() => {
       const storageId = `tinymce-custom-colors-${ id }`;
       const currentData = global$4.getItem(storageId);
       if (isNullable(currentData)) {
@@ -12838,7 +12315,7 @@
     const getClosestCssBackgroundColorValue = scope => {
       return closest$4(scope, node => {
         if (isElement$1(node)) {
-          const color = get$f(node, 'background-color');
+          const color = get$e(node, 'background-color');
           return someIf(isValidBackgroundColor(color), color);
         } else {
           return Optional.none();
@@ -12847,7 +12324,7 @@
     };
     const getCurrentColor = (editor, format) => {
       const node = SugarElement.fromDom(editor.selection.getStart());
-      const cssRgbValue = format === 'hilitecolor' ? getClosestCssBackgroundColorValue(node) : get$f(node, 'color');
+      const cssRgbValue = format === 'hilitecolor' ? getClosestCssBackgroundColorValue(node) : get$e(node, 'color');
       return fromString(cssRgbValue).map(rgba => '#' + fromRgba(rgba).value);
     };
     const applyFormat = (editor, format, value) => {
@@ -13142,8 +12619,7 @@
       const widgetSpec = {
         ...menuSpec,
         markers: markers(presets),
-        movement: deriveMenuMovement(columns, presets),
-        showMenuRole: false
+        movement: deriveMenuMovement(columns, presets)
       };
       return {
         type: 'widget',
@@ -13289,7 +12765,7 @@
       inserttable: renderInsertTableMenuItem,
       colorswatch: renderColorSwatchItem
     };
-    const renderFancyMenuItem = (spec, backstage) => get$h(fancyMenuItems, spec.fancytype).map(render => render(spec, backstage));
+    const renderFancyMenuItem = (spec, backstage) => get$g(fancyMenuItems, spec.fancytype).map(render => render(spec, backstage));
 
     const renderNestedItem = (spec, itemResponse, providersBackstage, renderIcons = true, downwardsCaret = false) => {
       const caret = downwardsCaret ? renderDownwardsCaret(providersBackstage.icons) : renderSubmenuCaret(providersBackstage.icons);
@@ -13398,8 +12874,7 @@
           toggleClass: tickedClass,
           toggleOnExecute: false,
           selected: spec.active
-        },
-        role: spec.role.getOrUndefined()
+        }
       });
     };
 
@@ -13422,19 +12897,19 @@
 
     var CouplingSchema = [requiredOf('others', setOf(Result.value, anyValue()))];
 
-    const init$9 = () => {
+    const init$a = () => {
       const coupled = {};
       const lookupCoupled = (coupleConfig, coupledName) => {
         const available = keys(coupleConfig.others);
         if (available.length === 0) {
           throw new Error('Cannot find any known coupled components');
         } else {
-          return get$h(coupled, coupledName);
+          return get$g(coupled, coupledName);
         }
       };
       const getOrCreate = (component, coupleConfig, name) => {
         return lookupCoupled(coupleConfig, name).getOrThunk(() => {
-          const builder = get$h(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+          const builder = get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
           const spec = builder(component);
           const built = component.getSystem().build(spec);
           coupled[name] = built;
@@ -13443,12 +12918,12 @@
       };
       const getExisting = (component, coupleConfig, name) => {
         return lookupCoupled(coupleConfig, name).orThunk(() => {
-          get$h(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+          get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
           return Optional.none();
         });
       };
       const readState = constant$1({});
-      return nu$7({
+      return nu$8({
         readState,
         getExisting,
         getOrCreate
@@ -13457,7 +12932,7 @@
 
     var CouplingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$9
+        init: init$a
     });
 
     const Coupling = create$4({
@@ -13603,52 +13078,44 @@
     const openF = (detail, mapFetch, anchor, component, sandbox, externals, highlightOnOpen) => {
       const futureData = fetch(detail, mapFetch, component);
       const getLazySink = getSink(component, detail);
-      return futureData.map(tdata => tdata.bind(data => {
-        const primaryMenu = data.menus[data.primary];
-        Optional.from(primaryMenu).each(menu => {
-          detail.listRole.each(listRole => {
-            menu.role = listRole;
+      return futureData.map(tdata => tdata.bind(data => Optional.from(tieredMenu.sketch({
+        ...externals.menu(),
+        uid: generate$5(''),
+        data,
+        highlightOnOpen,
+        onOpenMenu: (tmenu, menu) => {
+          const sink = getLazySink().getOrDie();
+          Positioning.position(sink, menu, { anchor });
+          Sandboxing.decloak(sandbox);
+        },
+        onOpenSubmenu: (tmenu, item, submenu) => {
+          const sink = getLazySink().getOrDie();
+          Positioning.position(sink, submenu, {
+            anchor: {
+              type: 'submenu',
+              item
+            }
           });
-        });
-        return Optional.from(tieredMenu.sketch({
-          ...externals.menu(),
-          uid: generate$5(''),
-          data,
-          highlightOnOpen,
-          onOpenMenu: (tmenu, menu) => {
-            const sink = getLazySink().getOrDie();
-            Positioning.position(sink, menu, { anchor });
-            Sandboxing.decloak(sandbox);
-          },
-          onOpenSubmenu: (tmenu, item, submenu) => {
-            const sink = getLazySink().getOrDie();
-            Positioning.position(sink, submenu, {
+          Sandboxing.decloak(sandbox);
+        },
+        onRepositionMenu: (tmenu, primaryMenu, submenuTriggers) => {
+          const sink = getLazySink().getOrDie();
+          Positioning.position(sink, primaryMenu, { anchor });
+          each$1(submenuTriggers, st => {
+            Positioning.position(sink, st.triggeredMenu, {
               anchor: {
                 type: 'submenu',
-                item
+                item: st.triggeringItem
               }
             });
-            Sandboxing.decloak(sandbox);
-          },
-          onRepositionMenu: (tmenu, primaryMenu, submenuTriggers) => {
-            const sink = getLazySink().getOrDie();
-            Positioning.position(sink, primaryMenu, { anchor });
-            each$1(submenuTriggers, st => {
-              Positioning.position(sink, st.triggeredMenu, {
-                anchor: {
-                  type: 'submenu',
-                  item: st.triggeringItem
-                }
-              });
-            });
-          },
-          onEscape: () => {
-            Focusing.focus(component);
-            Sandboxing.close(sandbox);
-            return Optional.some(true);
-          }
-        }));
-      }));
+          });
+        },
+        onEscape: () => {
+          Focusing.focus(component);
+          Sandboxing.close(sandbox);
+          return Optional.some(true);
+        }
+      }))));
     };
     const open = (detail, mapFetch, hotspot, sandbox, externals, onOpenSync, highlightOnOpen) => {
       const anchor = getAnchor(detail, hotspot);
@@ -13678,7 +13145,7 @@
     };
     const matchWidth = (hotspot, container, useMinWidth) => {
       const menu = Composing.getCurrent(container).getOr(container);
-      const buttonWidth = get$d(hotspot.element);
+      const buttonWidth = get$c(hotspot.element);
       if (useMinWidth) {
         set$8(menu.element, 'min-width', buttonWidth + 'px');
       } else {
@@ -13716,7 +13183,10 @@
         dom: {
           tag: 'div',
           classes: detail.sandboxClasses,
-          attributes: { id: ariaControls.id }
+          attributes: {
+            id: ariaControls.id,
+            role: 'listbox'
+          }
         },
         behaviours: SketchBehaviours.augment(detail.sandboxBehaviours, [
           Representing.config({
@@ -13783,8 +13253,7 @@
       option$3('lazySink'),
       defaulted('matchWidth', false),
       defaulted('useMinWidth', false),
-      option$3('role'),
-      option$3('listRole')
+      option$3('role')
     ].concat(sandboxFields()));
     const parts$e = constant$1([
       external({
@@ -13801,7 +13270,7 @@
     ]);
 
     const factory$k = (detail, components, _spec, externals) => {
-      const lookupAttr = attr => get$h(detail.dom, 'attributes').bind(attrs => get$h(attrs, attr));
+      const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
       const switchToMenu = sandbox => {
         Sandboxing.getState(sandbox).each(tmenu => {
           tieredMenu.highlightPrimary(tmenu);
@@ -13892,7 +13361,7 @@
           }),
           Focusing.config({})
         ]),
-        events: events$9(Optional.some(action)),
+        events: events$a(Optional.some(action)),
         eventOrder: {
           ...detail.eventOrder,
           [execute$5()]: [
@@ -13904,7 +13373,7 @@
         apis,
         domModification: {
           attributes: {
-            'aria-haspopup': detail.listRole.getOr('true'),
+            'aria-haspopup': 'true',
             ...detail.role.fold(() => ({}), role => ({ role })),
             ...detail.dom.tag === 'button' ? { type: lookupAttr('type').getOr('button') } : {}
           }
@@ -14079,7 +13548,7 @@
       const autocompleterId = generate$6('autocompleter');
       const processingAction = Cell(false);
       const activeState = Cell(false);
-      const activeRange = value$4();
+      const activeRange = value$2();
       const autocompleter = build$1(InlineView.sketch({
         dom: {
           tag: 'div',
@@ -14104,13 +13573,13 @@
           editor.dom.remove(autocompleterId, false);
           const editorBody = SugarElement.fromDom(editor.getBody());
           getOpt(editorBody, 'aria-owns').filter(ariaOwnsAttr => ariaOwnsAttr === autocompleterId).each(() => {
-            remove$8(editorBody, 'aria-owns');
-            remove$8(editorBody, 'aria-activedescendant');
+            remove$7(editorBody, 'aria-owns');
+            remove$7(editorBody, 'aria-activedescendant');
           });
         }
       };
       const getMenu = () => InlineView.getContent(autocompleter).bind(tmenu => {
-        return get$i(tmenu.components(), 0);
+        return get$h(tmenu.components(), 0);
       });
       const cancelIfNecessary = () => editor.execCommand('mceAutocompleterClose');
       const getCombinedItems = matches => {
@@ -14178,8 +13647,8 @@
         });
         editor.dom.add(docElm, newElm.dom);
         descendant(newElm, '[role="menu"]').each(child => {
-          remove$7(child, 'position');
-          remove$7(child, 'max-height');
+          remove$6(child, 'position');
+          remove$6(child, 'max-height');
         });
       };
       editor.on('AutocompleterStart', ({lookupData}) => {
@@ -14205,6 +13674,38 @@
       AutocompleterEditorEvents.setup(autocompleterUiApi, editor);
     };
     const Autocompleter = { register: register$b };
+
+    const nonScrollingOverflows = [
+      'visible',
+      'hidden',
+      'clip'
+    ];
+    const isScrollingOverflowValue = value => trim$1(value).length > 0 && !contains$2(nonScrollingOverflows, value);
+    const isScroller = elem => {
+      if (isHTMLElement(elem)) {
+        const overflowX = get$e(elem, 'overflow-x');
+        const overflowY = get$e(elem, 'overflow-y');
+        return isScrollingOverflowValue(overflowX) || isScrollingOverflowValue(overflowY);
+      } else {
+        return false;
+      }
+    };
+    const detect = popupSinkElem => {
+      const ancestorsScrollers = ancestors(popupSinkElem, isScroller);
+      const scrollers = ancestorsScrollers.length === 0 ? getShadowRoot(popupSinkElem).map(getShadowHost).map(x => ancestors(x, isScroller)).getOr([]) : ancestorsScrollers;
+      return head(scrollers).map(element => ({
+        element,
+        others: scrollers.slice(1)
+      }));
+    };
+    const detectWhenSplitUiMode = (editor, popupSinkElem) => isSplitUiMode(editor) ? detect(popupSinkElem) : Optional.none();
+    const getBoundsFrom = sc => {
+      const scrollableBoxes = [
+        ...map$2(sc.others, box$1),
+        win()
+      ];
+      return constrainByMany(box$1(sc.element), scrollableBoxes);
+    };
 
     const closest = (scope, selector, isRoot) => closest$1(scope, selector, isRoot).isSome();
 
@@ -14243,7 +13744,7 @@
       return distX > SIGNIFICANT_MOVE || distY > SIGNIFICANT_MOVE;
     };
     const monitor = settings => {
-      const startData = value$4();
+      const startData = value$2();
       const longpressFired = Cell(false);
       const longpress$1 = DelayedFunction(event => {
         settings.triggerEvent(longpress(), event);
@@ -14300,7 +13801,7 @@
           value: handleTouchend
         }
       ]);
-      const fireIfReady = (event, type) => get$h(handlers, type).bind(handler => handler(event));
+      const fireIfReady = (event, type) => get$g(handlers, type).bind(handler => handler(event));
       return { fireIfReady };
     };
 
@@ -14356,7 +13857,7 @@
           event.kill();
         }
       }));
-      const pasteTimeout = value$4();
+      const pasteTimeout = value$2();
       const onPaste = bind(container, 'paste', event => {
         tapEvent.fireIfReady(event, 'paste').each(tapStopped => {
           if (tapStopped) {
@@ -14385,7 +13886,7 @@
           event.kill();
         }
       });
-      const focusoutTimeout = value$4();
+      const focusoutTimeout = value$2();
       const onFocusOut = bind(container, 'focusout', event => {
         const stopped = settings.triggerEvent('focusout', event);
         if (stopped) {
@@ -14410,7 +13911,7 @@
     };
 
     const derive = (rawEvent, rawTarget) => {
-      const source = get$h(rawEvent, 'target').getOr(rawTarget);
+      const source = get$g(rawEvent, 'target').getOr(rawTarget);
       return Cell(source);
     };
 
@@ -14518,9 +14019,9 @@
           registry[k] = handlers;
         });
       };
-      const findHandler = (handlers, elem) => read(elem).bind(id => get$h(handlers, id)).map(descHandler => eventHandler(elem, descHandler));
-      const filterByType = type => get$h(registry, type).map(handlers => mapToArray(handlers, (f, id) => broadcastHandler(id, f))).getOr([]);
-      const find = (isAboveRoot, type, target) => get$h(registry, type).bind(handlers => closest$4(target, elem => findHandler(handlers, elem), isAboveRoot));
+      const findHandler = (handlers, elem) => read$1(elem).bind(id => get$g(handlers, id)).map(descHandler => eventHandler(elem, descHandler));
+      const filterByType = type => get$g(registry, type).map(handlers => mapToArray(handlers, (f, id) => broadcastHandler(id, f))).getOr([]);
+      const find = (isAboveRoot, type, target) => get$g(registry, type).bind(handlers => closest$4(target, elem => findHandler(handlers, elem), isAboveRoot));
       const unregisterId = id => {
         each(registry, (handlersById, _eventName) => {
           if (has$2(handlersById, id)) {
@@ -14541,7 +14042,7 @@
       const components = {};
       const readOrTag = component => {
         const elem = component.element;
-        return read(elem).getOrThunk(() => write('uid-', component.element));
+        return read$1(elem).getOrThunk(() => write('uid-', component.element));
       };
       const failOnDuplicate = (component, tagId) => {
         const conflict = components[tagId];
@@ -14561,14 +14062,14 @@
         components[tagId] = component;
       };
       const unregister = component => {
-        read(component.element).each(tagId => {
+        read$1(component.element).each(tagId => {
           delete components[tagId];
           events.unregisterId(tagId);
         });
       };
       const filter = type => events.filterByType(type);
       const find = (isAboveRoot, type, target) => events.find(isAboveRoot, type, target);
-      const getById = id => get$h(components, id);
+      const getById = id => get$g(components, id);
       return {
         find,
         filter,
@@ -14591,7 +14092,7 @@
           ...domWithoutAttributes
         },
         components: detail.components,
-        behaviours: get$4(detail.containerBehaviours),
+        behaviours: get$3(detail.containerBehaviours),
         events: detail.events,
         domModification: detail.domModification,
         eventOrder: detail.eventOrder
@@ -14624,7 +14125,7 @@
           monitorEvent(eventName, target, logger => triggerOnUntilStopped(lookup, eventName, data, target, logger));
         },
         triggerFocus: (target, originator) => {
-          read(target).fold(() => {
+          read$1(target).fold(() => {
             focus$3(target);
           }, _alloyId => {
             monitorEvent(focus$4(), target, logger => {
@@ -14695,7 +14196,7 @@
       };
       const destroy = () => {
         domEvents.unbind();
-        remove$6(root.element);
+        remove$5(root.element);
       };
       const broadcastData = data => {
         const receivers = registry.filter(receive());
@@ -14724,7 +14225,7 @@
       };
       const getByUid = uid => registry.getById(uid).fold(() => Result.error(new Error('Could not find component with uid: "' + uid + '" in system.')), Result.value);
       const getByDom = elem => {
-        const uid = read(elem).getOr('not found');
+        const uid = read$1(elem).getOr('not found');
         return getByUid(uid);
       };
       addToWorld(root);
@@ -14860,6 +14361,26 @@
       }
     });
 
+    const exhibit$2 = (base, tabConfig) => nu$7({
+      attributes: wrapAll([{
+          key: tabConfig.tabAttr,
+          value: 'true'
+        }])
+    });
+
+    var ActiveTabstopping = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        exhibit: exhibit$2
+    });
+
+    var TabstopSchema = [defaulted('tabAttr', 'data-alloy-tabstop')];
+
+    const Tabstopping = create$4({
+      fields: TabstopSchema,
+      name: 'tabstopping',
+      active: ActiveTabstopping
+    });
+
     var global$3 = tinymce.util.Tools.resolve('tinymce.html.Entities');
 
     const renderFormFieldWith = (pLabel, pField, extraClasses, extraBehaviours) => {
@@ -14904,12 +14425,12 @@
       };
       const runOnItem = f => (comp, se) => {
         closest$1(se.event.target, '[data-collection-item-value]').each(target => {
-          f(comp, se, target, get$g(target, 'data-collection-item-value'));
+          f(comp, se, target, get$f(target, 'data-collection-item-value'));
         });
       };
       const setContents = (comp, items) => {
         const htmlLines = map$2(items, item => {
-          const itemText = global$5.translate(item.text);
+          const itemText = global$8.translate(item.text);
           const textContent = spec.columns === 1 ? `<div class="tox-collection__item-label">${ itemText }</div>` : '';
           const iconContent = `<div class="tox-collection__item-icon">${ getIcon(item.icon) }</div>`;
           const mapItemName = {
@@ -14942,13 +14463,13 @@
         run$1(tap(), onClick),
         run$1(focusin(), runOnItem((comp, se, tgt) => {
           descendant(comp.element, '.' + activeClass).each(currentActive => {
-            remove$3(currentActive, activeClass);
+            remove$2(currentActive, activeClass);
           });
           add$2(tgt, activeClass);
         })),
         run$1(focusout(), runOnItem(comp => {
           descendant(comp.element, '.' + activeClass).each(currentActive => {
-            remove$3(currentActive, activeClass);
+            remove$2(currentActive, activeClass);
             blur$1(currentActive);
           });
         })),
@@ -14978,8 +14499,8 @@
             },
             onEnabled: comp => {
               iterCollectionItems(comp, childElm => {
-                remove$3(childElm, 'tox-collection__item--state-disabled');
-                remove$8(childElm, 'aria-disabled');
+                remove$2(childElm, 'tox-collection__item--state-disabled');
+                remove$7(childElm, 'aria-disabled');
               });
             }
           }),
@@ -15067,7 +14588,7 @@
     };
     const markValid = (component, invalidConfig) => {
       const elem = invalidConfig.getRoot(component).getOr(component.element);
-      remove$3(elem, invalidConfig.invalidClass);
+      remove$2(elem, invalidConfig.invalidClass);
       invalidConfig.notify.each(notifyInfo => {
         if (isAriaElement(component.element)) {
           set$9(component.element, 'aria-invalid', false);
@@ -15124,7 +14645,7 @@
         isInvalid: isInvalid
     });
 
-    const events$7 = (invalidConfig, invalidState) => invalidConfig.validator.map(validatorInfo => derive$2([run$1(validatorInfo.onEvent, component => {
+    const events$8 = (invalidConfig, invalidState) => invalidConfig.validator.map(validatorInfo => derive$2([run$1(validatorInfo.onEvent, component => {
         run(component, invalidConfig, invalidState).get(identity);
       })].concat(validatorInfo.validateOnLoad ? [runOnAttached(component => {
         run(component, invalidConfig, invalidState).get(noop);
@@ -15132,7 +14653,7 @@
 
     var ActiveInvalidate = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$7
+        events: events$8
     });
 
     var InvalidateSchema = [
@@ -15168,7 +14689,7 @@
       }
     });
 
-    const exhibit$1 = () => nu$8({
+    const exhibit$1 = () => nu$7({
       styles: {
         '-webkit-user-select': 'none',
         'user-select': 'none',
@@ -15177,11 +14698,11 @@
       },
       attributes: { unselectable: 'on' }
     });
-    const events$6 = () => derive$2([abort(selectstart(), always)]);
+    const events$7 = () => derive$2([abort(selectstart(), always)]);
 
     var ActiveUnselecting = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$6,
+        events: events$7,
         exhibit: exhibit$1
     });
 
@@ -15692,7 +15213,7 @@
     const setPositionFromValue$2 = (slider, thumb, detail, edges) => {
       const value = currentValue(detail);
       const pos = findPositionOfValue$1(slider, edges.getSpectrum(slider), value, edges.getLeftEdge(slider), edges.getRightEdge(slider), detail);
-      const thumbRadius = get$d(thumb.element) / 2;
+      const thumbRadius = get$c(thumb.element) / 2;
       set$8(thumb.element, 'left', pos - thumbRadius + 'px');
     };
     const onLeft$2 = handleMovement$2(-1);
@@ -15802,7 +15323,7 @@
     const setPositionFromValue$1 = (slider, thumb, detail, edges) => {
       const value = currentValue(detail);
       const pos = findPositionOfValue(slider, edges.getSpectrum(slider), value, edges.getTopEdge(slider), edges.getBottomEdge(slider), detail);
-      const thumbRadius = get$e(thumb.element) / 2;
+      const thumbRadius = get$d(thumb.element) / 2;
       set$8(thumb.element, 'top', pos - thumbRadius + 'px');
     };
     const onLeft$1 = Optional.none;
@@ -15873,8 +15394,8 @@
       const value = currentValue(detail);
       const xPos = findPositionOfValue$1(slider, edges.getSpectrum(slider), value.x, edges.getLeftEdge(slider), edges.getRightEdge(slider), detail);
       const yPos = findPositionOfValue(slider, edges.getSpectrum(slider), value.y, edges.getTopEdge(slider), edges.getBottomEdge(slider), detail);
-      const thumbXRadius = get$d(thumb.element) / 2;
-      const thumbYRadius = get$e(thumb.element) / 2;
+      const thumbXRadius = get$c(thumb.element) / 2;
+      const thumbYRadius = get$d(thumb.element) / 2;
       set$8(thumb.element, 'left', xPos - thumbXRadius + 'px');
       set$8(thumb.element, 'top', yPos - thumbYRadius + 'px');
     };
@@ -16683,7 +16204,7 @@
       }
     });
     const withElement = (initialValue, getter, setter) => withComp(initialValue, c => getter(c.element), (c, v) => setter(c.element, v));
-    const domHtml = optInitialValue => withElement(optInitialValue, get$8, set$6);
+    const domHtml = optInitialValue => withElement(optInitialValue, get$9, set$6);
     const memory = initialValue => Representing.config({
       store: {
         mode: 'memory',
@@ -16749,7 +16270,7 @@
             return optHex.map(hex => '#' + removeLeading(hex, '#')).getOr('');
           }, (comp, newValue) => {
             const pattern = /^#([a-fA-F0-9]{3}(?:[a-fA-F0-9]{3})?)/;
-            const valOpt = Optional.from(pattern.exec(newValue)).bind(matches => get$i(matches, 1));
+            const valOpt = Optional.from(pattern.exec(newValue)).bind(matches => get$h(matches, 1));
             const picker = memPicker.get(comp);
             const optRgbForm = Composing.getCurrent(picker);
             optRgbForm.fold(() => {
@@ -16770,9 +16291,9 @@
 
     const isOldCustomEditor = spec => has$2(spec, 'init');
     const renderCustomEditor = spec => {
-      const editorApi = value$4();
+      const editorApi = value$2();
       const memReplaced = record({ dom: { tag: spec.tag } });
-      const initialValue = value$4();
+      const initialValue = value$2();
       const focusBehaviour = !isOldCustomEditor(spec) && spec.onFocus.isSome() ? [
         Focusing.config({
           onFocus: comp => {
@@ -17166,7 +16687,7 @@
                 onReceive: (comp, message) => {
                   message.newFocus.each(newFocus => {
                     parentElement(comp.element).each(parent => {
-                      const f = eq(comp.element, newFocus) ? add$2 : remove$3;
+                      const f = eq(comp.element, newFocus) ? add$2 : remove$2;
                       f(parent, 'tox-navobj-bordered-focus');
                     });
                   });
@@ -17211,8 +16732,8 @@
       };
     };
     const zoomToFit = (panel, width, height) => {
-      const panelW = get$d(panel);
-      const panelH = get$e(panel);
+      const panelW = get$c(panel);
+      const panelH = get$d(panel);
       return Math.min(panelW / width, panelH / height, 1);
     };
     const renderImagePreview = (spec, initialData) => {
@@ -17245,7 +16766,7 @@
               const z = zoomToFit(frameComponent.element, cachedWidth, cachedHeight);
               translatedData.zoom = z;
             }
-            const position = calculateImagePosition(get$d(frameComponent.element), get$e(frameComponent.element), cachedWidth, cachedHeight, translatedData.zoom);
+            const position = calculateImagePosition(get$c(frameComponent.element), get$d(frameComponent.element), cachedWidth, cachedHeight, translatedData.zoom);
             memContainer.getOpt(frameComponent).each(container => {
               setAll(container.element, position);
             });
@@ -17253,9 +16774,9 @@
         };
         memImage.getOpt(frameComponent).each(imageComponent => {
           const img = imageComponent.element;
-          if (data.url !== get$g(img, 'src')) {
+          if (data.url !== get$f(img, 'src')) {
             set$9(img, 'src', data.url);
-            remove$3(frameComponent.element, 'tox-imagepreview__loaded');
+            remove$2(frameComponent.element, 'tox-imagepreview__loaded');
           }
           applyFramePositioning();
           image(img).then(img => {
@@ -17291,11 +16812,11 @@
       };
     };
 
-    const renderLabel$2 = (spec, backstageShared, getCompByName) => {
+    const renderLabel$2 = (spec, backstageShared) => {
       const baseClass = 'tox-label';
       const centerClass = spec.align === 'center' ? [`${ baseClass }--center`] : [];
       const endClass = spec.align === 'end' ? [`${ baseClass }--end`] : [];
-      const label = record({
+      const label = {
         dom: {
           tag: 'label',
           classes: [
@@ -17305,7 +16826,7 @@
           ]
         },
         components: [text$2(backstageShared.providers.translate(spec.label))]
-      });
+      };
       const comps = map$2(spec.items, backstageShared.interpreter);
       return {
         dom: {
@@ -17313,26 +16834,14 @@
           classes: ['tox-form__group']
         },
         components: [
-          label.asSpec(),
+          label,
           ...comps
         ],
         behaviours: derive$1([
           ComposingConfigs.self(),
           Replacing.config({}),
           domHtml(Optional.none()),
-          Keying.config({ mode: 'acyclic' }),
-          config('label', [runOnAttached(comp => {
-              spec.for.each(name => {
-                getCompByName(name).each(target => {
-                  label.getOpt(comp).each(labelComp => {
-                    var _a;
-                    const id = (_a = get$g(target.element, 'id')) !== null && _a !== void 0 ? _a : generate$6('form-field');
-                    set$9(target.element, 'id', id);
-                    set$9(labelComp.element, 'for', id);
-                  });
-                });
-              });
-            })])
+          Keying.config({ mode: 'acyclic' })
         ])
       };
     };
@@ -17369,7 +16878,7 @@
       ]
     };
 
-    const forceInitialSize = comp => set$8(comp.element, 'width', get$f(comp.element, 'width'));
+    const forceInitialSize = comp => set$8(comp.element, 'width', get$e(comp.element, 'width'));
 
     const renderIcon$1 = (iconName, iconsProvider, behaviours) => render$3(iconName, {
       tag: 'span',
@@ -17404,7 +16913,6 @@
         return Optional.some(true);
       };
       const role = spec.role.fold(() => ({}), role => ({ role }));
-      const listRole = Optional.from(spec.listRole).map(listRole => ({ listRole })).getOr({});
       const ariaLabelAttribute = spec.ariaLabel.fold(() => ({}), ariaLabel => {
         const translatedAriaLabel = sharedBackstage.providers.translate(ariaLabel);
         return { 'aria-label': translatedAriaLabel };
@@ -17418,7 +16926,6 @@
       const memDropdown = record(Dropdown.sketch({
         ...spec.uid ? { uid: spec.uid } : {},
         ...role,
-        ...listRole,
         dom: {
           tag: 'button',
           classes: [
@@ -17504,15 +17011,13 @@
           menu: {
             ...part(false, spec.columns, spec.presets),
             fakeFocus: spec.searchable,
-            ...spec.listRole === 'listbox' ? {} : {
-              onHighlightItem: updateAriaOnHighlight,
-              onCollapseMenu: (tmenuComp, itemCompCausingCollapse, nowActiveMenuComp) => {
-                Highlighting.getHighlighted(nowActiveMenuComp).each(itemComp => {
-                  updateAriaOnHighlight(tmenuComp, nowActiveMenuComp, itemComp);
-                });
-              },
-              onDehighlightItem: updateAriaOnDehighlight
-            }
+            onHighlightItem: updateAriaOnHighlight,
+            onCollapseMenu: (tmenuComp, itemCompCausingCollapse, nowActiveMenuComp) => {
+              Highlighting.getHighlighted(nowActiveMenuComp).each(itemComp => {
+                updateAriaOnHighlight(tmenuComp, nowActiveMenuComp, itemComp);
+              });
+            },
+            onDehighlightItem: updateAriaOnDehighlight
           }
         },
         getAnchorOverrides: () => {
@@ -17564,7 +17069,7 @@
       };
     };
     const generateValueIfRequired = item => {
-      const itemValue = get$h(item, 'value').getOrThunk(() => generate$6('generated-menu-item'));
+      const itemValue = get$g(item, 'value').getOrThunk(() => generate$6('generated-menu-item'));
       return deepMerge({ value: itemValue }, item);
     };
     const expand = (items, menuItems) => {
@@ -17622,17 +17127,16 @@
 
     const isSingleListItem = item => !has$2(item, 'items');
     const dataAttribute = 'data-value';
-    const fetchItems = (dropdownComp, name, items, selectedValue, hasNestedItems) => map$2(items, item => {
+    const fetchItems = (dropdownComp, name, items, selectedValue) => map$2(items, item => {
       if (!isSingleListItem(item)) {
         return {
           type: 'nestedmenuitem',
           text: item.text,
-          getSubmenuItems: () => fetchItems(dropdownComp, name, item.items, selectedValue, hasNestedItems)
+          getSubmenuItems: () => fetchItems(dropdownComp, name, item.items, selectedValue)
         };
       } else {
         return {
           type: 'togglemenuitem',
-          ...hasNestedItems ? {} : { role: 'option' },
           text: item.text,
           value: item.value,
           active: item.value === selectedValue,
@@ -17652,7 +17156,6 @@
       }
     });
     const renderListBox = (spec, backstage, initialData) => {
-      const hasNestedItems = exists(spec.items, item => !isSingleListItem(item));
       const providersBackstage = backstage.shared.providers;
       const initialItem = initialData.bind(value => findItemByValue(spec.items, value)).orThunk(() => head(spec.items).filter(isSingleListItem));
       const pLabel = spec.label.map(label => renderLabel$3(label, providersBackstage));
@@ -17664,11 +17167,10 @@
             text: initialItem.map(item => item.text),
             icon: Optional.none(),
             tooltip: Optional.none(),
-            role: someIf(!hasNestedItems, 'combobox'),
-            ...hasNestedItems ? {} : { listRole: 'listbox' },
+            role: Optional.none(),
             ariaLabel: spec.label,
             fetch: (comp, callback) => {
-              const items = fetchItems(comp, spec.name, spec.items, Representing.getValue(comp), hasNestedItems);
+              const items = fetchItems(comp, spec.name, spec.items, Representing.getValue(comp));
               callback(build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
                 isHorizontalMenu: false,
                 search: Optional.none()
@@ -17681,7 +17183,7 @@
             classes: [],
             dropdownBehaviours: [
               Tabstopping.config({}),
-              withComp(initialItem.map(item => item.value), comp => get$g(comp.element, dataAttribute), (comp, data) => {
+              withComp(initialItem.map(item => item.value), comp => get$f(comp.element, dataAttribute), (comp, data) => {
                 findItemByValue(spec.items, data).each(item => {
                   set$9(comp.element, dataAttribute, item.value);
                   emitWith(comp, updateMenuText, { text: item.text });
@@ -17750,7 +17252,7 @@
             store: {
               mode: 'manual',
               getValue: select => {
-                return get$7(select.element);
+                return get$6(select.element);
               },
               setValue: (select, newValue) => {
                 const firstOption = head(detail.options);
@@ -18192,12 +17694,6 @@
             name: spec.name,
             value
           });
-        },
-        onChange: (component, thumb, value) => {
-          emitWith(component, formChangeEvent, {
-            name: spec.name,
-            value
-          });
         }
       });
     };
@@ -18358,21 +17854,21 @@
     const getDimension = (slideConfig, elem) => slideConfig.dimension.getDimension(elem);
     const disableTransitions = (component, slideConfig) => {
       const root = getAnimationRoot(component, slideConfig);
-      remove$2(root, [
+      remove$1(root, [
         slideConfig.shrinkingClass,
         slideConfig.growingClass
       ]);
     };
     const setShrunk = (component, slideConfig) => {
-      remove$3(component.element, slideConfig.openClass);
+      remove$2(component.element, slideConfig.openClass);
       add$2(component.element, slideConfig.closedClass);
       set$8(component.element, getDimensionProperty(slideConfig), '0px');
       reflow(component.element);
     };
     const setGrown = (component, slideConfig) => {
-      remove$3(component.element, slideConfig.closedClass);
+      remove$2(component.element, slideConfig.closedClass);
       add$2(component.element, slideConfig.openClass);
-      remove$7(component.element, getDimensionProperty(slideConfig));
+      remove$6(component.element, getDimensionProperty(slideConfig));
     };
     const doImmediateShrink = (component, slideConfig, slideState, _calculatedSize) => {
       slideState.setCollapsed();
@@ -18388,7 +17884,7 @@
       set$8(component.element, getDimensionProperty(slideConfig), size);
       reflow(component.element);
       const root = getAnimationRoot(component, slideConfig);
-      remove$3(root, slideConfig.growingClass);
+      remove$2(root, slideConfig.growingClass);
       add$2(root, slideConfig.shrinkingClass);
       setShrunk(component, slideConfig);
       slideConfig.onStartShrink(component);
@@ -18413,16 +17909,16 @@
       };
       const setStartSize = wasShrinking ? startPartialGrow : startCompleteGrow;
       setStartSize();
-      remove$3(root, slideConfig.shrinkingClass);
+      remove$2(root, slideConfig.shrinkingClass);
       add$2(root, slideConfig.growingClass);
       setGrown(component, slideConfig);
       set$8(component.element, getDimensionProperty(slideConfig), fullSize);
       slideState.setExpanded();
       slideConfig.onStartGrow(component);
     };
-    const refresh$3 = (component, slideConfig, slideState) => {
+    const refresh$4 = (component, slideConfig, slideState) => {
       if (slideState.isExpanded()) {
-        remove$7(component.element, getDimensionProperty(slideConfig));
+        remove$6(component.element, getDimensionProperty(slideConfig));
         const fullSize = getDimension(slideConfig, component.element);
         set$8(component.element, getDimensionProperty(slideConfig), fullSize);
       }
@@ -18470,7 +17966,7 @@
 
     var SlidingApis = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        refresh: refresh$3,
+        refresh: refresh$4,
         grow: grow,
         shrink: shrink,
         immediateShrink: immediateShrink,
@@ -18486,20 +17982,20 @@
 
     const exhibit = (base, slideConfig, _slideState) => {
       const expanded = slideConfig.expanded;
-      return expanded ? nu$8({
+      return expanded ? nu$7({
         classes: [slideConfig.openClass],
         styles: {}
-      }) : nu$8({
+      }) : nu$7({
         classes: [slideConfig.closedClass],
         styles: wrap$1(slideConfig.dimension.property, '0px')
       });
     };
-    const events$5 = (slideConfig, slideState) => derive$2([runOnSource(transitionend(), (component, simulatedEvent) => {
+    const events$6 = (slideConfig, slideState) => derive$2([runOnSource(transitionend(), (component, simulatedEvent) => {
         const raw = simulatedEvent.event.raw;
         if (raw.propertyName === slideConfig.dimension.property) {
           disableTransitions(component, slideConfig);
           if (slideState.isExpanded()) {
-            remove$7(component.element, slideConfig.dimension.property);
+            remove$6(component.element, slideConfig.dimension.property);
           }
           const notify = slideState.isExpanded() ? slideConfig.onGrown : slideConfig.onShrunk;
           notify(component);
@@ -18509,7 +18005,7 @@
     var ActiveSliding = /*#__PURE__*/Object.freeze({
         __proto__: null,
         exhibit: exhibit,
-        events: events$5
+        events: events$6
     });
 
     var SlidingSchema = [
@@ -18526,19 +18022,19 @@
       requiredOf('dimension', choose$1('property', {
         width: [
           output$1('property', 'width'),
-          output$1('getDimension', elem => get$d(elem) + 'px')
+          output$1('getDimension', elem => get$c(elem) + 'px')
         ],
         height: [
           output$1('property', 'height'),
-          output$1('getDimension', elem => get$e(elem) + 'px')
+          output$1('getDimension', elem => get$d(elem) + 'px')
         ]
       }))
     ];
 
-    const init$8 = spec => {
+    const init$9 = spec => {
       const state = Cell(spec.expanded);
       const readState = () => 'expanded: ' + state.get();
-      return nu$7({
+      return nu$8({
         isExpanded: () => state.get() === true,
         isCollapsed: () => state.get() === false,
         setCollapsed: curry(state.set, false),
@@ -18549,7 +18045,7 @@
 
     var SlidingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        init: init$8
+        init: init$9
     });
 
     const Sliding = create$4({
@@ -18569,8 +18065,8 @@
           add$2(elm, 'tox-tbtn--enabled');
           set$9(elm, 'aria-pressed', true);
         } else {
-          remove$3(elm, 'tox-tbtn--enabled');
-          remove$8(elm, 'aria-pressed');
+          remove$2(elm, 'tox-tbtn--enabled');
+          remove$7(elm, 'aria-pressed');
         }
       },
       isActive: () => has(component.element, 'tox-tbtn--enabled'),
@@ -18972,7 +18468,7 @@
       };
     };
 
-    const events$4 = (streamConfig, streamState) => {
+    const events$5 = (streamConfig, streamState) => {
       const streams = streamConfig.stream.streams;
       const processor = streams.setup(streamConfig, streamState);
       return derive$2([
@@ -18983,7 +18479,7 @@
 
     var ActiveStreaming = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        events: events$4
+        events: events$5
     });
 
     const throttle = _config => {
@@ -18998,18 +18494,18 @@
           t.cancel();
         }
       };
-      return nu$7({
+      return nu$8({
         readState,
         setTimer,
         cancel
       });
     };
-    const init$7 = spec => spec.stream.streams.state(spec);
+    const init$8 = spec => spec.stream.streams.state(spec);
 
     var StreamingState = /*#__PURE__*/Object.freeze({
         __proto__: null,
         throttle: throttle,
-        init: init$7
+        init: init$8
     });
 
     const setup$c = (streamInfo, streamState) => {
@@ -19053,9 +18549,9 @@
     };
     const setSelectionOn = (input, f) => {
       const el = input.element;
-      const value = get$7(el);
+      const value = get$6(el);
       const node = el.dom;
-      if (get$g(el, 'type') !== 'number') {
+      if (get$f(el, 'type') !== 'number') {
         f(node, value);
       }
     };
@@ -19117,7 +18613,7 @@
           onSetValue: detail.onSetValue,
           store: {
             mode: 'dataset',
-            getDataKey: comp => get$7(comp.element),
+            getDataKey: comp => get$6(comp.element),
             getFallbackEntry: itemString => ({
               value: itemString,
               meta: {}
@@ -19138,7 +18634,7 @@
             const sandbox = Coupling.getCoupled(component, 'sandbox');
             const focusInInput = Focusing.isFocused(component);
             if (focusInInput) {
-              if (get$7(component.element).length >= detail.minChars) {
+              if (get$6(component.element).length >= detail.minChars) {
                 const previousValue = getActiveMenu(sandbox).bind(activeMenu => Highlighting.getHighlighted(activeMenu).map(Representing.getValue));
                 detail.previewing.set(true);
                 const onOpenSync = _sandbox => {
@@ -19212,7 +18708,7 @@
               return makeSandbox$1(detail, hotspot, {
                 onOpen: () => Toggling.on(hotspot),
                 onClose: () => {
-                  detail.lazyTypeaheadComp.get().each(input => remove$8(input.element, 'aria-activedescendant'));
+                  detail.lazyTypeaheadComp.get().each(input => remove$7(input.element, 'aria-activedescendant'));
                   Toggling.off(hotspot);
                 }
               });
@@ -19296,7 +18792,6 @@
       defaulted('dismissOnBlur', true),
       markers$1(['openClass']),
       option$3('initialData'),
-      option$3('listRole'),
       field('typeaheadBehaviours', [
         Focusing,
         Representing,
@@ -19759,7 +19254,7 @@
           Tabstopping.config({}),
           config('urlinput-events', [
             run$1(input(), comp => {
-              const currentValue = get$7(comp.element);
+              const currentValue = get$6(comp.element);
               const trimmedValue = currentValue.trim();
               if (trimmedValue !== currentValue) {
                 set$5(comp.element, trimmedValue);
@@ -19895,7 +19390,7 @@
     };
 
     const renderAlertBanner = (spec, providersBackstage) => {
-      const icon = get$3(spec.icon, providersBackstage.icons);
+      const icon = get$2(spec.icon, providersBackstage.icons);
       return Container.sketch({
         dom: {
           tag: 'div',
@@ -19945,7 +19440,7 @@
     const set$1 = (element, status) => {
       element.dom.checked = status;
     };
-    const get$2 = element => element.dom.checked;
+    const get$1 = element => element.dom.checked;
 
     const renderCheckbox = (spec, providerBackstage, initialData) => {
       const toggleCheckboxHandler = comp => {
@@ -19967,12 +19462,12 @@
               parentElement(component.element).each(element => add$2(element, 'tox-checkbox--disabled'));
             },
             onEnabled: component => {
-              parentElement(component.element).each(element => remove$3(element, 'tox-checkbox--disabled'));
+              parentElement(component.element).each(element => remove$2(element, 'tox-checkbox--disabled'));
             }
           }),
           Tabstopping.config({}),
           Focusing.config({}),
-          withElement(initialData, get$2, set$1),
+          withElement(initialData, get$1, set$1),
           Keying.config({
             mode: 'special',
             onEnter: toggleCheckboxHandler,
@@ -20030,22 +19525,14 @@
     };
 
     const renderHtmlPanel = (spec, providersBackstage) => {
-      const classes = [
-        'tox-form__group',
-        ...spec.stretched ? ['tox-form__group--stretched'] : []
-      ];
-      const init = config('htmlpanel', [runOnAttached(comp => {
-          spec.onInit(comp.element.dom);
-        })]);
       if (spec.presets === 'presentation') {
         return Container.sketch({
           dom: {
             tag: 'div',
-            classes,
+            classes: ['tox-form__group'],
             innerHtml: spec.html
           },
-          containerBehaviours: derive$1([
-            Tooltipping.config({
+          containerBehaviours: derive$1([Tooltipping.config({
               ...providersBackstage.tooltips.getConfig({
                 tooltipText: '',
                 onShow: comp => {
@@ -20081,33 +19568,30 @@
                 },
                 bubble: nu$5(0, -2, {})
               })
-            }),
-            init
-          ])
+            })])
         });
       } else {
         return Container.sketch({
           dom: {
             tag: 'div',
-            classes,
+            classes: ['tox-form__group'],
             innerHtml: spec.html,
             attributes: { role: 'document' }
           },
           containerBehaviours: derive$1([
             Tabstopping.config({}),
-            Focusing.config({}),
-            init
+            Focusing.config({})
           ])
         });
       }
     };
 
     const make$2 = render => {
-      return (parts, spec, dialogData, backstage, getCompByName) => get$h(spec, 'name').fold(() => render(spec, backstage, Optional.none(), getCompByName), fieldName => parts.field(fieldName, render(spec, backstage, get$h(dialogData, fieldName), getCompByName)));
+      return (parts, spec, dialogData, backstage) => get$g(spec, 'name').fold(() => render(spec, backstage, Optional.none()), fieldName => parts.field(fieldName, render(spec, backstage, get$g(dialogData, fieldName))));
     };
-    const makeIframe = render => (parts, spec, dialogData, backstage, getCompByName) => {
+    const makeIframe = render => (parts, spec, dialogData, backstage) => {
       const iframeSpec = deepMerge(spec, { source: 'dynamic' });
-      return make$2(render)(parts, iframeSpec, dialogData, backstage, getCompByName);
+      return make$2(render)(parts, iframeSpec, dialogData, backstage);
     };
     const factories = {
       bar: make$2((spec, backstage) => renderBar(spec, backstage.shared)),
@@ -20115,7 +19599,7 @@
       alertbanner: make$2((spec, backstage) => renderAlertBanner(spec, backstage.shared.providers)),
       input: make$2((spec, backstage, data) => renderInput(spec, backstage.shared.providers, data)),
       textarea: make$2((spec, backstage, data) => renderTextarea(spec, backstage.shared.providers, data)),
-      label: make$2((spec, backstage, _data, getCompByName) => renderLabel$2(spec, backstage.shared, getCompByName)),
+      label: make$2((spec, backstage) => renderLabel$2(spec, backstage.shared)),
       iframe: makeIframe((spec, backstage, data) => renderIFrame(spec, backstage.shared.providers, data)),
       button: make$2((spec, backstage) => renderDialogButton(spec, backstage.shared.providers)),
       checkbox: make$2((spec, backstage, data) => renderCheckbox(spec, backstage.shared.providers, data)),
@@ -20139,15 +19623,15 @@
       field: (_name, spec) => spec,
       record: constant$1([])
     };
-    const interpretInForm = (parts, spec, dialogData, oldBackstage, getCompByName) => {
-      const newBackstage = deepMerge(oldBackstage, { shared: { interpreter: childSpec => interpretParts(parts, childSpec, dialogData, newBackstage, getCompByName) } });
-      return interpretParts(parts, spec, dialogData, newBackstage, getCompByName);
+    const interpretInForm = (parts, spec, dialogData, oldBackstage) => {
+      const newBackstage = deepMerge(oldBackstage, { shared: { interpreter: childSpec => interpretParts(parts, childSpec, dialogData, newBackstage) } });
+      return interpretParts(parts, spec, dialogData, newBackstage);
     };
-    const interpretParts = (parts, spec, dialogData, backstage, getCompByName) => get$h(factories, spec.type).fold(() => {
+    const interpretParts = (parts, spec, dialogData, backstage) => get$g(factories, spec.type).fold(() => {
       console.error(`Unknown factory type "${ spec.type }", defaulting to container: `, spec);
       return spec;
-    }, factory => factory(parts, spec, dialogData, backstage, getCompByName));
-    const interpretWithoutForm = (spec, dialogData, backstage, getCompByName) => interpretParts(noFormParts, spec, dialogData, backstage, getCompByName);
+    }, factory => factory(parts, spec, dialogData, backstage));
+    const interpretWithoutForm = (spec, dialogData, backstage) => interpretParts(noFormParts, spec, dialogData, backstage);
 
     const labelPrefix = 'layout-inset';
     const westEdgeX = anchor => anchor.x;
@@ -20607,7 +20091,7 @@
       return doEnrich(formats);
     };
 
-    const init$6 = editor => {
+    const init$7 = editor => {
       const isSelectedFor = format => () => editor.formatter.match(format);
       const getPreviewFor = format => () => {
         const fmt = editor.formatter.get(format);
@@ -20671,11 +20155,8 @@
               spec.onShow(comp, tooltip);
             }
           },
-          onHide: (comp, tooltip) => {
+          onHide: () => {
             numActiveTooltips--;
-            if (spec.onHide) {
-              spec.onHide(comp, tooltip);
-            }
           }
         };
       };
@@ -20814,14 +20295,14 @@
     };
     const getHistory = fileType => {
       const history = getAllHistory();
-      return get$h(history, fileType).getOr([]);
+      return get$g(history, fileType).getOr([]);
     };
     const addToHistory = (url, fileType) => {
       if (!isHttpUrl(url)) {
         return;
       }
       const history = getAllHistory();
-      const items = get$h(history, fileType).getOr([]);
+      const items = get$g(history, fileType).getOr([]);
       const itemsWithoutUrl = filter$2(items, item => item !== url);
       history[fileType] = [url].concat(itemsWithoutUrl).slice(0, HISTORY_LENGTH);
       setAllHistory(history);
@@ -20883,19 +20364,19 @@
       getUrlPicker: filetype => getUrlPicker(editor, filetype)
     });
 
-    const init$5 = (lazySinks, editor, lazyAnchorbar, lazyBottomAnchorBar) => {
+    const init$6 = (lazySinks, editor, lazyAnchorbar, lazyBottomAnchorBar) => {
       const contextMenuState = Cell(false);
       const toolbar = HeaderBackstage(editor);
       const providers = {
         icons: () => editor.ui.registry.getAll().icons,
         menuItems: () => editor.ui.registry.getAll().menuItems,
-        translate: global$5.translate,
+        translate: global$8.translate,
         isDisabled: () => editor.mode.isReadOnly() || !editor.ui.isEnabled(),
         getOption: editor.options.get,
         tooltips: TooltipsBackstage(lazySinks.dialog)
       };
       const urlinput = UrlInputBackstage(editor);
-      const styles = init$6(editor);
+      const styles = init$7(editor);
       const colorinput = ColorInputBackstage(editor);
       const dialogSettings = DialogBackstage(editor);
       const isContextMenuOpen = () => contextMenuState.get();
@@ -20913,12 +20394,11 @@
         isContextMenuOpen,
         setContextMenuState
       };
-      const getCompByName = _name => Optional.none();
       const popupBackstage = {
         ...commonBackstage,
         shared: {
           ...commonBackstage.shared,
-          interpreter: s => interpretWithoutForm(s, {}, popupBackstage, getCompByName),
+          interpreter: s => interpretWithoutForm(s, {}, popupBackstage),
           getSink: lazySinks.popup
         }
       };
@@ -20926,7 +20406,7 @@
         ...commonBackstage,
         shared: {
           ...commonBackstage.shared,
-          interpreter: s => interpretWithoutForm(s, {}, dialogBackstage, getCompByName),
+          interpreter: s => interpretWithoutForm(s, {}, dialogBackstage),
           getSink: lazySinks.dialog
         }
       };
@@ -21181,14 +20661,405 @@
     });
 
     const setup$a = noop;
-    const isDocked$1 = never;
+    const isDocked$2 = never;
     const getBehaviours$1 = constant$1([]);
 
     var StaticHeader = /*#__PURE__*/Object.freeze({
         __proto__: null,
         setup: setup$a,
-        isDocked: isDocked$1,
+        isDocked: isDocked$2,
         getBehaviours: getBehaviours$1
+    });
+
+    const getOffsetParent = element => {
+      const isFixed = is$1(getRaw(element, 'position'), 'fixed');
+      const offsetParent$1 = isFixed ? Optional.none() : offsetParent(element);
+      return offsetParent$1.orThunk(() => {
+        const marker = SugarElement.fromTag('span');
+        return parent(element).bind(parent => {
+          append$2(parent, marker);
+          const offsetParent$1 = offsetParent(marker);
+          remove$5(marker);
+          return offsetParent$1;
+        });
+      });
+    };
+    const getOrigin = element => getOffsetParent(element).map(absolute$3).getOrThunk(() => SugarPosition(0, 0));
+
+    const appear = (component, contextualInfo) => {
+      const elem = component.element;
+      add$2(elem, contextualInfo.transitionClass);
+      remove$2(elem, contextualInfo.fadeOutClass);
+      add$2(elem, contextualInfo.fadeInClass);
+      contextualInfo.onShow(component);
+    };
+    const disappear = (component, contextualInfo) => {
+      const elem = component.element;
+      add$2(elem, contextualInfo.transitionClass);
+      remove$2(elem, contextualInfo.fadeInClass);
+      add$2(elem, contextualInfo.fadeOutClass);
+      contextualInfo.onHide(component);
+    };
+    const isPartiallyVisible = (box, bounds) => box.y < bounds.bottom && box.bottom > bounds.y;
+    const isTopCompletelyVisible = (box, bounds) => box.y >= bounds.y;
+    const isBottomCompletelyVisible = (box, bounds) => box.bottom <= bounds.bottom;
+    const forceTopPosition = (winBox, leftX, viewport) => ({
+      location: 'top',
+      leftX,
+      topY: viewport.bounds.y - winBox.y
+    });
+    const forceBottomPosition = (winBox, leftX, viewport) => ({
+      location: 'bottom',
+      leftX,
+      bottomY: winBox.bottom - viewport.bounds.bottom
+    });
+    const getDockedLeftPosition = bounds => {
+      return bounds.box.x - bounds.win.x;
+    };
+    const tryDockingPosition = (modes, bounds, viewport) => {
+      const winBox = bounds.win;
+      const box = bounds.box;
+      const leftX = getDockedLeftPosition(bounds);
+      return findMap(modes, mode => {
+        switch (mode) {
+        case 'bottom':
+          return !isBottomCompletelyVisible(box, viewport.bounds) ? Optional.some(forceBottomPosition(winBox, leftX, viewport)) : Optional.none();
+        case 'top':
+          return !isTopCompletelyVisible(box, viewport.bounds) ? Optional.some(forceTopPosition(winBox, leftX, viewport)) : Optional.none();
+        default:
+          return Optional.none();
+        }
+      }).getOr({ location: 'no-dock' });
+    };
+    const isVisibleForModes = (modes, box, viewport) => forall(modes, mode => {
+      switch (mode) {
+      case 'bottom':
+        return isBottomCompletelyVisible(box, viewport.bounds);
+      case 'top':
+        return isTopCompletelyVisible(box, viewport.bounds);
+      }
+    });
+    const getXYForRestoring = (pos, viewport) => {
+      const priorY = viewport.optScrollEnv.fold(constant$1(pos.bounds.y), scrollEnv => scrollEnv.scrollElmTop + (pos.bounds.y - scrollEnv.currentScrollTop));
+      return SugarPosition(pos.bounds.x, priorY);
+    };
+    const getXYForSaving = (box, viewport) => {
+      const priorY = viewport.optScrollEnv.fold(constant$1(box.y), scrollEnv => box.y + scrollEnv.currentScrollTop - scrollEnv.scrollElmTop);
+      return SugarPosition(box.x, priorY);
+    };
+    const getPrior = (elem, viewport, state) => state.getInitialPos().map(pos => {
+      const xy = getXYForRestoring(pos, viewport);
+      return {
+        box: bounds(xy.left, xy.top, get$c(elem), get$d(elem)),
+        location: pos.location
+      };
+    });
+    const storePrior = (elem, box, viewport, state, decision) => {
+      const xy = getXYForSaving(box, viewport);
+      const bounds$1 = bounds(xy.left, xy.top, box.width, box.height);
+      state.setInitialPos({
+        style: getAllRaw(elem),
+        position: get$e(elem, 'position') || 'static',
+        bounds: bounds$1,
+        location: decision.location
+      });
+    };
+    const storePriorIfNone = (elem, box, viewport, state, decision) => {
+      state.getInitialPos().fold(() => storePrior(elem, box, viewport, state, decision), () => noop);
+    };
+    const revertToOriginal = (elem, box, state) => state.getInitialPos().bind(position => {
+      var _a;
+      state.clearInitialPos();
+      switch (position.position) {
+      case 'static':
+        return Optional.some({ morph: 'static' });
+      case 'absolute':
+        const offsetParent = getOffsetParent(elem).getOr(body());
+        const offsetBox = box$1(offsetParent);
+        const scrollDelta = (_a = offsetParent.dom.scrollTop) !== null && _a !== void 0 ? _a : 0;
+        return Optional.some({
+          morph: 'absolute',
+          positionCss: NuPositionCss('absolute', get$g(position.style, 'left').map(_left => box.x - offsetBox.x), get$g(position.style, 'top').map(_top => box.y - offsetBox.y + scrollDelta), get$g(position.style, 'right').map(_right => offsetBox.right - box.right), get$g(position.style, 'bottom').map(_bottom => offsetBox.bottom - box.bottom))
+        });
+      default:
+        return Optional.none();
+      }
+    });
+    const tryMorphToOriginal = (elem, viewport, state) => getPrior(elem, viewport, state).filter(({box}) => isVisibleForModes(state.getModes(), box, viewport)).bind(({box}) => revertToOriginal(elem, box, state));
+    const tryDecisionToFixedMorph = decision => {
+      switch (decision.location) {
+      case 'top': {
+          return Optional.some({
+            morph: 'fixed',
+            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.some(decision.topY), Optional.none(), Optional.none())
+          });
+        }
+      case 'bottom': {
+          return Optional.some({
+            morph: 'fixed',
+            positionCss: NuPositionCss('fixed', Optional.some(decision.leftX), Optional.none(), Optional.none(), Optional.some(decision.bottomY))
+          });
+        }
+      default:
+        return Optional.none();
+      }
+    };
+    const tryMorphToFixed = (elem, viewport, state) => {
+      const box = box$1(elem);
+      const winBox = win();
+      const decision = tryDockingPosition(state.getModes(), {
+        win: winBox,
+        box
+      }, viewport);
+      if (decision.location === 'top' || decision.location === 'bottom') {
+        storePrior(elem, box, viewport, state, decision);
+        return tryDecisionToFixedMorph(decision);
+      } else {
+        return Optional.none();
+      }
+    };
+    const tryMorphToOriginalOrUpdateFixed = (elem, viewport, state) => {
+      return tryMorphToOriginal(elem, viewport, state).orThunk(() => {
+        return viewport.optScrollEnv.bind(_ => getPrior(elem, viewport, state)).bind(({box, location}) => {
+          const winBox = win();
+          const leftX = getDockedLeftPosition({
+            win: winBox,
+            box
+          });
+          const decision = location === 'top' ? forceTopPosition(winBox, leftX, viewport) : forceBottomPosition(winBox, leftX, viewport);
+          return tryDecisionToFixedMorph(decision);
+        });
+      });
+    };
+    const tryMorph = (component, viewport, state) => {
+      const elem = component.element;
+      const isDocked = is$1(getRaw(elem, 'position'), 'fixed');
+      return isDocked ? tryMorphToOriginalOrUpdateFixed(elem, viewport, state) : tryMorphToFixed(elem, viewport, state);
+    };
+    const calculateMorphToOriginal = (component, viewport, state) => {
+      const elem = component.element;
+      return getPrior(elem, viewport, state).bind(({box}) => revertToOriginal(elem, box, state));
+    };
+    const forceDockWith = (elem, viewport, state, getDecision) => {
+      const box = box$1(elem);
+      const winBox = win();
+      const leftX = getDockedLeftPosition({
+        win: winBox,
+        box
+      });
+      const decision = getDecision(winBox, leftX, viewport);
+      if (decision.location === 'bottom' || decision.location === 'top') {
+        storePriorIfNone(elem, box, viewport, state, decision);
+        return tryDecisionToFixedMorph(decision);
+      } else {
+        return Optional.none();
+      }
+    };
+
+    const morphToStatic = (component, config, state) => {
+      state.setDocked(false);
+      each$1([
+        'left',
+        'right',
+        'top',
+        'bottom',
+        'position'
+      ], prop => remove$6(component.element, prop));
+      config.onUndocked(component);
+    };
+    const morphToCoord = (component, config, state, position) => {
+      const isDocked = position.position === 'fixed';
+      state.setDocked(isDocked);
+      applyPositionCss(component.element, position);
+      const method = isDocked ? config.onDocked : config.onUndocked;
+      method(component);
+    };
+    const updateVisibility = (component, config, state, viewport, morphToDocked = false) => {
+      config.contextual.each(contextInfo => {
+        contextInfo.lazyContext(component).each(box => {
+          const isVisible = isPartiallyVisible(box, viewport.bounds);
+          if (isVisible !== state.isVisible()) {
+            state.setVisible(isVisible);
+            if (morphToDocked && !isVisible) {
+              add$1(component.element, [contextInfo.fadeOutClass]);
+              contextInfo.onHide(component);
+            } else {
+              const method = isVisible ? appear : disappear;
+              method(component, contextInfo);
+            }
+          }
+        });
+      });
+    };
+    const applyFixedMorph = (component, config, state, viewport, morph) => {
+      updateVisibility(component, config, state, viewport, true);
+      morphToCoord(component, config, state, morph.positionCss);
+    };
+    const applyMorph = (component, config, state, viewport, morph) => {
+      switch (morph.morph) {
+      case 'static': {
+          return morphToStatic(component, config, state);
+        }
+      case 'absolute': {
+          return morphToCoord(component, config, state, morph.positionCss);
+        }
+      case 'fixed': {
+          return applyFixedMorph(component, config, state, viewport, morph);
+        }
+      }
+    };
+    const refreshInternal = (component, config, state) => {
+      const viewport = config.lazyViewport(component);
+      updateVisibility(component, config, state, viewport);
+      tryMorph(component, viewport, state).each(morph => {
+        applyMorph(component, config, state, viewport, morph);
+      });
+    };
+    const resetInternal = (component, config, state) => {
+      const elem = component.element;
+      state.setDocked(false);
+      const viewport = config.lazyViewport(component);
+      calculateMorphToOriginal(component, viewport, state).each(staticOrAbsoluteMorph => {
+        switch (staticOrAbsoluteMorph.morph) {
+        case 'static': {
+            morphToStatic(component, config, state);
+            break;
+          }
+        case 'absolute': {
+            morphToCoord(component, config, state, staticOrAbsoluteMorph.positionCss);
+            break;
+          }
+        }
+      });
+      state.setVisible(true);
+      config.contextual.each(contextInfo => {
+        remove$1(elem, [
+          contextInfo.fadeInClass,
+          contextInfo.fadeOutClass,
+          contextInfo.transitionClass
+        ]);
+        contextInfo.onShow(component);
+      });
+      refresh$3(component, config, state);
+    };
+    const refresh$3 = (component, config, state) => {
+      if (component.getSystem().isConnected()) {
+        refreshInternal(component, config, state);
+      }
+    };
+    const reset = (component, config, state) => {
+      if (state.isDocked()) {
+        resetInternal(component, config, state);
+      }
+    };
+    const forceDockWithDecision = getDecision => (component, config, state) => {
+      const viewport = config.lazyViewport(component);
+      const optMorph = forceDockWith(component.element, viewport, state, getDecision);
+      optMorph.each(morph => {
+        applyFixedMorph(component, config, state, viewport, morph);
+      });
+    };
+    const forceDockToTop = forceDockWithDecision(forceTopPosition);
+    const forceDockToBottom = forceDockWithDecision(forceBottomPosition);
+    const isDocked$1 = (component, config, state) => state.isDocked();
+    const setModes = (component, config, state, modes) => state.setModes(modes);
+    const getModes = (component, config, state) => state.getModes();
+
+    var DockingApis = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        refresh: refresh$3,
+        reset: reset,
+        isDocked: isDocked$1,
+        getModes: getModes,
+        setModes: setModes,
+        forceDockToTop: forceDockToTop,
+        forceDockToBottom: forceDockToBottom
+    });
+
+    const events$4 = (dockInfo, dockState) => derive$2([
+      runOnSource(transitionend(), (component, simulatedEvent) => {
+        dockInfo.contextual.each(contextInfo => {
+          if (has(component.element, contextInfo.transitionClass)) {
+            remove$1(component.element, [
+              contextInfo.transitionClass,
+              contextInfo.fadeInClass
+            ]);
+            const notify = dockState.isVisible() ? contextInfo.onShown : contextInfo.onHidden;
+            notify(component);
+          }
+          simulatedEvent.stop();
+        });
+      }),
+      run$1(windowScroll(), (component, _) => {
+        refresh$3(component, dockInfo, dockState);
+      }),
+      run$1(externalElementScroll(), (component, _) => {
+        refresh$3(component, dockInfo, dockState);
+      }),
+      run$1(windowResize(), (component, _) => {
+        reset(component, dockInfo, dockState);
+      })
+    ]);
+
+    var ActiveDocking = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        events: events$4
+    });
+
+    var DockingSchema = [
+      optionObjOf('contextual', [
+        requiredString('fadeInClass'),
+        requiredString('fadeOutClass'),
+        requiredString('transitionClass'),
+        requiredFunction('lazyContext'),
+        onHandler('onShow'),
+        onHandler('onShown'),
+        onHandler('onHide'),
+        onHandler('onHidden')
+      ]),
+      defaultedFunction('lazyViewport', () => ({
+        bounds: win(),
+        optScrollEnv: Optional.none()
+      })),
+      defaultedArrayOf('modes', [
+        'top',
+        'bottom'
+      ], string),
+      onHandler('onDocked'),
+      onHandler('onUndocked')
+    ];
+
+    const init$5 = spec => {
+      const docked = Cell(false);
+      const visible = Cell(true);
+      const initialBounds = value$2();
+      const modes = Cell(spec.modes);
+      const readState = () => `docked:  ${ docked.get() }, visible: ${ visible.get() }, modes: ${ modes.get().join(',') }`;
+      return nu$8({
+        isDocked: docked.get,
+        setDocked: docked.set,
+        getInitialPos: initialBounds.get,
+        setInitialPos: initialBounds.set,
+        clearInitialPos: initialBounds.clear,
+        isVisible: visible.get,
+        setVisible: visible.set,
+        getModes: modes.get,
+        setModes: modes.set,
+        readState
+      });
+    };
+
+    var DockingState = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        init: init$5
+    });
+
+    const Docking = create$4({
+      fields: DockingSchema,
+      name: 'docking',
+      active: ActiveDocking,
+      apis: DockingApis,
+      state: DockingState
     });
 
     const toolbarHeightChange = constant$1(generate$6('toolbar-height-change'));
@@ -21204,14 +21075,14 @@
       const doc = owner$4(containerHeader);
       const win = defaultView(containerHeader);
       const viewHeight = win.dom.innerHeight;
-      const scrollPos = get$c(doc);
+      const scrollPos = get$b(doc);
       const markerElement = SugarElement.fromDom(e.elm);
       const markerPos = absolute$2(markerElement);
-      const markerHeight = get$e(markerElement);
+      const markerHeight = get$d(markerElement);
       const markerTop = markerPos.y;
       const markerBottom = markerTop + markerHeight;
       const editorHeaderPos = absolute$3(containerHeader);
-      const editorHeaderHeight = get$e(containerHeader);
+      const editorHeaderHeight = get$d(containerHeader);
       const editorHeaderTop = editorHeaderPos.top;
       const editorHeaderBottom = editorHeaderTop + editorHeaderHeight;
       const editorHeaderDockedAtTop = Math.abs(editorHeaderTop - scrollPos.top) < 2;
@@ -21225,29 +21096,29 @@
     };
     const isDockedMode = (header, mode) => contains$2(Docking.getModes(header), mode);
     const updateIframeContentFlow = header => {
-      const getOccupiedHeight = elm => getOuter$2(elm) + (parseInt(get$f(elm, 'margin-top'), 10) || 0) + (parseInt(get$f(elm, 'margin-bottom'), 10) || 0);
+      const getOccupiedHeight = elm => getOuter$2(elm) + (parseInt(get$e(elm, 'margin-top'), 10) || 0) + (parseInt(get$e(elm, 'margin-bottom'), 10) || 0);
       const elm = header.element;
       parentElement(elm).each(parentElem => {
         const padding = 'padding-' + Docking.getModes(header)[0];
         if (Docking.isDocked(header)) {
-          const parentWidth = get$d(parentElem);
+          const parentWidth = get$c(parentElem);
           set$8(elm, 'width', parentWidth + 'px');
           set$8(parentElem, padding, getOccupiedHeight(elm) + 'px');
         } else {
-          remove$7(elm, 'width');
-          remove$7(parentElem, padding);
+          remove$6(elm, 'width');
+          remove$6(parentElem, padding);
         }
       });
     };
     const updateSinkVisibility = (sinkElem, visible) => {
       if (visible) {
-        remove$3(sinkElem, visibility.fadeOutClass);
+        remove$2(sinkElem, visibility.fadeOutClass);
         add$1(sinkElem, [
           visibility.transitionClass,
           visibility.fadeInClass
         ]);
       } else {
-        remove$3(sinkElem, visibility.fadeInClass);
+        remove$2(sinkElem, visibility.fadeInClass);
         add$1(sinkElem, [
           visibility.fadeOutClass,
           visibility.transitionClass
@@ -21258,10 +21129,10 @@
       const editorContainer = SugarElement.fromDom(editor.getContainer());
       if (docked) {
         add$2(editorContainer, editorStickyOnClass);
-        remove$3(editorContainer, editorStickyOffClass);
+        remove$2(editorContainer, editorStickyOffClass);
       } else {
         add$2(editorContainer, editorStickyOffClass);
-        remove$3(editorContainer, editorStickyOnClass);
+        remove$2(editorContainer, editorStickyOnClass);
       }
     };
     const restoreFocus = (headerElem, focusedElem) => {
@@ -21304,7 +21175,7 @@
     const isDocked = lazyHeader => lazyHeader().map(Docking.isDocked).getOr(false);
     const getIframeBehaviours = () => [Receiving.config({ channels: { [toolbarHeightChange()]: { onReceive: updateIframeContentFlow } } })];
     const getBehaviours = (editor, sharedBackstage) => {
-      const focusedElm = value$4();
+      const focusedElm = value$2();
       const lazySink = sharedBackstage.getSink;
       const runOnSinkElement = f => {
         lazySink().each(sink => f(sink.element));
@@ -21343,7 +21214,7 @@
               runOnSinkElement(elem => updateSinkVisibility(elem, true));
             },
             onShown: comp => {
-              runOnSinkElement(elem => remove$2(elem, [
+              runOnSinkElement(elem => remove$1(elem, [
                 visibility.transitionClass,
                 visibility.fadeInClass
               ]));
@@ -21357,7 +21228,7 @@
               runOnSinkElement(elem => updateSinkVisibility(elem, false));
             },
             onHidden: () => {
-              runOnSinkElement(elem => remove$2(elem, [visibility.transitionClass]));
+              runOnSinkElement(elem => remove$1(elem, [visibility.transitionClass]));
             },
             ...visibility
           },
@@ -21605,12 +21476,12 @@
       const onSlots = f => (container, keys) => {
         each$1(keys, key => f(container, key));
       };
-      const doShowing = (comp, _key) => get$g(comp.element, 'aria-hidden') !== 'true';
+      const doShowing = (comp, _key) => get$f(comp.element, 'aria-hidden') !== 'true';
       const doShow = (comp, key) => {
         if (!doShowing(comp)) {
           const element = comp.element;
-          remove$7(element, 'display');
-          remove$8(element, 'aria-hidden');
+          remove$6(element, 'display');
+          remove$7(element, 'aria-hidden');
           emitWith(comp, slotVisibility(), {
             name: key,
             visible: true
@@ -21645,7 +21516,7 @@
         uid: detail.uid,
         dom: detail.dom,
         components,
-        behaviours: get$4(detail.slotBehaviours),
+        behaviours: get$3(detail.slotBehaviours),
         apis
       };
     };
@@ -21746,7 +21617,7 @@
           Composing.getCurrent(slider).each(slotContainer => {
             SlotContainer.showSlot(slotContainer, configKey);
             Sliding.immediateGrow(slider);
-            remove$7(slider.element, 'width');
+            remove$6(slider.element, 'width');
             updateSidebarRoleOnToggle(sidebar.element, 'region');
           });
         }
@@ -21826,7 +21697,7 @@
                 emitWith(slider, fixSize, { width: getRaw(slider.element, 'width').getOr('') });
               },
               onStartShrink: slider => {
-                emitWith(slider, fixSize, { width: get$d(slider.element) + 'px' });
+                emitWith(slider, fixSize, { width: get$c(slider.element) + 'px' });
               }
             }),
             Replacing.config({}),
@@ -21845,7 +21716,7 @@
             set$8(comp.element, 'width', se.event.width);
           }),
           run$1(autoSize, (comp, _se) => {
-            remove$7(comp.element, 'width');
+            remove$6(comp.element, 'width');
           })
         ])
       ])
@@ -21874,7 +21745,7 @@
       state.blockWith(() => Replacing.remove(root, blocker));
     };
     const unblock = (component, config, state) => {
-      remove$8(component.element, 'aria-busy');
+      remove$7(component.element, 'aria-busy');
       if (state.isBlocked()) {
         config.onUnblock(component);
       }
@@ -21901,7 +21772,7 @@
       const blockWith = destroy => {
         blocker.set({ destroy });
       };
-      return nu$7({
+      return nu$8({
         readState: blocker.isSet,
         blockWith,
         clear: blocker.clear,
@@ -21941,10 +21812,10 @@
           getOpt(iframe, tabIndexAttr).each(tabIndex => set$9(iframe, dataTabIndexAttr, tabIndex));
           set$9(iframe, tabIndexAttr, -1);
         } else {
-          remove$8(iframe, tabIndexAttr);
+          remove$7(iframe, tabIndexAttr);
           getOpt(iframe, dataTabIndexAttr).each(tabIndex => {
             set$9(iframe, tabIndexAttr, tabIndex);
-            remove$8(iframe, dataTabIndexAttr);
+            remove$7(iframe, dataTabIndexAttr);
           });
         }
       });
@@ -21954,8 +21825,8 @@
       toggleEditorTabIndex(editor, state);
       if (state) {
         Blocking.block(comp, getBusySpec$1(providerBackstage));
-        remove$7(element, 'display');
-        remove$8(element, 'aria-hidden');
+        remove$6(element, 'display');
+        remove$7(element, 'aria-hidden');
         if (editor.hasFocus()) {
           focusBusyComponent(comp);
         }
@@ -21995,7 +21866,7 @@
     };
     const setup$7 = (editor, lazyThrobber, sharedBackstage) => {
       const throbberState = Cell(false);
-      const timer = value$4();
+      const timer = value$2();
       const stealFocus = e => {
         if (throbberState.get() && !isPasteBinTarget(e)) {
           e.preventDefault();
@@ -22116,7 +21987,7 @@
       const focusedComp = findFocusedComp(groups);
       setOverflow([]);
       setGroups$1(primary, groups);
-      const availableWidth = get$d(primary.element);
+      const availableWidth = get$c(primary.element);
       const overflows = partition(availableWidth, detail.builtGroups.get(), comp => Math.ceil(comp.element.dom.getBoundingClientRect().width), overflowGroup);
       if (overflows.extra.length === 0) {
         Replacing.remove(primary, overflowGroup);
@@ -22125,7 +21996,7 @@
         setGroups$1(primary, overflows.within);
         setOverflow(overflows.extra);
       }
-      remove$7(primary.element, 'visibility');
+      remove$6(primary.element, 'visibility');
       reflow(primary.element);
       focusedComp.each(Focusing.focus);
     };
@@ -22201,7 +22072,7 @@
       })
     ]);
 
-    const shouldSkipFocus = value$4();
+    const shouldSkipFocus = value$2();
     const toggleWithoutFocusing = (button, externals) => {
       shouldSkipFocus.set(true);
       toggle(button, externals);
@@ -22521,10 +22392,12 @@
                 onShrunk: comp => {
                   getPart(comp, detail, 'overflow-button').each(button => {
                     Toggling.off(button);
+                    Focusing.focus(button);
                   });
                   detail.onClosed(comp);
                 },
                 onGrown: comp => {
+                  Keying.focusIn(comp);
                   detail.onOpened(comp);
                 },
                 onStartGrow: comp => {
@@ -22547,7 +22420,7 @@
         overrides: detail => ({
           buttonBehaviours: derive$1([Toggling.config({
               toggleClass: detail.markers.overflowToggledClass,
-              aria: { mode: 'expanded' },
+              aria: { mode: 'pressed' },
               toggleOnExecute: false
             })])
         })
@@ -22556,31 +22429,10 @@
     ]);
 
     const isOpen = (toolbar, detail) => getPart(toolbar, detail, 'overflow').map(Sliding.hasGrown).getOr(false);
-    const toggleToolbar = (toolbar, detail, skipFocus) => {
-      getPart(toolbar, detail, 'overflow-button').each(oveflowButton => {
-        getPart(toolbar, detail, 'overflow').each(overf => {
-          refresh(toolbar, detail);
-          if (Sliding.hasShrunk(overf)) {
-            const fn = detail.onOpened;
-            detail.onOpened = comp => {
-              if (!skipFocus) {
-                Keying.focusIn(overf);
-              }
-              fn(comp);
-              detail.onOpened = fn;
-            };
-          } else {
-            const fn = detail.onClosed;
-            detail.onClosed = comp => {
-              if (!skipFocus) {
-                Focusing.focus(oveflowButton);
-              }
-              fn(comp);
-              detail.onClosed = fn;
-            };
-          }
-          Sliding.toggleGrow(overf);
-        });
+    const toggleToolbar = (toolbar, detail) => {
+      getPart(toolbar, detail, 'overflow-button').bind(() => getPart(toolbar, detail, 'overflow')).each(overf => {
+        refresh(toolbar, detail);
+        Sliding.toggleGrow(overf);
       });
     };
     const refresh = (toolbar, detail) => {
@@ -22624,7 +22476,7 @@
             }
           }),
           config('toolbar-toggle-events', [run$1(toolbarToggleEvent, toolbar => {
-              toggleToolbar(toolbar, detail, false);
+              toggleToolbar(toolbar, detail);
             })])
         ]),
         apis: {
@@ -22633,12 +22485,7 @@
             refresh(toolbar, detail);
           },
           refresh: toolbar => refresh(toolbar, detail),
-          toggle: toolbar => {
-            toggleToolbar(toolbar, detail, false);
-          },
-          toggleWithoutFocusing: toolbar => {
-            toggleToolbar(toolbar, detail, true);
-          },
+          toggle: toolbar => toggleToolbar(toolbar, detail),
           isOpen: toolbar => isOpen(toolbar, detail)
         },
         domModification: { attributes: { role: 'group' } }
@@ -22866,8 +22713,8 @@
             add$2(elm, 'tox-button--enabled');
             set$9(elm, 'aria-pressed', true);
           } else {
-            remove$3(elm, 'tox-button--enabled');
-            remove$8(elm, 'aria-pressed');
+            remove$2(elm, 'tox-button--enabled');
+            remove$7(elm, 'aria-pressed');
           }
         };
         const isActive = () => has(comp.element, 'tox-button--enabled');
@@ -22977,10 +22824,6 @@
     const renderViewPane = spec => {
       return {
         uid: spec.uid,
-        behaviours: derive$1([
-          Focusing.config({}),
-          Tabstopping.config({})
-        ]),
         dom: {
           tag: 'div',
           classes: ['tox-view__pane']
@@ -22997,13 +22840,6 @@
         uid: detail.uid,
         dom: detail.dom,
         components,
-        behaviours: derive$1([
-          Focusing.config({}),
-          Keying.config({
-            mode: 'cyclic',
-            focusInside: FocusInsideModes.OnEnterOrSpaceMode
-          })
-        ]),
         apis
       };
     };
@@ -23070,8 +22906,8 @@
     };
     const showContainer = comp => {
       const element = comp.element;
-      remove$7(element, 'display');
-      remove$8(element, 'aria-hidden');
+      remove$6(element, 'display');
+      remove$7(element, 'aria-hidden');
     };
     const makeViewInstanceApi = slot => ({ getContainer: constant$1(slot) });
     const runOnPaneWithInstanceApi = (slotContainer, name, get) => {
@@ -23153,9 +22989,9 @@
       let toolbarDrawerOpenState = false;
       const toggleStatusbar = editorContainer => {
         sibling(editorContainer, '.tox-statusbar').each(statusBar => {
-          if (get$f(statusBar, 'display') === 'none' && get$g(statusBar, 'aria-hidden') === 'true') {
-            remove$7(statusBar, 'display');
-            remove$8(statusBar, 'aria-hidden');
+          if (get$e(statusBar, 'display') === 'none' && get$f(statusBar, 'aria-hidden') === 'true') {
+            remove$6(statusBar, 'display');
+            remove$7(statusBar, 'aria-hidden');
           } else {
             set$8(statusBar, 'display', 'none');
             set$9(statusBar, 'aria-hidden', 'true');
@@ -23259,8 +23095,8 @@
           parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
             const element = editorContainer.element;
             toggleStatusbar(element);
-            remove$7(element, 'display');
-            remove$8(element, 'aria-hidden');
+            remove$6(element, 'display');
+            remove$7(element, 'aria-hidden');
           });
         }
       };
@@ -23489,7 +23325,7 @@
       },
       insert: {
         title: 'Insert',
-        items: 'image link media addcomment pageembed inserttemplate codesample inserttable accordion math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents footnotes | mergetags | insertdatetime'
+        items: 'image link media addcomment pageembed inserttemplate codesample inserttable accordion | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents footnotes | mergetags | insertdatetime'
       },
       format: {
         title: 'Format',
@@ -23541,7 +23377,7 @@
       const validMenus = filter$2(menubar, menuName => {
         const isDefaultMenu = has$2(defaultMenus, menuName);
         if (userDefinedMenus) {
-          return isDefaultMenu || get$h(registry.menus, menuName).exists(menu => has$2(menu, 'items'));
+          return isDefaultMenu || get$g(registry.menus, menuName).exists(menu => has$2(menu, 'items'));
         } else {
           return isDefaultMenu;
         }
@@ -23587,10 +23423,9 @@
       const skinUiCss = 'ui/' + skinResourceIdentifier + '/skin.css';
       const css = tinymce.Resource.get(skinUiCss);
       if (isString(css)) {
-        loadRawCss(editor, skinUiCss, css, editor.ui.styleSheetLoader);
+        return Promise.resolve(loadRawCss(editor, skinUiCss, css, editor.ui.styleSheetLoader));
       } else {
-        const suffix = editor.editorManager.suffix;
-        const skinUiCss = skinUrl + `/skin${ suffix }.css`;
+        const skinUiCss = skinUrl + '/skin.min.css';
         return loadStylesheet(editor, skinUiCss, editor.ui.styleSheetLoader);
       }
     };
@@ -23601,29 +23436,30 @@
         const shadowDomSkinCss = 'ui/' + skinResourceIdentifier + '/skin.shadowdom.css';
         const css = tinymce.Resource.get(shadowDomSkinCss);
         if (isString(css)) {
-          loadRawCss(editor, shadowDomSkinCss, css, global$8.DOM.styleSheetLoader);
+          loadRawCss(editor, shadowDomSkinCss, css, global$7.DOM.styleSheetLoader);
+          return Promise.resolve();
         } else {
-          const suffix = editor.editorManager.suffix;
-          const shadowDomSkinCss = skinUrl + `/skin.shadowdom${ suffix }.css`;
-          return loadStylesheet(editor, shadowDomSkinCss, global$8.DOM.styleSheetLoader);
+          const shadowDomSkinCss = skinUrl + '/skin.shadowdom.min.css';
+          return loadStylesheet(editor, shadowDomSkinCss, global$7.DOM.styleSheetLoader);
         }
       }
     };
     const loadUrlSkin = async (isInline, editor) => {
-      const unbundled = () => {
+      getSkinUrlOption(editor).fold(() => {
         const skinResourceIdentifier = getSkinUrl(editor);
-        const suffix = editor.editorManager.suffix;
         if (skinResourceIdentifier) {
-          editor.contentCSS.push(skinResourceIdentifier + (isInline ? '/content.inline' : '/content') + `${ suffix }.css`);
+          editor.contentCSS.push(skinResourceIdentifier + (isInline ? '/content.inline' : '/content') + '.min.css');
         }
-      };
-      getSkinUrlOption(editor).fold(unbundled, skinUrl => {
+      }, skinUrl => {
         const skinContentCss = 'ui/' + skinUrl + (isInline ? '/content.inline' : '/content') + '.css';
         const css = tinymce.Resource.get(skinContentCss);
         if (isString(css)) {
           loadRawCss(editor, skinContentCss, css, editor.ui.styleSheetLoader);
         } else {
-          unbundled();
+          const skinResourceIdentifier = getSkinUrl(editor);
+          if (skinResourceIdentifier) {
+            editor.contentCSS.push(skinResourceIdentifier + (isInline ? '/content.inline' : '/content') + '.min.css');
+          }
         }
       });
       const skinUrl = getSkinUrl(editor);
@@ -24327,10 +24163,10 @@
       if (/[0-9.]+px$/.test(fontSize)) {
         return round(parseInt(fontSize, 10) * 72 / 96, precision || 0) + 'pt';
       } else {
-        return get$h(keywordFontSizes, fontSize).getOr(fontSize);
+        return get$g(keywordFontSizes, fontSize).getOr(fontSize);
       }
     };
-    const toLegacy = fontSize => get$h(legacyFontSizes, fontSize).getOr('');
+    const toLegacy = fontSize => get$g(legacyFontSizes, fontSize).getOr('');
     const getSpec$1 = editor => {
       const getMatchingValue = () => {
         let matchOpt = Optional.none();
@@ -24528,8 +24364,7 @@
       defaulted('matchWidth', false),
       defaulted('useMinWidth', false),
       defaulted('eventOrder', {}),
-      option$3('role'),
-      option$3('listRole')
+      option$3('role')
     ].concat(sandboxFields()));
     const arrowPart = required({
       factory: Button,
@@ -24640,7 +24475,7 @@
               set$9(component.element, 'aria-describedby', descriptorId);
             });
           })]),
-        ...events$9(Optional.some(action))
+        ...events$a(Optional.some(action))
       };
       const apis = {
         repositionMenus: comp => {
@@ -24962,7 +24797,7 @@
                 'tox-tbtn',
                 'tox-split-button__chevron'
               ],
-              innerHtml: get$3('chevron-down', sharedBackstage.providers.icons)
+              innerHtml: get$2('chevron-down', sharedBackstage.providers.icons)
             },
             buttonBehaviours: derive$1([
               DisablingConfigs.splitButton(sharedBackstage.providers.isDisabled),
@@ -25051,7 +24886,7 @@
         }
       })
     };
-    const extractFrom = (spec, backstage, editor, btnName) => get$h(types, spec.type).fold(() => {
+    const extractFrom = (spec, backstage, editor, btnName) => get$g(types, spec.type).fold(() => {
       console.error('skipping button defined by', spec);
       return Optional.none();
     }, render => Optional.some(render(spec, backstage, editor, btnName)));
@@ -25094,7 +24929,7 @@
         return [];
       }
     };
-    const lookupButton = (editor, buttons, toolbarItem, allowToolbarGroups, backstage, prefixes) => get$h(buttons, toolbarItem.toLowerCase()).orThunk(() => prefixes.bind(ps => findMap(ps, prefix => get$h(buttons, prefix + toolbarItem.toLowerCase())))).fold(() => get$h(bespokeButtons, toolbarItem.toLowerCase()).map(r => r(editor, backstage)), spec => {
+    const lookupButton = (editor, buttons, toolbarItem, allowToolbarGroups, backstage, prefixes) => get$g(buttons, toolbarItem.toLowerCase()).orThunk(() => prefixes.bind(ps => findMap(ps, prefix => get$g(buttons, prefix + toolbarItem.toLowerCase())))).fold(() => get$g(bespokeButtons, toolbarItem.toLowerCase()).map(r => r(editor, backstage)), spec => {
       if (spec.type === 'grouptoolbarbutton' && !allowToolbarGroups) {
         console.warn(`Ignoring the '${ toolbarItem }' toolbar button. Group toolbar buttons are only supported when using floating toolbar mode and cannot be nested.`);
         return Optional.none();
@@ -25172,7 +25007,7 @@
       });
       editor.on('show', () => {
         each$1(uiMotherships, m => {
-          remove$7(m.element, 'display');
+          remove$6(m.element, 'display');
         });
       });
       editor.on('NodeChange', resizeDocument);
@@ -25315,7 +25150,7 @@
     const maximumDistanceToEdge = 40;
     const InlineHeader = (editor, targetElm, uiRefs, backstage, floatContainer) => {
       const {mainUi, uiMotherships} = uiRefs;
-      const DOM = global$8.DOM;
+      const DOM = global$7.DOM;
       const useFixedToolbarContainer = useFixedContainer(editor);
       const isSticky = isStickyToolbar(editor);
       const editorMaxWidthOpt = getMaxWidthOption(editor).or(getWidth(editor));
@@ -25326,20 +25161,20 @@
       const isSplitToolbar = toolbarMode === ToolbarMode.sliding || toolbarMode === ToolbarMode.floating;
       const visible = Cell(false);
       const isVisible = () => visible.get() && !editor.removed;
-      const calcToolbarOffset = toolbar => isSplitToolbar ? toolbar.fold(constant$1(0), tbar => tbar.components().length > 1 ? get$e(tbar.components()[1].element) : 0) : 0;
+      const calcToolbarOffset = toolbar => isSplitToolbar ? toolbar.fold(constant$1(0), tbar => tbar.components().length > 1 ? get$d(tbar.components()[1].element) : 0) : 0;
       const calcMode = container => {
         switch (getToolbarLocation(editor)) {
         case ToolbarLocation.auto:
           const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
-          const toolbarHeight = get$e(container.element) - offset;
+          const toolbarHeight = get$d(container.element) - offset;
           const targetBounds = box$1(targetElm);
           const roomAtTop = targetBounds.y > toolbarHeight;
           if (roomAtTop) {
             return 'top';
           } else {
             const doc = documentElement(targetElm);
-            const docHeight = Math.max(doc.dom.scrollHeight, get$e(doc));
+            const docHeight = Math.max(doc.dom.scrollHeight, get$d(doc));
             const roomAtBottom = targetBounds.bottom < docHeight - toolbarHeight;
             if (roomAtBottom) {
               return 'bottom';
@@ -25383,17 +25218,17 @@
             const isOffsetParentBody = eq(offsetParent, body());
             return isOffsetParentBody ? targetBounds.x : targetBounds.x - offsetBox.x;
           });
-          const getTop = () => offsetParent.fold(() => isPositionedAtTop() ? Math.max(targetBounds.y - get$e(container.element) + offset, 0) : targetBounds.bottom, offsetParent => {
+          const getTop = () => offsetParent.fold(() => isPositionedAtTop() ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.bottom, offsetParent => {
             var _a;
             const offsetBox = box$1(offsetParent);
             const scrollDelta = (_a = offsetParent.dom.scrollTop) !== null && _a !== void 0 ? _a : 0;
             const isOffsetParentBody = eq(offsetParent, body());
-            const topValue = isOffsetParentBody ? Math.max(targetBounds.y - get$e(container.element) + offset, 0) : targetBounds.y - offsetBox.y + scrollDelta - get$e(container.element) + offset;
+            const topValue = isOffsetParentBody ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.y - offsetBox.y + scrollDelta - get$d(container.element) + offset;
             return isPositionedAtTop() ? topValue : targetBounds.bottom;
           });
           const left = getLeft();
           const widthProperties = someIf(isOuterContainerWidthRestored, Math.ceil(mainUi.outerContainer.element.dom.getBoundingClientRect().width)).filter(w => w > minimumToolbarWidth).map(toolbarWidth => {
-            const scroll = prevScroll.getOr(get$c());
+            const scroll = prevScroll.getOr(get$b());
             const availableWidth = window.innerWidth - (left - scroll.left);
             const width = Math.max(Math.min(toolbarWidth, availableWidth), minimumToolbarWidth);
             if (availableWidth < toolbarWidth) {
@@ -25424,7 +25259,7 @@
           if (toolbarCurrentRightsidePosition >= window.innerWidth - maximumDistanceToEdge || getRaw(mainUi.outerContainer.element, 'width').isSome()) {
             set$8(mainUi.outerContainer.element, 'position', 'absolute');
             set$8(mainUi.outerContainer.element, 'left', '0px');
-            remove$7(mainUi.outerContainer.element, 'width');
+            remove$6(mainUi.outerContainer.element, 'width');
             return true;
           }
         }
@@ -25437,13 +25272,13 @@
         if (!useFixedToolbarContainer) {
           updateChromeWidth();
         }
-        const prevScroll = get$c();
+        const prevScroll = get$b();
         const isOuterContainerWidthRestored = useFixedToolbarContainer ? false : restoreOuterContainerWidth();
         if (isSplitToolbar) {
           OuterContainer.refreshToolbar(mainUi.outerContainer);
         }
         if (!useFixedToolbarContainer) {
-          const currentScroll = get$c();
+          const currentScroll = get$b();
           const optScroll = someIf(prevScroll.left !== currentScroll.left, prevScroll);
           updateChromePosition(isOuterContainerWidthRestored, optScroll);
           optScroll.each(scroll => {
@@ -25475,7 +25310,7 @@
         set$8(mainUi.outerContainer.element, 'display', 'flex');
         DOM.addClass(editor.getBody(), 'mce-edit-focus');
         each$1(uiMotherships, m => {
-          remove$7(m.element, 'display');
+          remove$6(m.element, 'display');
         });
         doUpdateMode();
         if (isSplitUiMode(editor)) {
@@ -25552,7 +25387,7 @@
       let lastScrollX = 0;
       const updateUi = last(() => ui.update(Docking.refresh), 33);
       editor.on('ScrollWindow', () => {
-        const newScrollX = get$c().left;
+        const newScrollX = get$b().left;
         if (newScrollX !== lastScrollX) {
           lastScrollX = newScrollX;
           updateUi.throttle();
@@ -25572,7 +25407,7 @@
     };
     const render = (editor, uiRefs, rawUiConfig, backstage, args) => {
       const {mainUi} = uiRefs;
-      const floatContainer = value$4();
+      const floatContainer = value$2();
       const targetElm = SugarElement.fromDom(args.targetNode);
       const ui = InlineHeader(editor, targetElm, uiRefs, backstage, floatContainer);
       const toolbarPersist = isToolbarPersist(editor);
@@ -25636,9 +25471,9 @@
     });
 
     const LazyUiReferences = () => {
-      const dialogUi = value$4();
-      const popupUi = value$4();
-      const mainUi = value$4();
+      const dialogUi = value$2();
+      const popupUi = value$2();
+      const mainUi = value$2();
       const lazyGetInOuterOrDie = (label, f) => () => mainUi.get().bind(oc => f(oc.outerContainer)).getOrDie(`Could not find ${ label } element in OuterContainer`);
       const getUiMotherships = () => {
         const optDialogMothership = dialogUi.get().map(ui => ui.mothership);
@@ -25777,7 +25612,7 @@
       const rng = editor.selection.getRng();
       const rect = getRangeRect(rng);
       if (editor.inline) {
-        const scroll = get$c();
+        const scroll = get$b();
         return bounds(scroll.left + rect.left, scroll.top + rect.top, rect.width, rect.height);
       } else {
         const bodyPos = absolute$2(SugarElement.fromDom(editor.getBody()));
@@ -25877,8 +25712,8 @@
           return isOverlapping && !data.isReposition() ? flip : preserve;
         });
       } else {
-        const yBounds = data.getMode() === 'fixed' ? bounds.y + get$c().top : bounds.y;
-        const contextbarHeight = get$e(contextbar) + bubbleSize$1;
+        const yBounds = data.getMode() === 'fixed' ? bounds.y + get$b().top : bounds.y;
+        const contextbarHeight = get$d(contextbar) + bubbleSize$1;
         return yBounds + contextbarHeight <= selectionBounds.y ? north : south;
       }
     };
@@ -26116,26 +25951,26 @@
         onShow: comp => {
           stack.set([]);
           InlineView.getContent(comp).each(c => {
-            remove$7(c.element, 'visibility');
+            remove$6(c.element, 'visibility');
           });
-          remove$3(comp.element, resizingClass);
-          remove$7(comp.element, 'width');
+          remove$2(comp.element, resizingClass);
+          remove$6(comp.element, 'width');
         },
         inlineBehaviours: derive$1([
           config('context-toolbar-events', [
             runOnSource(transitionend(), (comp, se) => {
               if (se.event.raw.propertyName === 'width') {
-                remove$3(comp.element, resizingClass);
-                remove$7(comp.element, 'width');
+                remove$2(comp.element, resizingClass);
+                remove$6(comp.element, 'width');
               }
             }),
             run$1(changeSlideEvent, (comp, se) => {
               const elem = comp.element;
-              remove$7(elem, 'width');
-              const currentWidth = get$d(elem);
+              remove$6(elem, 'width');
+              const currentWidth = get$c(elem);
               InlineView.setContent(comp, se.event.contents);
               add$2(elem, resizingClass);
-              const newWidth = get$d(elem);
+              const newWidth = get$c(elem);
               set$8(elem, 'width', currentWidth + 'px');
               InlineView.getContent(comp).each(newContents => {
                 se.event.focus.bind(f => {
@@ -26189,9 +26024,9 @@
       const backstage = extras.backstage;
       const sharedBackstage = backstage.shared;
       const isTouch = detect$1().deviceType.isTouch;
-      const lastElement = value$4();
-      const lastTrigger = value$4();
-      const lastContextPosition = value$4();
+      const lastElement = value$2();
+      const lastTrigger = value$2();
+      const lastContextPosition = value$2();
       const contextbar = build$1(renderContextToolbar({
         sink,
         onEscape: () => {
@@ -26226,7 +26061,7 @@
       const hideOrRepositionIfNecessary = () => {
         if (InlineView.isOpen(contextbar)) {
           const contextBarEle = contextbar.element;
-          remove$7(contextBarEle, 'display');
+          remove$6(contextBarEle, 'display');
           if (shouldContextToolbarHide()) {
             set$8(contextBarEle, 'display', 'none');
           } else {
@@ -26301,9 +26136,9 @@
         lastContextPosition.set(position);
         lastTrigger.set(1);
         const contextBarEle = contextbar.element;
-        remove$7(contextBarEle, 'display');
+        remove$6(contextBarEle, 'display');
         if (!isSameLaunchElement(elem)) {
-          remove$3(contextBarEle, transitionClass);
+          remove$2(contextBarEle, transitionClass);
           Positioning.reset(sink, contextbar);
         }
         InlineView.showWithinBounds(contextbar, wrapInPopDialog(toolbarSpec), {
@@ -26339,7 +26174,7 @@
         editor.on(hideContextToolbarEvent, close);
         editor.on(showContextToolbarEvent, e => {
           const scopes = getScopes();
-          get$h(scopes.lookupTable, e.toolbarKey).each(ctx => {
+          get$g(scopes.lookupTable, e.toolbarKey).each(ctx => {
             launchContext([ctx], someIf(e.target !== editor, e.target));
             InlineView.getContent(contextbar).each(Keying.focusIn);
           });
@@ -26427,7 +26262,7 @@
       const getMenuItems = () => {
         const options = spec.getOptions(editor);
         const initial = spec.getCurrent(editor).map(spec.hash);
-        const current = value$4();
+        const current = value$2();
         return map$2(options, value => ({
           type: 'togglemenuitem',
           text: spec.display(value),
@@ -27015,7 +26850,7 @@
       }
     };
     const transposeContentAreaContainer = (element, pos) => {
-      const containerPos = global$8.DOM.getPos(element);
+      const containerPos = global$7.DOM.getPos(element);
       return transpose(pos, containerPos.x, containerPos.y);
     };
     const getPointAnchor = (editor, e) => {
@@ -27247,7 +27082,7 @@
     };
     const generateContextMenu = (contextMenus, menuConfig, selectedElement) => {
       const sections = foldl(menuConfig, (acc, name) => {
-        return get$h(contextMenus, name.toLowerCase()).map(menu => {
+        return get$g(contextMenus, name.toLowerCase()).map(menu => {
           const items = menu.update(selectedElement);
           if (isString(items) && isNotEmpty(trim$1(items))) {
             return addContextMenuGroup(acc, items.split(' '));
@@ -27396,10 +27231,10 @@
     const fixed = adt.fixed;
 
     const parseAttrToInt = (element, name) => {
-      const value = get$g(element, name);
+      const value = get$f(element, name);
       return isUndefined(value) ? NaN : parseInt(value, 10);
     };
-    const get$1 = (component, snapsInfo) => {
+    const get = (component, snapsInfo) => {
       const element = component.element;
       const x = parseAttrToInt(element, snapsInfo.leftAttr);
       const y = parseAttrToInt(element, snapsInfo.topAttr);
@@ -27412,11 +27247,11 @@
     };
     const clear = (component, snapsInfo) => {
       const element = component.element;
-      remove$8(element, snapsInfo.leftAttr);
-      remove$8(element, snapsInfo.topAttr);
+      remove$7(element, snapsInfo.leftAttr);
+      remove$7(element, snapsInfo.topAttr);
     };
 
-    const getCoords = (component, snapInfo, coord, delta) => get$1(component, snapInfo).fold(() => coord, fixed$1 => fixed(fixed$1.left + delta.left, fixed$1.top + delta.top));
+    const getCoords = (component, snapInfo, coord, delta) => get(component, snapInfo).fold(() => coord, fixed$1 => fixed(fixed$1.left + delta.left, fixed$1.top + delta.top));
     const moveOrSnap = (component, snapInfo, coord, delta, scroll, origin) => {
       const newCoord = getCoords(component, snapInfo, coord, delta);
       const snap = snapInfo.mustSnap ? findClosestSnap(component, snapInfo, newCoord, scroll, origin) : findSnap(component, snapInfo, newCoord, scroll, origin);
@@ -27486,7 +27321,7 @@
       const target = dragConfig.getTarget(component.element);
       if (dragConfig.repositionTarget) {
         const doc = owner$4(component.element);
-        const scroll = get$c(doc);
+        const scroll = get$b(doc);
         const origin = getOrigin(target);
         const snapPin = snapTo$1(snap, scroll, origin);
         const styles = toStyles(snapPin.coord, scroll, origin);
@@ -27502,8 +27337,8 @@
     const initialAttribute = 'data-initial-z-index';
     const resetZIndex = blocker => {
       parent(blocker.element).filter(isElement$1).each(root => {
-        getOpt(root, initialAttribute).fold(() => remove$7(root, 'z-index'), zIndex => set$8(root, 'z-index', zIndex));
-        remove$8(root, initialAttribute);
+        getOpt(root, initialAttribute).fold(() => remove$6(root, 'z-index'), zIndex => set$8(root, 'z-index', zIndex));
+        remove$7(root, initialAttribute);
       });
     };
     const changeZIndex = blocker => {
@@ -27511,7 +27346,7 @@
         getRaw(root, 'z-index').each(zindex => {
           set$9(root, initialAttribute, zindex);
         });
-        set$8(root, 'z-index', get$f(blocker.element, 'z-index'));
+        set$8(root, 'z-index', get$e(blocker.element, 'z-index'));
       });
     };
     const instigate = (anyComponent, blocker) => {
@@ -27596,7 +27431,7 @@
       const target = dragConfig.getTarget(component.element);
       if (dragConfig.repositionTarget) {
         const doc = owner$4(component.element);
-        const scroll = get$c(doc);
+        const scroll = get$b(doc);
         const origin = getOrigin(target);
         const currentCoord = getCurrentCoord(target);
         const newCoord = calcNewCoord(component, dragConfig.snaps, currentCoord, scroll, origin, delta, startData);
@@ -27713,7 +27548,7 @@
     });
 
     const events$2 = (dragConfig, dragState, updateStartState) => {
-      const blockerSingleton = value$4();
+      const blockerSingleton = value$2();
       const stopBlocking = component => {
         stop(component, blockerSingleton.get(), dragConfig, dragState);
         blockerSingleton.clear();
@@ -27792,7 +27627,7 @@
       };
       const getStartData = () => startData;
       const readState = constant$1({});
-      return nu$7({
+      return nu$8({
         readState,
         reset,
         update,
@@ -27892,8 +27727,8 @@
       const tlTds = Cell([]);
       const brTds = Cell([]);
       const isVisible = Cell(false);
-      const startCell = value$4();
-      const finishCell = value$4();
+      const startCell = value$2();
+      const finishCell = value$2();
       const getTopLeftSnap = td => {
         const box = absolute$2(td);
         return calcSnap(memTopLeft.getOpt(sink), td, box.x, box.y, box.width, box.height);
@@ -27926,7 +27761,7 @@
       const bottomRight = build$1(memBottomRight.asSpec());
       const showOrHideHandle = (selector, cell, isAbove, isBelow) => {
         const cellRect = cell.dom.getBoundingClientRect();
-        remove$7(selector.element, 'display');
+        remove$6(selector.element, 'display');
         const viewportHeight = defaultView(SugarElement.fromDom(editor.getBody())).dom.innerHeight;
         const aboveViewport = isAbove(cellRect);
         const belowViewport = isBelow(cellRect, viewportHeight);
@@ -27980,19 +27815,7 @@
       }
     };
 
-    var Logo = "<svg height=\"16\" viewBox=\"0 0 80 16\" width=\"80\" xmlns=\"http://www.w3.org/2000/svg\"><g opacity=\".8\"><path d=\"m80 3.537v-2.202h-7.976v11.585h7.976v-2.25h-5.474v-2.621h4.812v-2.069h-4.812v-2.443zm-10.647 6.929c-.493.217-1.13.337-1.864.337s-1.276-.156-1.805-.47a3.732 3.732 0 0 1 -1.3-1.298c-.324-.554-.48-1.191-.48-1.877s.156-1.335.48-1.877a3.635 3.635 0 0 1 1.3-1.299 3.466 3.466 0 0 1 1.805-.481c.65 0 .914.06 1.263.18.36.12.698.277.986.47.289.192.578.384.842.6l.12.085v-2.586l-.023-.024c-.385-.35-.855-.614-1.384-.818-.53-.205-1.155-.313-1.877-.313-.721 0-1.6.144-2.333.445a5.773 5.773 0 0 0 -1.937 1.251 5.929 5.929 0 0 0 -1.324 1.9c-.324.735-.48 1.565-.48 2.455s.156 1.72.48 2.454c.325.734.758 1.383 1.324 1.913.553.53 1.215.938 1.937 1.25a6.286 6.286 0 0 0 2.333.434c.819 0 1.384-.108 1.961-.313.59-.216 1.083-.505 1.468-.866l.024-.024v-2.49l-.12.096c-.41.337-.878.626-1.396.866zm-14.869-4.15-4.8-5.04-.024-.025h-.902v11.67h2.502v-6.847l2.827 3.08.385.409.397-.41 2.791-3.067v6.845h2.502v-11.679h-.902l-4.788 5.052z\"/><path clip-rule=\"evenodd\" d=\"m15.543 5.137c0-3.032-2.466-5.113-4.957-5.137-.36 0-.745.024-1.094.096-.157.024-3.85.758-3.85.758-3.032.602-4.62 2.466-4.704 4.788-.024.89-.024 4.27-.024 4.27.036 3.165 2.406 5.138 5.017 5.126.337 0 1.119-.109 1.287-.145.144-.024.385-.084.746-.144.661-.12 1.684-.325 3.067-.602 2.37-.409 4.103-2.009 4.44-4.33.156-1.023.084-4.692.084-4.692zm-3.213 3.308-2.346.457v2.31l-5.859 1.143v-5.75l2.346-.458v3.441l3.513-.686v-3.44l-3.513.685v-2.297l5.859-1.143v5.75zm20.09-3.296-.083-1.023h-2.13v8.794h2.346v-4.884c0-1.107.95-1.985 2.057-1.997 1.095 0 1.901.89 1.901 1.997v4.884h2.346v-5.245c-.012-2.105-1.588-3.777-3.67-3.765a3.764 3.764 0 0 0 -2.778 1.25l.012-.011zm-6.014-4.102 2.346-.458v2.298l-2.346.457z\" fill-rule=\"evenodd\"/><path d=\"m28.752 4.126h-2.346v8.794h2.346z\"/><path clip-rule=\"evenodd\" d=\"m43.777 15.483 4.043-11.357h-2.418l-1.54 4.355-.445 1.324-.36-1.324-1.54-4.355h-2.418l3.151 8.794-1.083 3.08zm-21.028-5.51c0 .722.541 1.034.878 1.034s.638-.048.95-.144l.518 1.708c-.217.145-.879.518-2.13.518a2.565 2.565 0 0 1 -2.562-2.587c-.024-1.082-.024-2.49 0-4.21h-1.54v-2.142h1.54v-1.912l2.346-.458v2.37h2.201v2.142h-2.2v3.693-.012z\" fill-rule=\"evenodd\"/></g></svg>\n";
-
-    const describedBy = (describedElement, describeElement) => {
-      const describeId = Optional.from(get$g(describedElement, 'id')).getOrThunk(() => {
-        const id = generate$6('aria');
-        set$9(describeElement, 'id', id);
-        return id;
-      });
-      set$9(describedElement, 'aria-describedby', describeId);
-    };
-    const remove = describedElement => {
-      remove$8(describedElement, 'aria-describedby');
-    };
+    var Logo = "<svg width=\"50px\" height=\"16px\" viewBox=\"0 0 50 16\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M10.143 0c2.608.015 5.186 2.178 5.186 5.331 0 0 .077 3.812-.084 4.87-.361 2.41-2.164 4.074-4.65 4.496-1.453.284-2.523.49-3.212.623-.373.071-.634.122-.785.152-.184.038-.997.145-1.35.145-2.732 0-5.21-2.04-5.248-5.33 0 0 0-3.514.03-4.442.093-2.4 1.758-4.342 4.926-4.963 0 0 3.875-.752 4.036-.782.368-.07.775-.1 1.15-.1Zm1.826 2.8L5.83 3.989v2.393l-2.455.475v5.968l6.137-1.189V9.243l2.456-.476V2.8ZM5.83 6.382l3.682-.713v3.574l-3.682.713V6.382Zm27.173-1.64-.084-1.066h-2.226v9.132h2.456V7.743c-.008-1.151.998-2.064 2.149-2.072 1.15-.008 1.987.92 1.995 2.072v5.065h2.455V7.359c-.015-2.18-1.657-3.929-3.837-3.913a3.993 3.993 0 0 0-2.908 1.296Zm-6.3-4.266L29.16 0v2.387l-2.456.475V.476Zm0 3.2v9.132h2.456V3.676h-2.456Zm18.179 11.787L49.11 3.676H46.58l-1.612 4.527-.46 1.382-.384-1.382-1.611-4.527H39.98l3.3 9.132L42.15 16l2.732-.537ZM22.867 9.738c0 .752.568 1.075.921 1.075.353 0 .668-.047.998-.154l.537 1.765c-.23.154-.92.537-2.225.537-1.305 0-2.655-.997-2.686-2.686a136.877 136.877 0 0 1 0-4.374H18.8V3.676h1.612v-1.98l2.455-.476v2.456h2.302V5.9h-2.302v3.837Z\"/>\n</svg>\n";
 
     const isHidden = elm => elm.nodeName === 'BR' || !!elm.getAttribute('data-mce-bogus') || elm.getAttribute('data-mce-type') === 'bookmark';
     const renderElementPath = (editor, settings, providersBackstage) => {
@@ -28002,7 +27825,10 @@
         dom: {
           tag: 'div',
           classes: ['tox-statusbar__path-item'],
-          attributes: { 'data-index': index }
+          attributes: {
+            'data-index': index,
+            'aria-level': index + 1
+          }
         },
         components: [text$2(name)],
         action: _btn => {
@@ -28011,20 +27837,6 @@
           editor.nodeChanged();
         },
         buttonBehaviours: derive$1([
-          Tooltipping.config({
-            ...providersBackstage.tooltips.getConfig({
-              tooltipText: providersBackstage.translate([
-                'Select the {0} element',
-                element.nodeName.toLowerCase()
-              ]),
-              onShow: (comp, tooltip) => {
-                describedBy(comp.element, tooltip.element);
-              },
-              onHide: comp => {
-                remove(comp.element);
-              }
-            })
-          }),
           DisablingConfigs.button(providersBackstage.isDisabled),
           receivingConfig()
         ])
@@ -28111,7 +27923,7 @@
     };
     const resize = (editor, deltas, resizeType) => {
       const container = SugarElement.fromDom(editor.getContainer());
-      const dimensions = getDimensions(editor, deltas, resizeType, get$e(container), get$d(container));
+      const dimensions = getDimensions(editor, deltas, resizeType, get$d(container), get$c(container));
       each(dimensions, (val, dim) => {
         if (isNumber(val)) {
           set$8(container, dim, numToPx(val));
@@ -28244,15 +28056,12 @@
                   'href': 'https://www.tiny.cloud/powered-by-tiny?utm_campaign=poweredby&utm_source=tiny&utm_medium=referral&utm_content=v7',
                   'rel': 'noopener',
                   'target': '_blank',
-                  'aria-label': editor.translate([
-                    'Build with {0}',
-                    'TinyMCE'
+                  'aria-label': global$8.translate([
+                    'Powered by {0}',
+                    'Tiny'
                   ])
                 },
-                innerHtml: editor.translate([
-                  'Build with {0}',
-                  Logo.trim()
-                ])
+                innerHtml: Logo.trim()
               },
               behaviours: derive$1([Focusing.config({})])
             }]
@@ -28266,7 +28075,7 @@
             tag: 'div',
             classes: ['tox-statusbar__help-text']
           },
-          components: [text$2(global$5.translate([
+          components: [text$2(global$8.translate([
               text,
               shortcutText
             ]))]
@@ -28361,9 +28170,9 @@
       const mode = isInline ? Inline : Iframe;
       const header = isStickyToolbar(editor) ? StickyHeader : StaticHeader;
       const lazyUiRefs = LazyUiReferences();
-      const lazyMothership = value$4();
-      const lazyDialogMothership = value$4();
-      const lazyPopupMothership = value$4();
+      const lazyMothership = value$2();
+      const lazyDialogMothership = value$2();
+      const lazyPopupMothership = value$2();
       const platform = detect$1();
       const isTouch = platform.deviceType.isTouch();
       const touchPlatformClass = 'tox-platform-touch';
@@ -28389,7 +28198,7 @@
       const lazyBottomAnchorBar = lazyUiRefs.lazyGetInOuterOrDie('bottom anchor bar', memBottomAnchorBar.getOpt);
       const lazyToolbar = lazyUiRefs.lazyGetInOuterOrDie('toolbar', OuterContainer.getToolbar);
       const lazyThrobber = lazyUiRefs.lazyGetInOuterOrDie('throbber', OuterContainer.getThrobber);
-      const backstages = init$5({
+      const backstages = init$6({
         popup: lazyPopupSinkResult,
         dialog: lazyDialogSinkResult
       }, editor, lazyAnchorBar, lazyBottomAnchorBar);
@@ -28503,7 +28312,7 @@
       };
       const renderDialogUi = () => {
         const uiContainer = getUiContainer(editor);
-        const isGridUiContainer = eq(body(), uiContainer) && get$f(uiContainer, 'display') === 'grid';
+        const isGridUiContainer = eq(body(), uiContainer) && get$e(uiContainer, 'display') === 'grid';
         const sinkSpec = {
           dom: {
             tag: 'div',
@@ -28512,7 +28321,7 @@
               'tox-silver-sink',
               'tox-tinymce-aux'
             ].concat(deviceClasses),
-            attributes: { ...global$5.isRtl() ? { dir: 'rtl' } : {} }
+            attributes: { ...global$8.isRtl() ? { dir: 'rtl' } : {} }
           },
           behaviours: derive$1([Positioning.config({ useFixed: () => header.isDocked(lazyHeader) })])
         };
@@ -28540,7 +28349,7 @@
               'tox-silver-popup-sink',
               'tox-tinymce-aux'
             ].concat(deviceClasses),
-            attributes: { ...global$5.isRtl() ? { dir: 'rtl' } : {} }
+            attributes: { ...global$8.isRtl() ? { dir: 'rtl' } : {} }
           },
           behaviours: derive$1([Positioning.config({
               useFixed: () => header.isDocked(lazyHeader),
@@ -28581,7 +28390,7 @@
         const isHidden = isDistractionFree(editor);
         const attributes = {
           role: 'application',
-          ...global$5.isRtl() ? { dir: 'rtl' } : {},
+          ...global$8.isRtl() ? { dir: 'rtl' } : {},
           ...isHidden ? { 'aria-hidden': 'true' } : {}
         };
         const outerContainer = build$1(OuterContainer.sketch({
@@ -28721,8 +28530,6 @@
       };
     };
 
-    const get = element => element.dom.textContent;
-
     const labelledBy = (labelledElement, labelElement) => {
       const labelId = getOpt(labelledElement, 'id').fold(() => {
         const id = generate$6('dialog-label');
@@ -28805,7 +28612,7 @@
     ]);
 
     const factory$4 = (detail, components, spec, externals) => {
-      const dialogComp = value$4();
+      const dialogComp = value$2();
       const showDialog = dialog => {
         dialogComp.set(dialog);
         const sink = detail.lazySink(dialog).getOrDie();
@@ -28844,7 +28651,6 @@
         ...detail.eventOrder,
         [attachedToDom()]: [modalEventsId].concat(detail.eventOrder['alloy.system.attached'] || [])
       };
-      const browser = detect$1();
       return {
         uid: detail.uid,
         dom: detail.dom,
@@ -28875,13 +28681,7 @@
           }),
           Blocking.config({ getRoot: dialogComp.get }),
           config(modalEventsId, [runOnAttached(c => {
-              const titleElm = getPartOrDie(c, detail, 'title').element;
-              const title = get(titleElm);
-              if (browser.os.isMacOS() && isNonNullable(title)) {
-                set$9(c.element, 'aria-label', title);
-              } else {
-                labelledBy(c.element, titleElm);
-              }
+              labelledBy(c.element, getPartOrDie(c, detail, 'title').element);
             })])
         ])
       };
@@ -29059,9 +28859,7 @@
       defaultedStringEnum('presets', 'presentation', [
         'presentation',
         'document'
-      ]),
-      defaultedFunction('onInit', noop),
-      defaultedBoolean('stretched', false)
+      ])
     ];
     const htmlPanelSchema = objOf(htmlPanelFields);
 
@@ -29099,8 +28897,7 @@
         'start',
         'center',
         'end'
-      ]),
-      optionString('for')
+      ])
     ];
 
     const listBoxSingleItemFields = [
@@ -29448,13 +29245,13 @@
       return errors.length > 0 ? Result.error(errors) : Result.value(result);
     };
 
-    const renderBodyPanel = (spec, dialogData, backstage, getCompByName) => {
+    const renderBodyPanel = (spec, dialogData, backstage) => {
       const memForm = record(Form.sketch(parts => ({
         dom: {
           tag: 'div',
           classes: ['tox-form'].concat(spec.classes)
         },
-        components: map$2(spec.items, item => interpretInForm(parts, item, dialogData, backstage, getCompByName))
+        components: map$2(spec.items, item => interpretInForm(parts, item, dialogData, backstage))
       })));
       return {
         dom: {
@@ -29491,7 +29288,7 @@
       uid: detail.uid,
       dom: detail.dom,
       components: detail.components,
-      events: events$9(detail.action),
+      events: events$a(detail.action),
       behaviours: augment(detail.tabButtonBehaviours, [
         Focusing.config({}),
         Keying.config({
@@ -29685,7 +29482,7 @@
         uid: detail.uid,
         dom: detail.dom,
         components,
-        behaviours: get$4(detail.tabSectionBehaviours),
+        behaviours: get$3(detail.tabSectionBehaviours),
         events: derive$2(flatten([
           detail.selectFirst ? [runOnAttached((section, _simulatedEvent) => {
               changeTabBy(section, Highlighting.getFirst);
@@ -29747,19 +29544,19 @@
     const getMaxTabviewHeight = (dialog, tabview, tablist) => {
       const documentElement$1 = documentElement(dialog).dom;
       const rootElm = ancestor(dialog, '.tox-dialog-wrap').getOr(dialog);
-      const isFixed = get$f(rootElm, 'position') === 'fixed';
+      const isFixed = get$e(rootElm, 'position') === 'fixed';
       let maxHeight;
       if (isFixed) {
         maxHeight = Math.max(documentElement$1.clientHeight, window.innerHeight);
       } else {
         maxHeight = Math.max(documentElement$1.offsetHeight, documentElement$1.scrollHeight);
       }
-      const tabviewHeight = get$e(tabview);
-      const isTabListBeside = tabview.dom.offsetLeft >= tablist.dom.offsetLeft + get$d(tablist);
-      const currentTabHeight = isTabListBeside ? Math.max(get$e(tablist), tabviewHeight) : tabviewHeight;
-      const dialogTopMargin = parseInt(get$f(dialog, 'margin-top'), 10) || 0;
-      const dialogBottomMargin = parseInt(get$f(dialog, 'margin-bottom'), 10) || 0;
-      const dialogHeight = get$e(dialog) + dialogTopMargin + dialogBottomMargin;
+      const tabviewHeight = get$d(tabview);
+      const isTabListBeside = tabview.dom.offsetLeft >= tablist.dom.offsetLeft + get$c(tablist);
+      const currentTabHeight = isTabListBeside ? Math.max(get$d(tablist), tabviewHeight) : tabviewHeight;
+      const dialogTopMargin = parseInt(get$e(dialog, 'margin-top'), 10) || 0;
+      const dialogBottomMargin = parseInt(get$e(dialog, 'margin-bottom'), 10) || 0;
+      const dialogHeight = get$d(dialog) + dialogTopMargin + dialogBottomMargin;
       const chromeHeight = dialogHeight - currentTabHeight;
       return maxHeight - chromeHeight;
     };
@@ -29785,7 +29582,7 @@
     };
     const getTabview = dialog => descendant(dialog, '[role="tabpanel"]');
     const smartMode = allTabs => {
-      const maxTabHeight = value$4();
+      const maxTabHeight = value$2();
       const extraEvents = [
         runOnAttached(comp => {
           const dialog = comp.element;
@@ -29797,7 +29594,7 @@
               maxTabHeightOpt.fold(maxTabHeight.clear, maxTabHeight.set);
             });
             updateTabviewHeight(dialog, tabview, maxTabHeight);
-            remove$7(tabview, 'visibility');
+            remove$6(tabview, 'visibility');
             showTab(allTabs, comp);
             requestAnimationFrame(() => {
               updateTabviewHeight(dialog, tabview, maxTabHeight);
@@ -29816,8 +29613,8 @@
             const oldFocus = active$1(getRootNode(tabview));
             set$8(tabview, 'visibility', 'hidden');
             const oldHeight = getRaw(tabview, 'height').map(h => parseInt(h, 10));
-            remove$7(tabview, 'height');
-            remove$7(tabview, 'flex-basis');
+            remove$6(tabview, 'height');
+            remove$6(tabview, 'flex-basis');
             const newHeight = tabview.dom.getBoundingClientRect().height;
             const hasGrown = oldHeight.forall(h => newHeight > h);
             if (hasGrown) {
@@ -29828,7 +29625,7 @@
                 setTabviewHeight(tabview, h);
               });
             }
-            remove$7(tabview, 'visibility');
+            remove$6(tabview, 'visibility');
             oldFocus.each(focus$3);
           });
         })
@@ -29842,7 +29639,7 @@
 
     const SendDataToSectionChannel = 'send-data-to-section';
     const SendDataToViewChannel = 'send-data-to-view';
-    const renderTabPanel = (spec, dialogData, backstage, getCompByName) => {
+    const renderTabPanel = (spec, dialogData, backstage) => {
       const storedValue = Cell({});
       const updateDataWithForm = form => {
         const formData = Representing.getValue(form);
@@ -29870,7 +29667,7 @@
                   tag: 'div',
                   classes: ['tox-form']
                 },
-                components: map$2(tab.items, item => interpretInForm(parts, item, dialogData, backstage, getCompByName)),
+                components: map$2(tab.items, item => interpretInForm(parts, item, dialogData, backstage)),
                 formBehaviours: derive$1([
                   Keying.config({
                     mode: 'acyclic',
@@ -29948,15 +29745,15 @@
       });
     };
 
-    const renderBody = (spec, dialogId, contentId, backstage, ariaAttrs, getCompByName) => {
+    const renderBody = (spec, dialogId, contentId, backstage, ariaAttrs) => {
       const renderComponents = incoming => {
         const body = incoming.body;
         switch (body.type) {
         case 'tabpanel': {
-            return [renderTabPanel(body, incoming.initialData, backstage, getCompByName)];
+            return [renderTabPanel(body, incoming.initialData, backstage)];
           }
         default: {
-            return [renderBodyPanel(body, incoming.initialData, backstage, getCompByName)];
+            return [renderBodyPanel(body, incoming.initialData, backstage)];
           }
         }
       };
@@ -29983,9 +29780,9 @@
         ])
       };
     };
-    const renderInlineBody = (spec, dialogId, contentId, backstage, ariaAttrs, getCompByName) => renderBody(spec, dialogId, Optional.some(contentId), backstage, ariaAttrs, getCompByName);
-    const renderModalBody = (spec, dialogId, backstage, getCompByName) => {
-      const bodySpec = renderBody(spec, dialogId, Optional.none(), backstage, false, getCompByName);
+    const renderInlineBody = (spec, dialogId, contentId, backstage, ariaAttrs) => renderBody(spec, dialogId, Optional.some(contentId), backstage, ariaAttrs);
+    const renderModalBody = (spec, dialogId, backstage) => {
+      const bodySpec = renderBody(spec, dialogId, Optional.none(), backstage, false);
       return ModalDialog.parts.body(bodySpec);
     };
     const renderIframeBody = spec => {
@@ -30018,7 +29815,7 @@
       return ModalDialog.parts.body(bodySpec);
     };
 
-    const isTouch = global$6.deviceType.isTouch();
+    const isTouch = global$5.deviceType.isTouch();
     const hiddenHeader = (title, close) => ({
       dom: {
         tag: 'div',
@@ -30146,7 +29943,7 @@
               add$2(body(), scrollLockClass);
             }),
             runOnDetached(() => {
-              remove$3(body(), scrollLockClass);
+              remove$2(body(), scrollLockClass);
             })
           ]),
           ...spec.extraBehaviours
@@ -30198,7 +29995,7 @@
       const renderComponents = data => [text$2(providersBackstage.translate(data.title))];
       return {
         dom: {
-          tag: 'h1',
+          tag: 'div',
           classes: ['tox-dialog__title'],
           attributes: { ...titleId.map(x => ({ id: x })).getOr({}) }
         },
@@ -30265,7 +30062,7 @@
     const getEventExtras = (lazyDialog, providers, extra) => ({
       onClose: () => extra.closeWindow(),
       onBlock: blockEvent => {
-        const headerHeight = descendant(lazyDialog().element, '.tox-dialog__header').map(header => get$e(header));
+        const headerHeight = descendant(lazyDialog().element, '.tox-dialog__header').map(header => get$d(header));
         ModalDialog.setBusy(lazyDialog(), (_comp, bs) => getBusySpec(blockEvent.message, bs, providers, headerHeight));
       },
       onUnblock: () => {
@@ -30288,7 +30085,7 @@
     const updateDialogSizeClass = (size, component) => {
       const dialogBody = SugarElement.fromDom(component.element.dom);
       if (!has(dialogBody, fullscreenClass)) {
-        remove$2(dialogBody, [
+        remove$1(dialogBody, [
           largeDialogClass,
           mediumDialogClass
         ]);
@@ -30297,7 +30094,7 @@
     };
     const toggleFullscreen = (comp, currentSize) => {
       const dialogBody = SugarElement.fromDom(comp.element.dom);
-      const classes = get$9(dialogBody);
+      const classes = get$7(dialogBody);
       const currentSizeClass = find$5(classes, c => c === largeDialogClass || c === mediumDialogClass).or(getDialogSizeClass(currentSize));
       toggle$3(dialogBody, [
         fullscreenClass,
@@ -30340,7 +30137,7 @@
     const mapMenuButtons = (buttons, menuItemStates = {}) => {
       const mapItems = button => {
         const items = map$2(button.items, item => {
-          const cell = get$h(menuItemStates, item.name).getOr(Cell(false));
+          const cell = get$g(menuItemStates, item.name).getOr(Cell(false));
           return {
             ...item,
             storage: cell
@@ -30614,7 +30411,6 @@
       const internalDialog = dialogInit.internalDialog;
       const header = getHeader(internalDialog.title, dialogId, backstage);
       const dialogSize = Cell(internalDialog.size);
-      const getCompByName$1 = name => getCompByName(modalAccess, name);
       const dialogSizeClasses = getDialogSizeClass(dialogSize.get()).toArray();
       const updateState = (comp, incoming) => {
         dialogSize.set(incoming.internalDialog.size);
@@ -30624,7 +30420,7 @@
       const body = renderModalBody({
         body: internalDialog.body,
         initialData: internalDialog.initialData
-      }, dialogId, backstage, getCompByName$1);
+      }, dialogId, backstage);
       const storedMenuButtons = mapMenuButtons(internalDialog.buttons);
       const objOfCells = extractCellsToObject(storedMenuButtons);
       const footer = someIf(storedMenuButtons.length !== 0, renderModalFooter({ buttons: storedMenuButtons }, dialogId, backstage));
@@ -30672,7 +30468,6 @@
       const dialogLabelId = generate$6('dialog-label');
       const dialogContentId = generate$6('dialog-content');
       const internalDialog = dialogInit.internalDialog;
-      const getCompByName$1 = name => getCompByName(modalAccess, name);
       const dialogSize = Cell(internalDialog.size);
       const dialogSizeClass = getDialogSizeClass(dialogSize.get()).toArray();
       const updateState = (comp, incoming) => {
@@ -30688,14 +30483,14 @@
       const memBody = record(renderInlineBody({
         body: internalDialog.body,
         initialData: internalDialog.initialData
-      }, dialogId, dialogContentId, backstage, ariaAttrs, getCompByName$1));
+      }, dialogId, dialogContentId, backstage, ariaAttrs));
       const storagedMenuButtons = mapMenuButtons(internalDialog.buttons);
       const objOfCells = extractCellsToObject(storagedMenuButtons);
       const optMemFooter = someIf(storagedMenuButtons.length !== 0, record(renderInlineFooter({ buttons: storagedMenuButtons }, dialogId, backstage)));
       const dialogEvents = initDialog(() => instanceApi, {
         onBlock: event => {
           Blocking.block(dialog, (_comp, bs) => {
-            const headerHeight = memHeader.getOpt(dialog).map(dialog => get$e(dialog.element));
+            const headerHeight = memHeader.getOpt(dialog).map(dialog => get$d(dialog.element));
             return getBusySpec(event.message, bs, backstage.shared.providers, headerHeight);
           });
         },
@@ -30705,7 +30500,6 @@
         onClose: () => extra.closeWindow()
       }, backstage.shared.getSink);
       const inlineClass = 'tox-dialog-inline';
-      const os = detect$1().os;
       const dialog = build$1({
         dom: {
           tag: 'div',
@@ -30716,7 +30510,7 @@
           ],
           attributes: {
             role: 'dialog',
-            ...os.isMacOS() ? { 'aria-label': internalDialog.title } : { 'aria-labelledby': dialogLabelId }
+            ['aria-labelledby']: dialogLabelId
           }
         },
         eventOrder: {
@@ -30737,7 +30531,7 @@
               emit(c, formCloseEvent);
               return Optional.some(true);
             },
-            useTabstopAt: elem => !isPseudoStop(elem) && (name$3(elem) !== 'button' || get$g(elem, 'disabled') !== 'disabled'),
+            useTabstopAt: elem => !isPseudoStop(elem) && (name$3(elem) !== 'button' || get$f(elem, 'disabled') !== 'disabled'),
             firstTabstop: 1
           }),
           Reflecting.config({
@@ -30767,7 +30561,7 @@
       const toggleFullscreen$1 = () => {
         toggleFullscreen(dialog, dialogSize.get());
       };
-      const modalAccess = {
+      const instanceApi = getDialogApi({
         getId: constant$1(dialogId),
         getRoot: constant$1(dialog),
         getFooter: () => optMemFooter.map(memFooter => memFooter.get(dialog)),
@@ -30777,8 +30571,7 @@
           return Composing.getCurrent(body).getOr(body);
         },
         toggleFullscreen: toggleFullscreen$1
-      };
-      const instanceApi = getDialogApi(modalAccess, extra.redial, objOfCells);
+      }, extra.redial, objOfCells);
       return {
         dialog,
         instanceApi
@@ -31115,7 +30908,7 @@
       const openInlineDialog = (config$1, anchor, closeWindow, windowParams) => {
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
-          const inlineDialog = value$4();
+          const inlineDialog = value$2();
           const isToolbarLocationTop = extras.backstages.popup.shared.header.isPositionedAtTop();
           const dialogInit = {
             dataValidator,
@@ -31173,7 +30966,7 @@
       const openBottomInlineDialog = (config$1, anchor, closeWindow, windowParams) => {
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
-          const inlineDialog = value$4();
+          const inlineDialog = value$2();
           const isToolbarLocationTop = extras.backstages.popup.shared.header.isPositionedAtTop();
           const dialogInit = {
             dataValidator,
@@ -31306,8 +31099,7 @@
             dialog: dialogs.backstage
           }
         });
-        const notificationRegion = value$4();
-        const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership(), notificationRegion);
+        const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership());
         return {
           renderUI,
           getWindowManagerImpl: constant$1(windowMgr),

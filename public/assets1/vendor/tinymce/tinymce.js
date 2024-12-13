@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 7.2.0 (2024-06-19)
+ * TinyMCE version 7.0.1 (2024-04-10)
  */
 
 (function () {
@@ -1392,6 +1392,7 @@
     const firstChild = element => child$1(element, 0);
     const lastChild = element => child$1(element, element.dom.childNodes.length - 1);
     const childNodesCount = element => element.dom.childNodes.length;
+    const hasChildNodes = element => element.dom.hasChildNodes();
 
     const getHead = doc => {
       const b = doc.dom.head;
@@ -2095,99 +2096,27 @@
       });
     };
 
-    const Cell = initial => {
-      let value = initial;
-      const get = () => {
-        return value;
-      };
-      const set = v => {
-        value = v;
-      };
-      return {
-        get,
-        set
-      };
-    };
-
-    const singleton = doRevoke => {
-      const subject = Cell(Optional.none());
-      const revoke = () => subject.get().each(doRevoke);
-      const clear = () => {
-        revoke();
-        subject.set(Optional.none());
-      };
-      const isSet = () => subject.get().isSome();
-      const get = () => subject.get();
-      const set = s => {
-        revoke();
-        subject.set(Optional.some(s));
-      };
-      return {
-        clear,
-        isSet,
-        get,
-        set
-      };
-    };
-    const repeatable = delay => {
-      const intervalId = Cell(Optional.none());
-      const revoke = () => intervalId.get().each(id => clearInterval(id));
-      const clear = () => {
-        revoke();
-        intervalId.set(Optional.none());
-      };
-      const isSet = () => intervalId.get().isSome();
-      const get = () => intervalId.get();
-      const set = functionToRepeat => {
-        revoke();
-        intervalId.set(Optional.some(setInterval(functionToRepeat, delay)));
-      };
-      return {
-        clear,
-        isSet,
-        get,
-        set
-      };
-    };
-    const value$2 = () => {
-      const subject = singleton(noop);
-      const on = f => subject.get().each(f);
-      return {
-        ...subject,
-        on
-      };
-    };
-
-    const nodeNameToNamespaceType = name => {
-      const lowerCaseName = name.toLowerCase();
-      if (lowerCaseName === 'svg') {
-        return 'svg';
-      } else if (lowerCaseName === 'math') {
-        return 'math';
-      } else {
-        return 'html';
-      }
-    };
-    const isNonHtmlElementRootName = name => nodeNameToNamespaceType(name) !== 'html';
+    const isNonHtmlElementRootName = name => name.toLowerCase() === 'svg';
     const isNonHtmlElementRoot = node => isNonHtmlElementRootName(node.nodeName);
-    const toScopeType = node => nodeNameToNamespaceType(node.nodeName);
-    const namespaceElements = [
-      'svg',
-      'math'
-    ];
+    const toScopeType = node => (node === null || node === void 0 ? void 0 : node.nodeName) === 'svg' ? 'svg' : 'html';
+    const namespaceElements = ['svg'];
     const createNamespaceTracker = () => {
-      const currentScope = value$2();
-      const current = () => currentScope.get().map(toScopeType).getOr('html');
+      let scopes = [];
+      const peek = () => scopes[scopes.length - 1];
       const track = node => {
         if (isNonHtmlElementRoot(node)) {
-          currentScope.set(node);
-        } else if (currentScope.get().exists(scopeNode => !scopeNode.contains(node))) {
-          currentScope.clear();
+          scopes.push(node);
         }
-        return current();
+        let currentScope = peek();
+        if (currentScope && !currentScope.contains(node)) {
+          scopes.pop();
+          currentScope = peek();
+        }
+        return toScopeType(currentScope);
       };
+      const current = () => toScopeType(peek());
       const reset = () => {
-        currentScope.clear();
+        scopes = [];
       };
       return {
         track,
@@ -2199,8 +2128,7 @@
     const transparentBlockAttr = 'data-mce-block';
     const elementNames = map => filter$5(keys(map), key => !/[A-Z]/.test(key));
     const makeSelectorFromSchemaMap = map => map$3(elementNames(map), name => {
-      const escapedName = CSS.escape(name);
-      return `${ escapedName }:` + map$3(namespaceElements, ns => `not(${ ns } ${ escapedName })`).join(':');
+      return `${ name }:` + map$3(namespaceElements, ns => `not(${ ns } ${ name })`).join(':');
     }).join(',');
     const updateTransparent = (blocksSelector, transparent) => {
       if (isNonNullable(transparent.querySelector(blocksSelector))) {
@@ -2753,10 +2681,7 @@
           'dropzone',
           'hidden',
           'spellcheck',
-          'translate',
-          'itemprop',
-          'itemscope',
-          'itemtype'
+          'translate'
         ] : [],
         ...type !== 'html5-strict' ? ['xml:lang'] : []
       ]);
@@ -3015,7 +2940,7 @@
         addAttrs('a', 'download');
         addAttrs('link script img', 'crossorigin');
         addAttrs('img', 'loading');
-        addAttrs('iframe', 'sandbox seamless allow allowfullscreen loading referrerpolicy');
+        addAttrs('iframe', 'sandbox seamless allow allowfullscreen loading');
       }
       if (type !== 'html4') {
         each$e([
@@ -3563,8 +3488,8 @@
       return hexColour(value);
     };
 
-    const rgbRegex = /^\s*rgb\s*\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)\s*\)\s*$/i;
-    const rgbaRegex = /^\s*rgba\s*\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*((?:\d?\.\d+|\d+)%?)\s*\)\s*$/i;
+    const rgbRegex = /^\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i;
+    const rgbaRegex = /^\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?(?:\.\d+)?)\s*\)\s*$/i;
     const rgbaColour = (red, green, blue, alpha) => ({
       red,
       green,
@@ -3578,15 +3503,10 @@
       const a = parseFloat(alpha);
       return rgbaColour(r, g, b, a);
     };
-    const getColorFormat = colorString => {
-      if (rgbRegex.test(colorString)) {
-        return 'rgb';
-      } else if (rgbaRegex.test(colorString)) {
-        return 'rgba';
-      }
-      return 'other';
-    };
     const fromString = rgbaString => {
+      if (rgbaString === 'transparent') {
+        return Optional.some(rgbaColour(0, 0, 0, 0));
+      }
       const rgbMatch = rgbRegex.exec(rgbaString);
       if (rgbMatch !== null) {
         return Optional.some(fromStringValues(rgbMatch[1], rgbMatch[2], rgbMatch[3], '1'));
@@ -3605,6 +3525,7 @@
       const urlOrStrRegExp = /(?:url(?:(?:\(\s*\"([^\"]+)\"\s*\))|(?:\(\s*\'([^\']+)\'\s*\))|(?:\(\s*([^)\s]+)\s*\))))|(?:\'([^\']+)\')|(?:\"([^\"]+)\")/gi;
       const styleRegExp = /\s*([^:]+):\s*([^;]+);?/g;
       const trimRightRegExp = /\s+$/;
+      const rgbaRegExp = /rgba *\(/i;
       const encodingLookup = {};
       let validStyles;
       let invalidStyles;
@@ -3758,7 +3679,7 @@
                 } else if (name === 'color' || name === 'background-color') {
                   value = value.toLowerCase();
                 }
-                if (getColorFormat(value) === 'rgb') {
+                if (!rgbaRegExp.test(value)) {
                   fromString(value).each(rgba => {
                     value = rgbaToHexString(toString(rgba)).toLowerCase();
                   });
@@ -5049,6 +4970,20 @@
     }
     ScriptLoader.ScriptLoader = new ScriptLoader();
 
+    const Cell = initial => {
+      let value = initial;
+      const get = () => {
+        return value;
+      };
+      const set = v => {
+        value = v;
+      };
+      return {
+        get,
+        set
+      };
+    };
+
     const isDuplicated = (items, item) => {
       const firstIndex = items.indexOf(item);
       return firstIndex !== -1 && items.indexOf(item, firstIndex + 1) > firstIndex;
@@ -5233,6 +5168,55 @@
     AddOnManager.PluginManager = AddOnManager();
     AddOnManager.ThemeManager = AddOnManager();
     AddOnManager.ModelManager = AddOnManager();
+
+    const singleton = doRevoke => {
+      const subject = Cell(Optional.none());
+      const revoke = () => subject.get().each(doRevoke);
+      const clear = () => {
+        revoke();
+        subject.set(Optional.none());
+      };
+      const isSet = () => subject.get().isSome();
+      const get = () => subject.get();
+      const set = s => {
+        revoke();
+        subject.set(Optional.some(s));
+      };
+      return {
+        clear,
+        isSet,
+        get,
+        set
+      };
+    };
+    const repeatable = delay => {
+      const intervalId = Cell(Optional.none());
+      const revoke = () => intervalId.get().each(id => clearInterval(id));
+      const clear = () => {
+        revoke();
+        intervalId.set(Optional.none());
+      };
+      const isSet = () => intervalId.get().isSome();
+      const get = () => intervalId.get();
+      const set = functionToRepeat => {
+        revoke();
+        intervalId.set(Optional.some(setInterval(functionToRepeat, delay)));
+      };
+      return {
+        clear,
+        isSet,
+        get,
+        set
+      };
+    };
+    const value$2 = () => {
+      const subject = singleton(noop);
+      const on = f => subject.get().each(f);
+      return {
+        ...subject,
+        on
+      };
+    };
 
     const first$1 = (fn, rate) => {
       let timer = null;
@@ -6529,7 +6513,7 @@
         forward
       };
     };
-    const getBookmark$3 = (selection, type, normalized = false) => {
+    const getBookmark$2 = (selection, type, normalized = false) => {
       if (type === 2) {
         return getOffsetBookmark(trim$2, normalized, selection);
       } else if (type === 3) {
@@ -8607,8 +8591,8 @@
       return Optional.none();
     };
 
-    const getBookmark$2 = (selection, type, normalized) => {
-      return getBookmark$3(selection, type, normalized);
+    const getBookmark$1 = (selection, type, normalized) => {
+      return getBookmark$2(selection, type, normalized);
     };
     const moveToBookmark = (selection, bookmark) => {
       resolve(selection, bookmark).each(({range, forward}) => {
@@ -9444,7 +9428,7 @@
 
     const BookmarkManager = selection => {
       return {
-        getBookmark: curry(getBookmark$2, selection),
+        getBookmark: curry(getBookmark$1, selection),
         moveToBookmark: curry(moveToBookmark, selection)
       };
     };
@@ -10722,7 +10706,7 @@
       const rng = !selection || selection.rangeCount === 0 ? Optional.none() : Optional.from(selection.getRangeAt(0));
       return rng.map(nativeRangeToSelectionRange);
     };
-    const getBookmark$1 = root => {
+    const getBookmark = root => {
       const win = defaultView(root);
       return readRange(win.dom).filter(isRngInRoot(root));
     };
@@ -10738,7 +10722,7 @@
       }
     };
     const store = editor => {
-      const newBookmark = shouldStore(editor) ? getBookmark$1(SugarElement.fromDom(editor.getBody())) : Optional.none();
+      const newBookmark = shouldStore(editor) ? getBookmark(SugarElement.fromDom(editor.getBody())) : Optional.none();
       editor.bookmark = newBookmark.isSome() ? newBookmark : editor.bookmark;
     };
     const getRng = editor => {
@@ -10969,21 +10953,15 @@
       const body = editor.getBody();
       let rng = selection.getRng();
       editor.quirks.refreshContentEditable();
-      const restoreBookmark = editor => {
+      if (isNonNullable(editor.bookmark) && !hasFocus(editor)) {
         getRng(editor).each(bookmarkRng => {
           editor.selection.setRng(bookmarkRng);
           rng = bookmarkRng;
         });
-      };
-      if (!hasFocus(editor) && editor.hasEditableRoot()) {
-        restoreBookmark(editor);
       }
       const contentEditableHost = getContentEditableHost(editor, selection.getNode());
       if (contentEditableHost && editor.dom.isChildOf(contentEditableHost, body)) {
         focusBody(contentEditableHost);
-        if (!editor.hasEditableRoot()) {
-          restoreBookmark(editor);
-        }
         normalizeSelection(editor, rng);
         activateEditor(editor);
         return;
@@ -11743,6 +11721,7 @@
         'background',
         'background-attachment',
         'background-clip',
+        'background-color',
         'background-image',
         'background-origin',
         'background-position',
@@ -11778,24 +11757,14 @@
         nonInheritableStyles.add(style);
       });
     })();
-    const conditionalNonInheritableStyles = new Set();
-    (() => {
-      const conditionalNonInheritableStylesArr = ['background-color'];
-      each$e(conditionalNonInheritableStylesArr, style => {
-        conditionalNonInheritableStyles.add(style);
-      });
-    })();
     const shorthandStyleProps = [
       'font',
       'text-decoration',
       'text-emphasis'
     ];
-    const getStyles$1 = (dom, node) => dom.parseStyle(dom.getAttrib(node, 'style'));
-    const getStyleProps = (dom, node) => keys(getStyles$1(dom, node));
+    const getStyleProps = (dom, node) => keys(dom.parseStyle(dom.getAttrib(node, 'style')));
     const isNonInheritableStyle = style => nonInheritableStyles.has(style);
-    const isConditionalNonInheritableStyle = style => conditionalNonInheritableStyles.has(style);
-    const hasNonInheritableStyles = (dom, node) => exists(getStyleProps(dom, node), style => isNonInheritableStyle(style));
-    const hasConditionalNonInheritableStyles = (dom, node) => hasNonInheritableStyles(dom, node) && exists(getStyleProps(dom, node), style => isConditionalNonInheritableStyle(style));
+    const hasInheritableStyles = (dom, node) => forall(getStyleProps(dom, node), style => !isNonInheritableStyle(style));
     const getLonghandStyleProps = styles => filter$5(styles, style => exists(shorthandStyleProps, prop => startsWith(style, prop)));
     const hasStyleConflict = (dom, node, parentNode) => {
       const nodeStyleProps = getStyleProps(dom, node);
@@ -12522,7 +12491,7 @@
       const rootElm = SugarElement.fromDom(editor.getBody());
       return getParentCaption(rootElm, startElm).fold(() => deleteCaretCells(editor, forward, rootElm, startElm).orThunk(() => someIf(isBeforeOrAfterTable(editor, forward), noop)), fromCaption => deleteCaretCaption(editor, forward, rootElm, fromCaption));
     };
-    const backspaceDelete$b = (editor, forward) => {
+    const backspaceDelete$a = (editor, forward) => {
       const startElm = SugarElement.fromDom(editor.selection.getStart(true));
       const cells = getCellsFromEditor(editor);
       return editor.selection.isCollapsed() && cells.length === 0 ? deleteCaret$3(editor, forward, startElm) : deleteRange$3(editor, startElm, cells);
@@ -13076,20 +13045,18 @@
       if (merge) {
         const root = editor.getBody();
         const elementUtils = ElementUtils(editor);
-        const fragmentSelector = '*[data-mce-fragment]';
-        const fragments = dom.select(fragmentSelector);
-        Tools.each(fragments, node => {
-          const isInline = currentNode => isNonNullable(textInlineElements[currentNode.nodeName.toLowerCase()]);
-          const hasOneChild = currentNode => currentNode.childNodes.length === 1;
-          const hasNoNonInheritableStyles = currentNode => !(hasNonInheritableStyles(dom, currentNode) || hasConditionalNonInheritableStyles(dom, currentNode));
-          if (hasNoNonInheritableStyles(node) && isInline(node) && hasOneChild(node)) {
-            const styles = getStyleProps(dom, node);
-            const isOverridden = (oldStyles, newStyles) => forall(oldStyles, style => contains$2(newStyles, style));
-            const overriddenByAllChildren = childNode => hasOneChild(node) && dom.is(childNode, fragmentSelector) && isInline(childNode) && (childNode.nodeName === node.nodeName && isOverridden(styles, getStyleProps(dom, childNode)) || overriddenByAllChildren(childNode.children[0]));
-            const identicalToParent = parentNode => isNonNullable(parentNode) && parentNode !== root && (elementUtils.compare(node, parentNode) || identicalToParent(parentNode.parentElement));
-            const conflictWithInsertedParent = parentNode => isNonNullable(parentNode) && parentNode !== root && dom.is(parentNode, fragmentSelector) && (hasStyleConflict(dom, node, parentNode) || conflictWithInsertedParent(parentNode.parentElement));
-            if (overriddenByAllChildren(node.children[0]) || identicalToParent(node.parentElement) && !conflictWithInsertedParent(node.parentElement)) {
-              dom.remove(node, true);
+        Tools.each(dom.select('*[data-mce-fragment]'), node => {
+          const isInline = isNonNullable(textInlineElements[node.nodeName.toLowerCase()]);
+          if (isInline && hasInheritableStyles(dom, node)) {
+            for (let parentNode = node.parentElement; isNonNullable(parentNode) && parentNode !== root; parentNode = parentNode.parentElement) {
+              const styleConflict = hasStyleConflict(dom, node, parentNode);
+              if (styleConflict) {
+                break;
+              }
+              if (elementUtils.compare(parentNode, node)) {
+                dom.remove(node, true);
+                break;
+              }
             }
           }
         });
@@ -17197,39 +17164,29 @@
       return config;
     };
     const sanitizeNamespaceElement = ele => {
-      const namespaceType = toScopeType(ele);
-      if (namespaceType === 'svg') {
-        const xlinkAttrs = [
-          'type',
-          'href',
-          'role',
-          'arcrole',
-          'title',
-          'show',
-          'actuate',
-          'label',
-          'from',
-          'to'
-        ].map(name => `xlink:${ name }`);
-        const config = {
-          IN_PLACE: true,
-          USE_PROFILES: {
-            html: true,
-            svg: true,
-            svgFilters: true
-          },
-          ALLOWED_ATTR: xlinkAttrs
-        };
-        purify().sanitize(ele, config);
-      } else if (namespaceType === 'math') {
-        const config = {
-          IN_PLACE: true,
-          USE_PROFILES: { mathMl: true }
-        };
-        purify().sanitize(ele, config);
-      } else {
-        throw new Error('Not a namespace element');
-      }
+      const xlinkAttrs = [
+        'type',
+        'href',
+        'role',
+        'arcrole',
+        'title',
+        'show',
+        'actuate',
+        'label',
+        'from',
+        'to'
+      ].map(name => `xlink:${ name }`);
+      const config = {
+        IN_PLACE: true,
+        USE_PROFILES: {
+          html: true,
+          svg: true,
+          svgFilters: true
+        },
+        ALLOWED_ATTR: xlinkAttrs
+      };
+      purify().sanitize(ele, config);
+      return ele.innerHTML;
     };
     const getSanitizer = (settings, schema) => {
       const namespaceTracker = createNamespaceTracker();
@@ -17268,7 +17225,7 @@
     const makeMap = Tools.makeMap, extend$1 = Tools.extend;
     const transferChildren = (parent, nativeParent, specialElements, nsSanitizer) => {
       const parentName = parent.name;
-      const isSpecial = parentName in specialElements && parentName !== 'title' && parentName !== 'textarea' && parentName !== 'noscript';
+      const isSpecial = parentName in specialElements && parentName !== 'title' && parentName !== 'textarea';
       const childNodes = nativeParent.childNodes;
       for (let ni = 0, nl = childNodes.length; ni < nl; ni++) {
         const nativeChild = childNodes[ni];
@@ -19023,6 +18980,16 @@
           }
         }
       });
+      htmlParser.addNodeFilter('noscript', nodes => {
+        var _a;
+        let i = nodes.length;
+        while (i--) {
+          const node = nodes[i].firstChild;
+          if (node) {
+            node.value = Entities.decode((_a = node.value) !== null && _a !== void 0 ? _a : '');
+          }
+        }
+      });
       htmlParser.addNodeFilter('script,style', (nodes, name) => {
         var _a;
         const trim = value => {
@@ -19499,7 +19466,7 @@
         return a.type === b.type && a.text === b.text && !a.progressBar && !a.timeout && !b.progressBar && !b.timeout;
       };
       const reposition = () => {
-        getTopNotification().each(notification => {
+        each$e(notifications, notification => {
           notification.reposition();
         });
       };
@@ -19526,7 +19493,11 @@
           editor.editorManager.setActive(editor);
           const notification = getImplementation().open(spec, () => {
             closeNotification(notification);
-          }, () => hasEditorOrUiFocus(editor));
+            reposition();
+            if (hasEditorOrUiFocus(editor)) {
+              getTopNotification().fold(() => editor.focus(), top => focus$1(SugarElement.fromDom(top.getEl())));
+            }
+          });
           addNotification(notification);
           reposition();
           editor.dispatch('OpenNotification', { notification: { ...notification } });
@@ -19553,7 +19524,7 @@
           }
           reposition();
         });
-        editor.on('show ResizeEditor NodeChange', () => {
+        editor.on('show ResizeEditor ResizeWindow NodeChange', () => {
           requestAnimationFrame(reposition);
         });
         editor.on('remove', () => {
@@ -19561,7 +19532,6 @@
             getImplementation().close(notification);
           });
         });
-        editor.addShortcut('alt+F12', 'Focus to notification', () => getTopNotification().map(notificationApi => SugarElement.fromDom(notificationApi.getEl())).each(elm => focus$1(elm)));
       };
       registerEvents(editor);
       return {
@@ -21268,7 +21238,6 @@
       const containerElm = SugarElement.fromDom(pos.container());
       return getParentBlock$2(rootElm, containerElm).map(block => blockPosition(block, pos));
     };
-    const isNotAncestorial = blockBoundary => !(contains(blockBoundary.to.block, blockBoundary.from.block) || contains(blockBoundary.from.block, blockBoundary.to.block));
     const isDifferentBlocks = blockBoundary => !eq(blockBoundary.from.block, blockBoundary.to.block);
     const getClosestHost = (root, scope) => {
       const isRoot = node => eq(node, root);
@@ -21281,7 +21250,7 @@
     };
     const isEditable$1 = blockBoundary => isContentEditableFalse$b(blockBoundary.from.block.dom) === false && isContentEditableFalse$b(blockBoundary.to.block.dom) === false;
     const hasValidBlocks = blockBoundary => {
-      const isValidBlock = block => isTextBlock$2(block) || hasBlockAttr(block.dom) || isListItem$1(block);
+      const isValidBlock = block => isTextBlock$2(block) || hasBlockAttr(block.dom);
       return isValidBlock(blockBoundary.from.block) && isValidBlock(blockBoundary.to.block);
     };
     const skipLastBr = (schema, rootNode, forward, blockPosition) => {
@@ -21300,7 +21269,7 @@
     const readFromRange = (schema, rootNode, forward, rng) => {
       const fromBlockPos = getBlockPosition(rootNode, CaretPosition.fromRangeStart(rng));
       const toBlockPos = fromBlockPos.bind(blockPos => fromPosition(forward, rootNode, blockPos.position).bind(to => getBlockPosition(rootNode, to).map(blockPos => skipLastBr(schema, rootNode, forward, blockPos))));
-      return lift2(fromBlockPos, toBlockPos, blockBoundary).filter(blockBoundary => isDifferentBlocks(blockBoundary) && hasSameHost(rootNode, blockBoundary) && isEditable$1(blockBoundary) && hasValidBlocks(blockBoundary) && isNotAncestorial(blockBoundary));
+      return lift2(fromBlockPos, toBlockPos, blockBoundary).filter(blockBoundary => isDifferentBlocks(blockBoundary) && hasSameHost(rootNode, blockBoundary) && isEditable$1(blockBoundary) && hasValidBlocks(blockBoundary));
     };
     const read$1 = (schema, rootNode, forward, rng) => rng.collapsed ? readFromRange(schema, rootNode, forward, rng) : Optional.none();
 
@@ -21373,7 +21342,7 @@
     };
     const mergeBlocks = (rootNode, forward, block1, block2, schema) => forward ? mergeBlockInto(rootNode, block2, block1, schema) : mergeBlockInto(rootNode, block1, block2, schema);
 
-    const backspaceDelete$a = (editor, forward) => {
+    const backspaceDelete$9 = (editor, forward) => {
       const rootNode = SugarElement.fromDom(editor.getBody());
       const position = read$1(editor.schema, rootNode.dom, forward, editor.selection.getRng()).map(blockBoundary => () => {
         mergeBlocks(rootNode, forward, blockBoundary.from.block, blockBoundary.to.block, editor.schema).each(pos => {
@@ -21420,7 +21389,7 @@
       const rng = editor.selection.getRng();
       return isEverythingSelected(rootNode, rng) ? emptyEditor(editor) : deleteRangeMergeBlocks(rootNode, editor.selection, editor.schema);
     };
-    const backspaceDelete$9 = (editor, _forward) => editor.selection.isCollapsed() ? Optional.none() : deleteRange$2(editor);
+    const backspaceDelete$8 = (editor, _forward) => editor.selection.isCollapsed() ? Optional.none() : deleteRange$2(editor);
 
     const showCaret = (direction, editor, node, before, scrollIntoView) => Optional.from(editor._selectionOverrides.showCaret(direction, node, before, scrollIntoView));
     const getNodeRange = node => {
@@ -21503,7 +21472,7 @@
       }
       return Optional.none();
     };
-    const backspaceDelete$8 = (editor, forward) => deleteBoundaryText(editor, forward);
+    const backspaceDelete$7 = (editor, forward) => deleteBoundaryText(editor, forward);
 
     const getEdgeCefPosition = (editor, atStart) => {
       const root = editor.getBody();
@@ -21642,104 +21611,12 @@
       }
       return true;
     };
-    const backspaceDelete$7 = (editor, forward) => {
+    const backspaceDelete$6 = (editor, forward) => {
       if (editor.selection.isCollapsed()) {
         return backspaceDeleteCaret(editor, forward);
       } else {
         return backspaceDeleteRange(editor, forward);
       }
-    };
-
-    const isTextEndpoint = endpoint => endpoint.hasOwnProperty('text');
-    const isElementEndpoint = endpoint => endpoint.hasOwnProperty('marker');
-    const getBookmark = (range, createMarker) => {
-      const getEndpoint = (container, offset) => {
-        if (isText$b(container)) {
-          return {
-            text: container,
-            offset
-          };
-        } else {
-          const marker = createMarker();
-          const children = container.childNodes;
-          if (offset < children.length) {
-            container.insertBefore(marker, children[offset]);
-            return {
-              marker,
-              before: true
-            };
-          } else {
-            container.appendChild(marker);
-            return {
-              marker,
-              before: false
-            };
-          }
-        }
-      };
-      const end = getEndpoint(range.endContainer, range.endOffset);
-      const start = getEndpoint(range.startContainer, range.startOffset);
-      return {
-        start,
-        end
-      };
-    };
-    const resolveBookmark = bm => {
-      var _a, _b;
-      const {start, end} = bm;
-      const rng = new window.Range();
-      if (isTextEndpoint(start)) {
-        rng.setStart(start.text, start.offset);
-      } else {
-        if (isElementEndpoint(start)) {
-          if (start.before) {
-            rng.setStartBefore(start.marker);
-          } else {
-            rng.setStartAfter(start.marker);
-          }
-          (_a = start.marker.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(start.marker);
-        }
-      }
-      if (isTextEndpoint(end)) {
-        rng.setEnd(end.text, end.offset);
-      } else {
-        if (isElementEndpoint(end)) {
-          if (end.before) {
-            rng.setEndBefore(end.marker);
-          } else {
-            rng.setEndAfter(end.marker);
-          }
-          (_b = end.marker.parentNode) === null || _b === void 0 ? void 0 : _b.removeChild(end.marker);
-        }
-      }
-      return rng;
-    };
-
-    const backspaceDelete$6 = (editor, forward) => {
-      var _a;
-      const dom = editor.dom;
-      const startBlock = dom.getParent(editor.selection.getStart(), dom.isBlock);
-      const endBlock = dom.getParent(editor.selection.getEnd(), dom.isBlock);
-      const body = editor.getBody();
-      const startBlockName = (_a = startBlock === null || startBlock === void 0 ? void 0 : startBlock.nodeName) === null || _a === void 0 ? void 0 : _a.toLowerCase();
-      if (startBlockName === 'div' && startBlock && endBlock && startBlock === body.firstChild && endBlock === body.lastChild && !dom.isEmpty(body)) {
-        const wrapper = startBlock.cloneNode(false);
-        const deleteAction = () => {
-          if (forward) {
-            execNativeForwardDeleteCommand(editor);
-          } else {
-            execNativeDeleteCommand(editor);
-          }
-          if (body.firstChild !== startBlock) {
-            const bookmark = getBookmark(editor.selection.getRng(), () => document.createElement('span'));
-            Array.from(body.childNodes).forEach(node => wrapper.appendChild(node));
-            body.appendChild(wrapper);
-            editor.selection.setRng(resolveBookmark(bookmark));
-          }
-        };
-        return Optional.some(deleteAction);
-      }
-      return Optional.none();
     };
 
     const deleteCaret$2 = (editor, forward) => {
@@ -22642,16 +22519,15 @@
 
     const findAction = (editor, caret, forward) => findMap([
       backspaceDelete$1,
+      backspaceDelete$6,
       backspaceDelete$7,
-      backspaceDelete$8,
       (editor, forward) => backspaceDelete$4(editor, caret, forward),
+      backspaceDelete$9,
       backspaceDelete$a,
-      backspaceDelete$b,
       backspaceDelete$5,
       backspaceDelete$2,
-      backspaceDelete$9,
-      backspaceDelete$3,
-      backspaceDelete$6
+      backspaceDelete$8,
+      backspaceDelete$3
     ], item => item(editor, forward)).filter(_ => editor.selection.isEditable());
     const deleteCommand = (editor, caret) => {
       const result = findAction(editor, caret, false);
@@ -22779,7 +22655,7 @@
       const rootNode = editor.getBody();
       let rootBlockNode;
       let tempNode;
-      let bm = null;
+      let wrapped = false;
       const forcedRootBlock = getForcedRootBlock(editor);
       if (!startNode || !isElement$6(startNode)) {
         return;
@@ -22788,14 +22664,9 @@
       if (!schema.isValidChild(rootNodeName, forcedRootBlock.toLowerCase()) || hasBlockParent(blockElements, rootNode, startNode)) {
         return;
       }
-      if (rootNode.firstChild === rootNode.lastChild && isBr$6(rootNode.firstChild)) {
-        rootBlockNode = createRootBlock(editor);
-        rootBlockNode.appendChild(createPaddingBr().dom);
-        rootNode.replaceChild(rootBlockNode, rootNode.firstChild);
-        editor.selection.setCursorLocation(rootBlockNode, 0);
-        editor.nodeChanged();
-        return;
-      }
+      const rng = selection.getRng();
+      const {startContainer, startOffset, endContainer, endOffset} = rng;
+      const restoreSelection = hasFocus(editor);
       let node = rootNode.firstChild;
       while (node) {
         if (isElement$6(node)) {
@@ -22809,15 +22680,9 @@
             continue;
           }
           if (!rootBlockNode) {
-            if (!bm && editor.hasFocus()) {
-              bm = getBookmark(editor.selection.getRng(), () => document.createElement('span'));
-            }
-            if (!node.parentNode) {
-              node = null;
-              break;
-            }
             rootBlockNode = createRootBlock(editor);
             rootNode.insertBefore(rootBlockNode, node);
+            wrapped = true;
           }
           tempNode = node;
           node = node.nextSibling;
@@ -22827,8 +22692,10 @@
           node = node.nextSibling;
         }
       }
-      if (bm) {
-        editor.selection.setRng(resolveBookmark(bm));
+      if (wrapped && restoreSelection) {
+        rng.setStart(startContainer, startOffset);
+        rng.setEnd(endContainer, endOffset);
+        selection.setRng(rng);
         editor.nodeChanged();
       }
     };
@@ -22843,7 +22710,7 @@
       return rng;
     };
     const setup$o = editor => {
-      editor.on('NodeChange', () => addRootBlocks(editor));
+      editor.on('NodeChange', curry(addRootBlocks, editor));
     };
 
     const hasClass = checkClassName => node => (' ' + node.attr('class') + ' ').indexOf(checkClassName) !== -1;
@@ -22876,12 +22743,6 @@
       }
       e.content = content;
     };
-    const isValidContent = (nonEditableRegExps, content) => {
-      return forall(nonEditableRegExps, re => {
-        const matches = content.match(re);
-        return matches !== null && matches[0].length === content.length;
-      });
-    };
     const setup$n = editor => {
       const contentEditableAttrName = 'contenteditable';
       const editClass = ' ' + Tools.trim(getEditableClass(editor)) + ' ';
@@ -22912,16 +22773,11 @@
           if (!hasEditClass(node) && !hasNonEditClass(node)) {
             continue;
           }
-          const content = node.attr('data-mce-content');
-          if (nonEditableRegExps.length > 0 && content) {
-            if (isValidContent(nonEditableRegExps, content)) {
-              node.name = '#text';
-              node.type = 3;
-              node.raw = true;
-              node.value = content;
-            } else {
-              node.remove();
-            }
+          if (nonEditableRegExps.length > 0 && node.attr('data-mce-content')) {
+            node.name = '#text';
+            node.type = 3;
+            node.raw = true;
+            node.value = node.attr('data-mce-content');
           } else {
             node.attr(contentEditableAttrName, null);
           }
@@ -24144,20 +24000,23 @@
           lookupInfo.lookupData.then(lookupData => {
             activeAutocompleter.get().map(ac => {
               const context = lookupInfo.context;
-              if (ac.trigger !== context.trigger) {
-                return;
-              }
-              activeAutocompleter.set({
-                ...ac,
-                matchLength: context.text.length
-              });
-              if (uiActive.get()) {
-                fireAutocompleterUpdateActiveRange(editor, { range: context.range });
-                fireAutocompleterUpdate(editor, { lookupData });
-              } else {
-                uiActive.set(true);
-                fireAutocompleterUpdateActiveRange(editor, { range: context.range });
-                fireAutocompleterStart(editor, { lookupData });
+              if (ac.trigger === context.trigger) {
+                if (context.text.length - ac.matchLength >= 10) {
+                  cancelIfNecessary();
+                } else {
+                  activeAutocompleter.set({
+                    ...ac,
+                    matchLength: context.text.length
+                  });
+                  if (uiActive.get()) {
+                    fireAutocompleterUpdateActiveRange(editor, { range: context.range });
+                    fireAutocompleterUpdate(editor, { lookupData });
+                  } else {
+                    uiActive.set(true);
+                    fireAutocompleterUpdateActiveRange(editor, { range: context.range });
+                    fireAutocompleterStart(editor, { lookupData });
+                  }
+                }
               }
             });
           });
@@ -24422,19 +24281,19 @@
         },
         {
           keyCode: VK.BACKSPACE,
+          action: action(backspaceDelete$6, editor, false)
+        },
+        {
+          keyCode: VK.DELETE,
+          action: action(backspaceDelete$6, editor, true)
+        },
+        {
+          keyCode: VK.BACKSPACE,
           action: action(backspaceDelete$7, editor, false)
         },
         {
           keyCode: VK.DELETE,
           action: action(backspaceDelete$7, editor, true)
-        },
-        {
-          keyCode: VK.BACKSPACE,
-          action: action(backspaceDelete$8, editor, false)
-        },
-        {
-          keyCode: VK.DELETE,
-          action: action(backspaceDelete$8, editor, true)
         },
         {
           keyCode: VK.BACKSPACE,
@@ -24446,11 +24305,11 @@
         },
         {
           keyCode: VK.BACKSPACE,
-          action: action(backspaceDelete$b, editor, false)
+          action: action(backspaceDelete$a, editor, false)
         },
         {
           keyCode: VK.DELETE,
-          action: action(backspaceDelete$b, editor, true)
+          action: action(backspaceDelete$a, editor, true)
         },
         {
           keyCode: VK.BACKSPACE,
@@ -24506,6 +24365,14 @@
         },
         {
           keyCode: VK.BACKSPACE,
+          action: action(backspaceDelete$8, editor, false)
+        },
+        {
+          keyCode: VK.DELETE,
+          action: action(backspaceDelete$8, editor, true)
+        },
+        {
+          keyCode: VK.BACKSPACE,
           action: action(backspaceDelete$9, editor, false)
         },
         {
@@ -24514,27 +24381,11 @@
         },
         {
           keyCode: VK.BACKSPACE,
-          action: action(backspaceDelete$a, editor, false)
-        },
-        {
-          keyCode: VK.DELETE,
-          action: action(backspaceDelete$a, editor, true)
-        },
-        {
-          keyCode: VK.BACKSPACE,
           action: action(backspaceDelete$3, editor, false)
         },
         {
           keyCode: VK.DELETE,
           action: action(backspaceDelete$3, editor, true)
-        },
-        {
-          keyCode: VK.BACKSPACE,
-          action: action(backspaceDelete$6, editor, false)
-        },
-        {
-          keyCode: VK.DELETE,
-          action: action(backspaceDelete$6, editor, true)
         }
       ], evt).filter(_ => editor.selection.isEditable()).each(applyAction => {
         evt.preventDefault();
@@ -25153,14 +25004,9 @@
       } else if (isCaretAtStartOrEndOfBlock(false)) {
         newBlock = insertNewBlockAfter();
       } else if (isCaretAtStartOrEndOfBlock(true) && parentBlockParent) {
-        const caretPos = CaretPosition.fromRangeStart(rng);
-        const afterTable = isAfterTable(caretPos);
-        const parentBlockSugar = SugarElement.fromDom(parentBlock);
-        const afterBr = isAfterBr(parentBlockSugar, caretPos, editor.schema);
-        const prevBrOpt = afterBr ? findPreviousBr(parentBlockSugar, caretPos, editor.schema).bind(pos => Optional.from(pos.getNode())) : Optional.none();
         newBlock = parentBlockParent.insertBefore(createNewBlock$1(), parentBlock);
-        const root = containerAndSiblingName(parentBlock, 'HR') || afterTable ? newBlock : prevBrOpt.getOr(parentBlock);
-        moveToCaretPosition(editor, root);
+        const isNearChildren = hasChildNodes(SugarElement.fromDom(rng.startContainer)) && rng.collapsed;
+        moveToCaretPosition(editor, containerAndSiblingName(parentBlock, 'HR') || isNearChildren ? newBlock : parentBlock);
       } else {
         const tmpRng = includeZwspInRange(rng).cloneRange();
         tmpRng.setEndAfter(parentBlock);
@@ -26803,7 +26649,6 @@
       setup$8(editor);
       register$1(editor, pasteFormat);
       setup$9(editor);
-      editor.addQueryStateHandler('mceTogglePlainTextPaste', () => pasteFormat.get() === 'text');
       editor.on('PreInit', () => {
         register(editor);
         setup$a(editor, draggingInternallyState);
@@ -29131,10 +28976,9 @@
       return iframeHTML;
     };
     const createIframe = (editor, boxInfo) => {
-      const iframeTitle = Env.browser.isFirefox() ? getIframeAriaText(editor) : 'Rich Text Area';
-      const translatedTitle = editor.translate(iframeTitle);
+      const iframeTitle = editor.translate('Rich Text Area');
       const tabindex = getOpt(SugarElement.fromDom(editor.getElement()), 'tabindex').bind(toInt);
-      const ifr = createIframeElement(editor.id, translatedTitle, getIframeAttrs(editor), tabindex).dom;
+      const ifr = createIframeElement(editor.id, iframeTitle, getIframeAttrs(editor), tabindex).dom;
       ifr.onload = () => {
         ifr.onload = null;
         editor.dispatch('load');
@@ -29597,10 +29441,7 @@
       const extendedOptions = Tools.extend(defaultOptions, defaultOverrideOptions, sectionResult.options(), isOnMobile(isMobileDevice, sectionResult) ? getSection(sectionResult, 'mobile') : {}, { external_plugins: getExternalPlugins(defaultOverrideOptions, sectionResult.options()) });
       return processPlugins(isMobileDevice, sectionResult, defaultOverrideOptions, extendedOptions);
     };
-    const normalizeOptions = (defaultOverrideOptions, options) => {
-      const copiedOptions = merge(options);
-      return combineOptions(isPhone || isTablet, isPhone, copiedOptions, defaultOverrideOptions, copiedOptions);
-    };
+    const normalizeOptions = (defaultOverrideOptions, options) => combineOptions(isPhone || isTablet, isPhone, options, defaultOverrideOptions, options);
 
     const addVisual = (editor, elm) => addVisual$1(editor, elm);
 
@@ -30687,7 +30528,7 @@
       }
       return undefined;
     };
-    const create$5 = (editor, initialOptions, rawInitialOptions = initialOptions) => {
+    const create$5 = (editor, initialOptions) => {
       const registry = {};
       const values = {};
       const setValue = (name, value, processor) => {
@@ -30735,26 +30576,13 @@
         return registered;
       };
       const isSet = name => has$2(values, name);
-      const debug = () => {
-        try {
-          console.log(JSON.parse(JSON.stringify(rawInitialOptions, (_key, value) => {
-            if (isBoolean(value) || isNumber(value) || isString(value) || isNull(value) || isArray$1(value) || isPlainObject(value)) {
-              return value;
-            }
-            return Object.prototype.toString.call(value);
-          })));
-        } catch (error) {
-          console.error(error);
-        }
-      };
       return {
         register,
         isRegistered,
         get,
         set,
         unset,
-        isSet,
-        debug
+        isSet
       };
     };
 
@@ -31086,7 +30914,7 @@
         this.id = id;
         this.hidden = false;
         const normalizedOptions = normalizeOptions(editorManager.defaultOptions, options);
-        this.options = create$5(self, normalizedOptions, options);
+        this.options = create$5(self, normalizedOptions);
         register$7(self);
         const getOption = this.options.get;
         if (getOption('deprecation_warnings')) {
@@ -31491,8 +31319,8 @@
       documentBaseURL: null,
       suffix: null,
       majorVersion: '7',
-      minorVersion: '2.0',
-      releaseDate: '2024-06-19',
+      minorVersion: '0.1',
+      releaseDate: '2024-04-10',
       i18n: I18n,
       activeEditor: null,
       focusedEditor: null,

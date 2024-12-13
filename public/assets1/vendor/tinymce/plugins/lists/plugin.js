@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 7.2.0 (2024-06-19)
+ * TinyMCE version 7.0.1 (2024-04-10)
  */
 
 (function () {
@@ -631,7 +631,7 @@
     const getForcedRootBlock = option('forced_root_block');
     const getForcedRootBlockAttrs = option('forced_root_block_attrs');
 
-    const createTextBlock = (editor, contentNode, attrs = {}) => {
+    const createTextBlock = (editor, contentNode) => {
       const dom = editor.dom;
       const blockElements = editor.schema.getBlockElements();
       const fragment = dom.createFragment();
@@ -640,10 +640,7 @@
       let node;
       let textBlock;
       let hasContentNode = false;
-      textBlock = dom.create(blockName, {
-        ...blockAttrs,
-        ...attrs.style ? { style: attrs.style } : {}
-      });
+      textBlock = dom.create(blockName, blockAttrs);
       if (!isBlock(contentNode.firstChild, blockElements)) {
         fragment.appendChild(textBlock);
       }
@@ -1136,8 +1133,7 @@
       const normalizedEntries = normalizeEntries(entries);
       return map(normalizedEntries, entry => {
         const content = !isEntryComment(entry) ? fromElements(entry.content) : fromElements([SugarElement.fromHtml(`<!--${ entry.content }-->`)]);
-        const listItemAttrs = isEntryList(entry) ? entry.itemAttributes : {};
-        return SugarElement.fromDom(createTextBlock(editor, content.dom, listItemAttrs));
+        return SugarElement.fromDom(createTextBlock(editor, content.dom));
       });
     };
     const indentedComposer = (editor, entries) => {

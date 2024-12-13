@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('auth')
 
 @section('content')
 <section class="vh-100">
@@ -9,7 +9,7 @@
                     <div class="row g-0">
                         <!-- Image Section -->
                         <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="{{ asset('assets1/img/logo_tasco.png') }}" alt="login form" class="img-fluid rounded-start-4" />
+                            <img src="{{ asset('assets1/img/logo tasco_fix.png') }}" alt="login form" class="img-fluid rounded-start-4" />
                         </div>
                         <!-- Form Section -->
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">

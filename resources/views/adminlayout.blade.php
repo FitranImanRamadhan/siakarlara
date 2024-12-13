@@ -313,6 +313,35 @@
                     </ul>
                 </li><!-- End Forms Nav -->
             @endif
+
+            @if (Auth()->user()->hak_akses == "Admin")
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse"
+                    href="#">
+                    <i class="bi bi-journal-text"></i><span>Layout Home</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('lokers.index') }}">
+                            <i class="bi bi-circle"></i><span>Loker</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('promos.index') }}">
+                            <i class="bi bi-circle"></i><span>Promo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('galeris.index') }}">
+                            <i class="bi bi-circle"></i><span>Galeri</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            @endif
+            
+            
         </ul>
 
     </aside><!-- End Sidebar-->

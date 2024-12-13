@@ -38,8 +38,8 @@ class PegawaiController extends Controller
         $request->validate([
             'id' => 'required',
             'nama' => 'required',
-            'jabatan' => 'required',
-            'toko' => 'required',
+            'jabatan' => '',
+            'toko' => '',
             'score' => 'required',
         ]);
 
@@ -95,8 +95,8 @@ class PegawaiController extends Controller
         $request->validate([
             'id' => 'required',
             'nama' => 'required',
-            'jabatan' => 'required',
-            'toko' => 'required',
+            'jabatan' => '',
+            'toko' => '',
             'score' => 'required',
         ]);
 

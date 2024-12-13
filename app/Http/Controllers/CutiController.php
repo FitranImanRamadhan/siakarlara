@@ -154,7 +154,7 @@ class CutiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(Cuti $cuti,)
+    public function show(Cuti $cuti)
     {
 
         return view('cutis.show', compact('cuti'));
@@ -235,7 +235,7 @@ class CutiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cuti $cuti,)
+    public function destroy(Cuti $cuti)
     {
 
         try {
